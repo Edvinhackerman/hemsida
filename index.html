@@ -1,264 +1,126 @@
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDVIN // EXPERIENCE // CV</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!doctype html>
+<html lang="sv"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BADVLOGG // ÖSTERGÖTLAND</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-:root{
-  --bg:#020204;
-  --red:#ff174d;
-  --red2:#ff4d70;
-  --purple:#7b2cff;
-  --white:#fff;
-  --muted:rgba(255,255,255,.58);
-  --line:rgba(255,23,77,.28);
-  --panel:rgba(10,7,12,.72);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  min-height:100vh;background:var(--bg);color:#fff;
-  font-family:'Space Mono',monospace;overflow-x:hidden;
-  cursor:crosshair;
-}
-a{color:inherit}
-.background{position:fixed;inset:0;z-index:-5;overflow:hidden;background:
-  radial-gradient(circle at 50% 25%,rgba(255,0,50,.16),transparent 28%),
-  radial-gradient(circle at 15% 85%,rgba(100,0,255,.13),transparent 30%),
-  radial-gradient(circle at 90% 10%,rgba(255,0,0,.08),transparent 28%),#020204}
-.grid{position:absolute;inset:-60%;width:220%;height:220%;
-  background-image:linear-gradient(rgba(255,0,50,.07) 1px,transparent 1px),
-  linear-gradient(90deg,rgba(255,0,50,.07) 1px,transparent 1px);
-  background-size:55px 55px;transform:perspective(500px) rotateX(60deg);
-  animation:gridMove 8s linear infinite;mask-image:linear-gradient(to top,#000,transparent 78%)}
-@keyframes gridMove{to{transform:perspective(500px) rotateX(60deg) translateY(55px)}}
-.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.32;animation:float 8s ease-in-out infinite}
-.orb.one{width:320px;height:320px;background:#ff003c;top:-100px;left:-100px}
-.orb.two{width:280px;height:280px;background:#6d00ff;right:-100px;bottom:5% ;animation-delay:-4s}
-@keyframes float{50%{transform:translate(40px,-30px)}}
-.scanlines{position:fixed;inset:0;pointer-events:none;z-index:50;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 1px,transparent 2px,transparent 4px)}
-.vignette{position:fixed;inset:0;pointer-events:none;z-index:49;box-shadow:inset 0 0 180px 60px #000}
-#particles{position:fixed;inset:0;z-index:-1}
+:root{--ink:#062a33;--muted:#658087;--aqua:#16c6c9;--blue:#087bb5;--sand:#fffaf0;--white:#fff;--line:#d9ecec;--shadow:0 18px 55px rgba(4,56,70,.12)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:"DM Sans",sans-serif;color:var(--ink);background:linear-gradient(180deg,#f5ffff,#fff 32%,#fffaf0);min-height:100vh}
+.hero{min-height:560px;position:relative;overflow:hidden;display:flex;align-items:center;color:#fff;background:radial-gradient(circle at 75% 25%,rgba(255,255,255,.4),transparent 24%),linear-gradient(145deg,#063e4c,#087da0 48%,#19c7c5)}
+.hero:after{content:"";position:absolute;left:-10%;right:-10%;bottom:-100px;height:240px;background:var(--sand);border-radius:50% 50% 0 0/55% 55% 0 0}
+nav{position:absolute;top:24px;left:0;right:0;z-index:5}.nav{width:min(1180px,92%);margin:auto;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:800;letter-spacing:2px}nav a{font-size:12px;font-weight:700;text-decoration:none;padding:10px 14px;border:1px solid #ffffff40;border-radius:999px}
+.hero-inner{width:min(1180px,92%);margin:auto;position:relative;z-index:2;padding:90px 0 130px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;opacity:.8}
+h1{font:800 clamp(55px,9vw,112px)/.88 Manrope,sans-serif;letter-spacing:-5px;margin:20px 0}
+.hero p{max-width:650px;font-size:18px;line-height:1.7;color:#ffffffd8}.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.badge{padding:10px 14px;border:1px solid #ffffff40;background:#ffffff18;border-radius:999px;font-weight:700;font-size:12px}
+main{width:min(1180px,92%);margin:-40px auto 70px;position:relative;z-index:3}.app{background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);overflow:hidden}
+.toolbar{padding:20px;display:flex;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+input,select{font:inherit}.search{flex:1;min-width:220px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;outline:none;background:#f8ffff}
+select{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
+.content{display:grid;grid-template-columns:1fr 1.2fr;min-height:650px}.list{padding:22px;max-height:720px;overflow:auto}#map{width:100%;height:100%;min-height:650px}
+.count{display:flex;justify-content:space-between;margin:0 4px 14px;font-size:12px;color:var(--muted)}.count strong{color:var(--ink);font-size:14px}
+.card{border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:12px;background:linear-gradient(135deg,#fff,#f6ffff);cursor:pointer;transition:.2s}
+.card:hover{transform:translateY(-2px);border-color:#8ddedf;box-shadow:0 10px 25px #04647314}.card-top{display:flex;justify-content:space-between;gap:10px}
+.card h3{font-size:16px}.place{color:var(--muted);font-size:11px;margin-top:4px}.stars{font-size:18px;letter-spacing:-2px;white-space:nowrap;color:#ffb52e}.stars .empty{color:#d7e1e1}.stars .half{background:linear-gradient(90deg,#ffb52e 50%,#d7e1e1 50%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.note{font-size:12px;color:#557078;line-height:1.6;margin-top:10px}.action{display:inline-block;text-decoration:none;font-size:11px;font-weight:800;padding:9px 11px;border-radius:10px;background:#eafafa;color:#067c82;margin-top:12px}
+.info{width:min(1180px,92%);margin:0 auto 70px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.info article{padding:25px;border:1px solid var(--line);border-radius:20px;background:#ffffffb8}.info p{font-size:12px;color:var(--muted);line-height:1.65;margin-top:8px}
+footer{text-align:center;padding:40px;color:#789096;font-size:11px}
+@media(max-width:850px){.content{grid-template-columns:1fr}#map{min-height:430px}.list{max-height:none}.info{grid-template-columns:1fr}}
 
-.corner{position:fixed;z-index:60;color:rgba(255,255,255,.3);font:9px 'Space Mono';letter-spacing:2px}
-.tl{top:22px;left:25px}.tr{top:22px;right:25px}.bl{bottom:22px;left:25px}.br{bottom:22px;right:25px}
-
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:40;
-  display:flex;justify-content:center;gap:10px;padding:18px 80px;
-  background:linear-gradient(to bottom,rgba(2,2,4,.88),transparent);
-  backdrop-filter:blur(8px)
-}
-nav a{font:700 10px 'Orbitron';letter-spacing:3px;text-decoration:none;color:rgba(255,255,255,.5);
-  padding:10px 14px;border:1px solid transparent;transition:.25s}
-nav a:hover{color:#fff;border-color:var(--line);background:rgba(255,0,50,.06);text-shadow:0 0 12px var(--red)}
-
-section{position:relative;min-height:100vh;padding:110px 7vw 90px;display:flex;align-items:center}
-.hero{justify-content:center;text-align:center;min-height:100vh}
-.hero-inner{max-width:1100px;transform-style:preserve-3d;transition:transform .15s ease-out}
-.status{display:inline-flex;align-items:center;gap:10px;padding:9px 18px;margin-bottom:25px;
-  border:1px solid rgba(255,0,60,.5);border-radius:999px;background:rgba(255,0,50,.05);
-  box-shadow:0 0 20px rgba(255,0,50,.15),inset 0 0 20px rgba(255,0,50,.05);
-  color:var(--red2);font:11px 'Orbitron';letter-spacing:4px}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);animation:blink 1s infinite}
-@keyframes blink{50%{opacity:.25}}
-h1{font:900 clamp(70px,14vw,180px)/.82 'Orbitron';letter-spacing:-7px;text-shadow:0 0 12px #fff,0 0 35px rgba(255,0,50,.8),0 0 100px rgba(255,0,50,.4);animation:glow 3s ease-in-out infinite}
-@keyframes glow{50%{text-shadow:0 0 18px #fff,0 0 55px rgba(255,0,50,1),0 0 120px rgba(255,0,50,.65)}}
-.kicker{margin-top:28px;color:rgba(255,255,255,.52);font:12px 'Orbitron';letter-spacing:7px}
-.hero-meta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:42px}
-.chip{padding:10px 14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.025);font-size:10px;letter-spacing:1px;color:var(--muted)}
-
-
-.wrap{width:min(1180px,100%);margin:auto}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:35px}
-.eyebrow{color:var(--red2);font:700 10px 'Orbitron';letter-spacing:4px}
-h2{font:800 clamp(34px,5vw,70px)/1 'Orbitron';letter-spacing:-2px;margin-top:10px}
-.section-no{font:700 48px 'Orbitron';color:rgba(255,255,255,.07)}
-
-.panel{
-  position:relative;background:linear-gradient(145deg,rgba(255,0,50,.055),rgba(255,255,255,.018));
-  border:1px solid var(--line);box-shadow:0 0 35px rgba(255,0,50,.06),inset 0 0 30px rgba(255,0,50,.025);
-  overflow:hidden
-}
-.panel:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 0 49.7%,rgba(255,23,77,.08) 50%,transparent 50.3%);opacity:.35}
-.profile-grid{display:grid;grid-template-columns:1.5fr 1fr}
-.profile-main,.profile-side{padding:34px}
-.profile-main{border-right:1px solid var(--line)}
-.profile-main p{color:rgba(255,255,255,.72);font-size:14px;line-height:1.9}
-.big-stat{font:800 clamp(55px,8vw,95px) 'Orbitron';color:#fff;text-shadow:0 0 30px rgba(255,0,50,.55)}
-.stat-label{color:var(--red2);font:700 10px 'Orbitron';letter-spacing:3px}
-.contact{display:grid;gap:18px;margin-top:28px}
-.contact div{padding-bottom:15px;border-bottom:1px solid rgba(255,255,255,.08)}
-.contact span{display:block;color:rgba(255,255,255,.35);font-size:9px;letter-spacing:2px;margin-bottom:7px}
-.contact a{text-decoration:none;font-size:12px}.contact a:hover{color:var(--red2)}
-
-.timeline{display:grid;gap:16px}
-.job{padding:28px 30px;display:grid;grid-template-columns:190px 1fr;gap:30px}
-.job + .job{border-top:1px solid var(--line)}
-.date{font:700 11px 'Orbitron';letter-spacing:2px;color:var(--red2)}
-.company{font:800 21px 'Orbitron';letter-spacing:-.5px}
-.role{margin-top:7px;color:rgba(255,255,255,.4);font-size:11px}
-.job ul{margin-top:18px;padding-left:18px;color:rgba(255,255,255,.68);font-size:12px;line-height:1.9}
-.job li::marker{color:var(--red)}
-
-.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.skill{padding:22px;border:1px solid rgba(255,23,77,.2);background:rgba(255,255,255,.018);transition:.25s}
-.skill:hover{transform:translateY(-5px);border-color:var(--red);box-shadow:0 0 25px rgba(255,0,50,.12)}
-.skill b{font:700 12px 'Orbitron';letter-spacing:1px}.skill p{margin-top:10px;color:rgba(255,255,255,.4);font-size:10px}
-
-.edu{display:grid;grid-template-columns:1fr 2fr;gap:18px}.edu .panel{padding:30px}.edu-year{font:700 11px 'Orbitron';color:var(--red2);letter-spacing:2px}.edu h3{font:700 19px 'Orbitron';margin-top:12px}.edu p{margin-top:9px;color:var(--muted);font-size:12px}
-
-footer{padding:50px 7vw 80px;text-align:center;color:rgba(255,255,255,.25);font-size:9px;letter-spacing:3px}
-
-.reveal{opacity:0;transform:translateY(25px);transition:opacity .7s ease,transform .7s ease}.reveal.show{opacity:1;transform:none}
-@media(max-width:800px){
- nav{padding:14px 55px 14px 10px;justify-content:flex-start;overflow:auto}nav a{white-space:nowrap;font-size:8px}
- section{padding:105px 20px 70px}
- .profile-grid,.edu{grid-template-columns:1fr}.profile-main{border-right:0;border-bottom:1px solid var(--line)}
- .job{grid-template-columns:1fr;gap:12px}.skills{grid-template-columns:1fr 1fr}
- .corner{font-size:7px}.tr{right:8px}.br{right:8px}.tl{left:8px}.bl{left:8px}
-}
-@media(max-width:480px){.skills{grid-template-columns:1fr}h1{letter-spacing:-4px}.kicker{font-size:8px;letter-spacing:4px}.job{padding:22px}.profile-main,.profile-side{padding:24px}}
-</style>
-</head>
+.map-status{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 12px}
+.map-status>div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:0 10px 30px rgba(4,56,70,.07)}
+.map-status b{display:block;font-size:10px;letter-spacing:1.5px;color:var(--blue);margin-bottom:4px}
+.map-status span{font-size:12px;color:var(--muted);line-height:1.5}
+.pin-icon{width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#087bb5;border:3px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.24);display:flex;align-items:center;justify-content:center}
+.pin-icon b{transform:rotate(45deg);color:#fff;font-size:11px;font-family:DM Sans,sans-serif}
+.precision{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.5px;color:#087bb5;background:#eafaff;border:1px solid #c8eff5;border-radius:999px;padding:5px 8px;margin-top:8px}
+.card .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.card .action{margin-top:0}
+.action.secondary{background:#f2fbfc;color:#087bb5;border:1px solid #ccebed}
+.leaflet-popup-content-wrapper{border-radius:16px}
+.leaflet-popup-content{margin:14px 16px;font-family:"DM Sans",sans-serif}
+@media(max-width:720px){.map-status{grid-template-columns:1fr}}
+.source-note{width:min(1180px,92%);margin:20px auto 50px;color:#71858a;font-size:11px;line-height:1.6;text-align:center}\n</style></head>
 <body>
-<div class="background"><div class="grid"></div><div class="orb one"></div><div class="orb two"></div></div>
-<canvas id="particles"></canvas>
-<div class="scanlines"></div><div class="vignette"></div>
+<header class="hero"><nav><div class="nav"><div class="logo">BADVLOGG // ÖSTERGÖTLAND</div><a href="#kartan">ÖPPNA KARTAN ↓</a></div></nav>
+<div class="hero-inner"><div class="eyebrow">49 bad // 1 län // din badguide</div>
+<h1>HITTA DITT<br>PERFEKTA BAD.</h1><p>En samlad badkarta över Östergötland. Se alla badplatser, kolla mitt betyg i stjärnor och öppna platsen direkt i Google Maps.</p>
+<div class="badges"><div class="badge">💦 49 BADPLATSER</div><div class="badge">⭐ PERSONLIGA BETYG</div><div class="badge">📍 GOOGLE MAPS</div></div></div></header>
 
-<div class="corner tl">SYSTEM // ONLINE</div>
-<div class="corner tr">EDVIN.HACKERMAN</div>
-<div class="corner bl">ACCESS_GRANTED</div>
-<div class="corner br">2026 // CV_001</div>
-
-<nav>
-  <a href="#top">01 // HOME</a>
-  <a href="#profile">02 // PROFILE</a>
-  <a href="#experience">03 // EXPERIENCE</a>
-  <a href="#skills">04 // SKILLS</a>
-  <a href="#education">05 // EDUCATION</a>
-</nav>
-
-<section class="hero" id="top">
-  <div class="hero-inner" id="heroInner">
-    <div class="status"><span class="dot"></span>SYSTEM ONLINE // CV LOADED</div>
-    <h1>EDVIN</h1>
-    <div class="kicker">LOGISTICS // MATERIAL FLOW // PROBLEM SOLVING</div>
-    <div class="hero-meta">
-      <div class="chip">5+ ÅR LOGISTIK</div><div class="chip">TOYOTA MATERIAL HANDLING</div><div class="chip">LINKÖPING</div>
-    </div>
-
-  </div>
-</section>
-
-<section id="profile">
-<div class="wrap reveal">
-  <div class="section-head"><div><div class="eyebrow">02 // IDENTIFICATION</div><h2>PROFILE</h2></div><div class="section-no">02</div></div>
-  <div class="panel profile-grid">
-    <div class="profile-main">
-      <div class="big-stat">05+</div><div class="stat-label">YEARS IN LOGISTICS & MATERIAL HANDLING</div>
-      <p style="margin-top:28px">5 års erfarenhet från logistik och materialhantering från Toyota, van vid orderplock, materialflöden, inventeringar och att samarbeta dagligen med kollegor på andra avdelningar för att problem i materialflödet ska upptäckas tidigt.</p>
-      <p style="margin-top:18px">Senaste året har mitt huvudfokus på jobbet legat vid upplärning av nya kollegor inom det standardiserade arbetssättet som vi har på Toyota. Gillar problemlösningar och att upptäcka saker som är fel i tid.</p>
-    </div>
-    <div class="profile-side">
-      <div class="eyebrow">CONTACT // NODE</div>
-      <div class="contact">
-        <div><span>PHONE</span>+46 793352082</div>
-        <div><span>EMAIL</span><a href="mailto:Edvin-andersson@live.se">Edvin-andersson@live.se</a></div>
-        <div><span>LOCATION</span>Linköping, Sverige</div>
-      </div>
-    </div>
-  </div>
+<main id="kartan"><div class="app"><div class="toolbar">
+<input id="search" class="search" type="search" placeholder="Sök badplats eller ort...">
+<select id="rating"><option value="0">Alla betyg</option><option value="9">9/10 eller bättre</option><option value="8">8/10 eller bättre</option><option value="7">7/10 eller bättre</option><option value="6">6/10 eller bättre</option><option value="5">5/10 eller bättre</option></select>
+</div><div class="content"><div class="list"><div class="count"><strong id="count">49 bad</strong><span>Klicka på ett bad för att zooma</span></div><div id="cards"></div></div><div class="map-status">
+  <div><b>LIVEKARTA</b><span>28 av 49 platser har verifierade koordinater inlagda.</span></div>
+  <div><b>GOOGLE MAPS</b><span>Alla 49 platser har en direkt kartlänk — även de punkter som jag inte ville gissa koordinater för.</span></div>
 </div>
-</section>
+<div id="map"></div></div></div><div class="source-note">Kartpunkter är inlagda från verifierade kart-/badplatsuppgifter där exakt badpunkt kunde beläggas. För övriga platser öppnas en direkt Google Maps-sökning så att ingen påhittad koordinat används.</div></main>
 
-<section id="experience">
-<div class="wrap reveal">
-  <div class="section-head"><div><div class="eyebrow">03 // WORK HISTORY</div><h2>EXPERIENCE</h2></div><div class="section-no">03</div></div>
-  <div class="panel timeline">
-    <article class="job">
-      <div><div class="date">2021 — NU</div><div class="role">LOGISTICS / MATERIAL FLOW</div></div>
-      <div><div class="company">TOYOTA MATERIAL HANDLING EUROPE</div>
-        <ul><li>Truckkörning</li><li>Materialhantering och kittning</li><li>Orderplock</li><li>Lättare montering av truck</li><li>Inventering och kontroll av lagersaldon</li><li>Samarbetar dagligen med kollegor och andra avdelningar för att problem i materialflödet ska upptäckas tidigt</li><li>Ansvarar för introduktion och upplärning av nyanställda enligt avdelningens standardiserade arbetssätt</li></ul>
-      </div>
-    </article>
-    <article class="job">
-      <div><div class="date">2021</div><div class="role">SEASONAL / PHYSICAL</div></div>
-      <div><div class="company">HERMELINS GRÖNSAKSODLING</div><ul><li>Plantering och skörd</li><li>Fysiskt arbete utomhus i alla väder</li></ul></div>
-    </article>
-    <article class="job">
-      <div><div class="date">2021</div><div class="role">WAREHOUSE / CUSTOMER</div></div>
-      <div><div class="company">DÄCKSTOPP LINKÖPING</div><ul><li>Lagerhantering och registrering av kunder i däckhotell</li><li>Hjul- och däckrekond</li><li>Orderplock till kunder</li><li>Arbete i högt tempo med hög arbetsbelastning</li></ul></div>
-    </article>
-    <article class="job">
-      <div><div class="date">2020</div><div class="role">RETAIL / WAREHOUSE</div></div>
-      <div><div class="company">WILLYS EKHOLMEN</div><ul><li>Lagerhantering</li><li>Orderplock</li><li>Kassaarbete</li><li>Kundservice</li></ul></div>
-    </article>
-    <article class="job">
-      <div><div class="date">2017 — 2018</div><div class="role">RESEARCH / COMMUNICATION</div></div>
-      <div><div class="company">CMA RESEARCH</div><ul><li>Ringde via telefon till folk och genomförde undersökningar</li></ul></div>
-    </article>
-  </div>
-</div>
-</section>
+<section class="info"><article><b>⭐ Betyg</b><p>Dina betyg är 1–10 och visas samtidigt som stjärnor. 10/10 = 5 ★.</p></article>
+<article><b>📍 Google Maps</b><p>Varje plats öppnas direkt i Google Maps. Google Maps URLs fungerar utan Google Maps API-nyckel.</p></article>
+<article><b>✏️ Lätt att uppdatera</b><p>Alla 49 bad ligger i en enda JavaScript-lista längst ner. Designen behöver du inte röra.</p></article></section>
+<footer>BADVLOGG // ÖSTERGÖTLAND · 49 BAD</footer>
 
-<section id="skills">
-<div class="wrap reveal">
-  <div class="section-head"><div><div class="eyebrow">04 // CAPABILITIES</div><h2>SKILLS</h2></div><div class="section-no">04</div></div>
-  <div class="skills">
-    <div class="skill"><b>TRUCKKÖRNING</b><p>Operativ truckkörning i lager-/materialflöde.</p></div>
-    <div class="skill"><b>LAGERHANTERING</b><p>Struktur, kontroll och flöde i lager.</p></div>
-    <div class="skill"><b>ORDERPLOCK</b><p>Effektivt och noggrant orderarbete.</p></div>
-    <div class="skill"><b>MATERIAL & KITTNING</b><p>Materialförsörjning och kittning.</p></div>
-    <div class="skill"><b>PROBLEMLÖSNING</b><p>Upptäcka avvikelser tidigt och agera.</p></div>
-    <div class="skill"><b>SAMARBETE</b><p>Dagligt samarbete över avdelningsgränser.</p></div>
-  </div>
-</div>
-</section>
-
-<section id="education">
-<div class="wrap reveal">
-  <div class="section-head"><div><div class="eyebrow">05 // EDUCATION</div><h2>EDUCATION</h2></div><div class="section-no">05</div></div>
-  <div class="edu">
-    <div class="panel"><div class="edu-year">2014 — 2017</div><h3>THOREN BUSINESS SCHOOL</h3><p>Linköping</p></div>
-    <div class="panel"><div class="eyebrow">PROGRAM // BEHAVIORAL SCIENCE</div><h3>SAMHÄLLSVETENSKAPSPROGRAMMET</h3><p>Inriktning Beteendevetenskap</p></div>
-  </div>
-</div>
-</section>
-
-<footer>EDVIN // EXPERIENCE // END OF TRANSMISSION</footer>
-
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');
-let particles=[];
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
-addEventListener('resize',resize);resize();
-for(let i=0;i<120;i++)particles.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,s:Math.random()*1.8+.2,v:Math.random()*.55+.1,o:Math.random()});
-function animate(){
- ctx.clearRect(0,0,canvas.width,canvas.height);
- particles.forEach(p=>{
-   p.y-=p.v;if(p.y<0){p.y=canvas.height;p.x=Math.random()*canvas.width}
-   ctx.beginPath();ctx.arc(p.x,p.y,p.s,0,Math.PI*2);
-   ctx.fillStyle=`rgba(255,30,70,${p.o})`;ctx.shadowBlur=10;ctx.shadowColor='#ff174d';ctx.fill();
- });requestAnimationFrame(animate)
-}animate();
-
-const hero=document.getElementById('heroInner');
-document.addEventListener('mousemove',e=>{
- const x=(innerWidth/2-e.clientX)/55,y=(innerHeight/2-e.clientY)/55;
- hero.style.transform=`rotateY(${-x}deg) rotateX(${y}deg)`;
+const places=[{"id": 1, "name": "Stureforsbadet", "city": "Sturefors", "lat": 58.32431, "lng": 15.72571, "rating": 9, "note": "", "mapsQuery": "Stureforsbadet, Östergötland"}, {"id": 2, "name": "Johannelundsbadet", "city": "Linköping", "lat": 58.398332, "lng": 15.661632, "rating": 6, "note": "", "mapsQuery": "Johannelundsbadet, Östergötland"}, {"id": 3, "name": "Kolbyttemon", "city": "Linköping", "lat": null, "lng": null, "rating": 9, "note": "", "mapsQuery": "Kolbyttemon, Östergötland"}, {"id": 4, "name": "Hultsjön", "city": "Ljungsbro", "lat": 58.574, "lng": 15.510489, "rating": 10, "note": "", "mapsQuery": "Hultsjön, Ljungsbro, Östergötland"}, {"id": 5, "name": "Svartmåla -", "city": "Linköping", "lat": null, "lng": null, "rating": 8, "note": "", "mapsQuery": "Svartmåla badplats, Östergötland"}, {"id": 6, "name": "Prästgårdskajen", "city": "Sturefors", "lat": null, "lng": null, "rating": 10, "note": "", "mapsQuery": "Prästgårdskajen, Sturefors, Östergötland"}, {"id": 7, "name": "Strandbaden borensberg", "city": "Borensberg", "lat": 58.555455, "lng": 15.277286, "rating": 7, "note": "", "mapsQuery": "Strandbaden borensberg, Östergötland"}, {"id": 8, "name": "Ekebyborna", "city": "Borensberg", "lat": null, "lng": null, "rating": 5, "note": "", "mapsQuery": "Ekebyborna, Borensberg, Östergötland"}, {"id": 9, "name": "Bergs slussar", "city": "Berg / Linköping", "lat": 58.486859, "lng": 15.540502, "rating": 10, "note": "", "mapsQuery": "Bergsbaden, Bergs slussar, Östergötland"}, {"id": 10, "name": "Piren", "city": "Sturefors", "lat": null, "lng": null, "rating": 8, "note": "", "mapsQuery": "Piren, Sturefors, Östergötland"}, {"id": 11, "name": "Grebo", "city": "Grebo", "lat": null, "lng": null, "rating": 10, "note": "", "mapsQuery": "Grebo badplats, Östergötland"}, {"id": 12, "name": "Roxenbaden", "city": "Vreta Kloster", "lat": 58.538944, "lng": 15.621988, "rating": 1, "note": "", "mapsQuery": "Roxenbaden, Östergötland"}, {"id": 13, "name": "Sibborpesjön", "city": "Ljungsbro", "lat": null, "lng": null, "rating": 7, "note": "", "mapsQuery": "Sibborpesjön, Ljungsbro, Östergötland"}, {"id": 14, "name": "Ljungbadet", "city": "Ljung", "lat": 58.528016, "lng": 15.451824, "rating": 8, "note": "", "mapsQuery": "Ljungbadet, Ljung, Östergötland"}, {"id": 15, "name": "Varamon", "city": "Motala", "lat": 58.5498, "lng": 15.00525, "rating": 6, "note": "", "mapsQuery": "Varamobaden, Motala, Östergötland"}, {"id": 16, "name": "Råssnäs", "city": "Motala", "lat": 58.529369, "lng": 14.991059, "rating": 8, "note": "", "mapsQuery": "Råssnäs, Motala, Östergötland"}, {"id": 17, "name": "Pariserviken", "city": "Motala", "lat": 58.533775, "lng": 14.986491, "rating": 5, "note": "", "mapsQuery": "Pariserviken, Motala, Östergötland"}, {"id": 18, "name": "Jerusalemsbadet", "city": "Motala", "lat": 58.511077, "lng": 15.0117, "rating": 6, "note": "", "mapsQuery": "Jerusalemsbadet, Motala, Östergötland"}, {"id": 19, "name": "Vadstena camping", "city": "", "lat": 58.464904, "lng": 14.879684, "rating": 7, "note": "", "mapsQuery": "Vadstena Camping, Östergötland"}, {"id": 20, "name": "Tycklingebadet", "city": "Vadstena", "lat": 58.462701, "lng": 14.895388, "rating": 4, "note": "", "mapsQuery": "Tycklingebadet, Vadstena, Östergötland"}, {"id": 21, "name": "Bårstad friluftsbad", "city": "Vadstena", "lat": 58.396338, "lng": 14.712135, "rating": 3, "note": "", "mapsQuery": "Bårstad friluftsbad, Vadstena, Östergötland"}, {"id": 22, "name": "Borghamn", "city": "Vadstena", "lat": null, "lng": null, "rating": 8, "note": "", "mapsQuery": "Borghamn, Vadstena, Östergötland"}, {"id": 23, "name": "Hästholmen", "city": "Ödeshög", "lat": 58.278229, "lng": 14.634559, "rating": 8, "note": "", "mapsQuery": "Hästholmens badplats, Ödeshög, Östergötland"}, {"id": 24, "name": "Stora Lund", "city": "Ödeshög", "lat": 58.2678, "lng": 14.61921, "rating": 9, "note": "", "mapsQuery": "Stora Lund badplats, Ödeshög, Östergötland"}, {"id": 25, "name": "Linköpings småbåtshamn", "city": "Linköping", "lat": null, "lng": null, "rating": 2, "note": "", "mapsQuery": "Linköpings småbåtshamn, Östergötland"}, {"id": 26, "name": "Viggebysand", "city": "Brokind", "lat": 58.202366, "lng": 15.641928, "rating": 9, "note": "", "mapsQuery": "Viggebysand, Östergötland"}, {"id": 27, "name": "Badholmarna Arkösund", "city": "Arkösund", "lat": 58.490648, "lng": 16.942691, "rating": 8, "note": "", "mapsQuery": "Arkösund, Badholmarna, Östergötland"}, {"id": 28, "name": "Bjärka Säby", "city": "Bjärka-Säby", "lat": 58.26833, "lng": 15.74094, "rating": 10, "note": "", "mapsQuery": "Bjärka-Säby badplats, Östergötland"}, {"id": 29, "name": "Timmeröbadet", "city": "Boxholm", "lat": 58.1844, "lng": 15.0576, "rating": 5, "note": "", "mapsQuery": "Timmeröbadet, Boxholm, Östergötland"}, {"id": 30, "name": "Sjögarpbadet", "city": "Boxholm", "lat": null, "lng": null, "rating": 4, "note": "", "mapsQuery": "Sjögarpbadet, Boxholm, Östergötland"}, {"id": 31, "name": "Skogssjön", "city": "Mjölby", "lat": 58.345169, "lng": 15.119286, "rating": 8, "note": "", "mapsQuery": "Skogssjöbadet, Mjölby, Östergötland"}, {"id": 32, "name": "Lillsjön", "city": "Nykil", "lat": 58.2757326, "lng": 15.4046085, "rating": 8, "note": "", "mapsQuery": "Lillsjön, Nykil, Östergötland"}, {"id": 33, "name": "Storsjön badklippor", "city": "Nykil", "lat": null, "lng": null, "rating": 6, "note": "", "mapsQuery": "Storsjön badklippor, Östergötland"}, {"id": 34, "name": "Blå lagunen Slaka", "city": "Skänninge", "lat": 58.441358, "lng": 15.125754, "rating": 6, "note": "", "mapsQuery": "Blå lagunen, Skänninge, Östergötland"}, {"id": 35, "name": "Hycklingebadet", "city": "Östergötland", "lat": null, "lng": null, "rating": 9, "note": "", "mapsQuery": "Hycklingebadet, Östergötland"}, {"id": 36, "name": "Rosöbadet", "city": "Östergötland", "lat": null, "lng": null, "rating": 9, "note": "", "mapsQuery": "Rosöbadet, Östergötland"}, {"id": 37, "name": "Trossbonäsbadet", "city": "Östergötland", "lat": null, "lng": null, "rating": 4, "note": "", "mapsQuery": "Trossbonäsbadet, Östergötland"}, {"id": 38, "name": "Björkebergsbadet", "city": "Östergötland", "lat": null, "lng": null, "rating": 5, "note": "", "mapsQuery": "Björkebergsbadet, Östergötland"}, {"id": 39, "name": "NederlösaBadet", "city": "Normlösa", "lat": null, "lng": null, "rating": 7, "note": "", "mapsQuery": "NederlösaBadet, Östergötland"}, {"id": 40, "name": "Väderkvarnsbacken", "city": "Skänninge", "lat": 58.39606, "lng": 15.06987, "rating": 8, "note": "", "mapsQuery": "Månsjön Väderkvarnsbacken, Skänninge, Östergötland"}, {"id": 41, "name": "Hövernbadet", "city": "Östra Ryd", "lat": 58.382499, "lng": 16.033492, "rating": 5, "note": "", "mapsQuery": "Hövernbadet, Östergötland"}, {"id": 42, "name": "Hjulsbrobadet", "city": "Hjulsbro", "lat": 58.37455, "lng": 15.714005, "rating": 4, "note": "", "mapsQuery": "Hjulsbrobadet, Östergötland"}, {"id": 43, "name": "Jakobsdalsbadet", "city": "", "lat": 58.389435, "lng": 15.684228, "rating": 5, "note": "", "mapsQuery": "Jakobsdalsbadet, Östergötland"}, {"id": 44, "name": "HjulsbroSluss", "city": "Hjulsbro", "lat": null, "lng": null, "rating": 3, "note": "", "mapsQuery": "HjulsbroSluss, Östergötland"}, {"id": 45, "name": "Sundsbo Båtramp", "city": "Östergötland", "lat": null, "lng": null, "rating": 5, "note": "", "mapsQuery": "Sundsbo Båtramp, Östergötland"}, {"id": 46, "name": "Öjebrobadet", "city": "Öjebro", "lat": null, "lng": null, "rating": 6, "note": "", "mapsQuery": "Öjebrobadet, Östergötland"}, {"id": 47, "name": "Hackefors stenen", "city": "Hackefors", "lat": null, "lng": null, "rating": 5, "note": "", "mapsQuery": "Hackefors stenen, Östergötland"}, {"id": 48, "name": "Järnevidbadet", "city": "Vadstena", "lat": 58.454621, "lng": 14.789423, "rating": 6, "note": "", "mapsQuery": "Järnevid friluftsbad, Vadstena, Östergötland"}, {"id": 49, "name": "Lönningen", "city": "Östergötland", "lat": null, "lng": null, "rating": 6, "note": "", "mapsQuery": "Lönningen, Östergötland"}];
+const map=L.map('map').setView([58.45,15.4],9);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
+const markers=new Map();
+function valid(p){return Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng))}
+function mapsUrl(p){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.mapsQuery||[p.name,p.city,'Östergötland'].filter(Boolean).join(', '))}
+function directCoordsUrl(p){return valid(p)?'https://www.google.com/maps/search/?api=1&query='+p.lat+','+p.lng:mapsUrl(p)}
+function stars(r){
+ r=Number(r)||0; const five=r/2;
+ return Array.from({length:5},(_,i)=>{
+   const cls = i+1 <= five ? 'full' : (i < five ? 'half' : 'empty');
+   return `<span class="${cls}">★</span>`;
+ }).join('');
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function pinIcon(id){return L.divIcon({className:'',html:`<div class="pin-icon"><b>${id}</b></div>`,iconSize:[34,34],iconAnchor:[17,34],popupAnchor:[0,-32]})}
+places.forEach(p=>{
+  if(valid(p)){
+    const m=L.marker([p.lat,p.lng],{icon:pinIcon(p.id)}).addTo(map);
+    m.bindPopup(`<b>${esc(p.name)}</b><br><small>${esc(p.city||'Östergötland')}</small><br><div style="margin:6px 0">${stars(p.rating)} &nbsp; <b>${p.rating}/10</b></div><a href="${directCoordsUrl(p)}" target="_blank" rel="noopener">Öppna exakt punkt i Google Maps →</a>`);
+    markers.set(p.id,m)
+  }
 });
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});
-document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
-document.addEventListener('click',()=>{
- const f=document.createElement('div');f.style='position:fixed;inset:0;background:#ff174d;opacity:.12;pointer-events:none;z-index:999';
- document.body.appendChild(f);f.animate([{opacity:.12},{opacity:0}],{duration:320,easing:'ease-out'});
- setTimeout(()=>f.remove(),350);
-});
-</script>
-</body>
-</html>
+function focusPlace(p){
+  if(!p)return;
+  if(valid(p)){map.setView([p.lat,p.lng],15,{animate:true});markers.get(p.id)?.openPopup();document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'})}
+  else {window.open(mapsUrl(p),'_blank','noopener')}
+}
+function render(){
+ const q=document.getElementById('search').value.toLowerCase().trim(),min=Number(document.getElementById('rating').value);
+ const arr=places.filter(p=>[p.name,p.city,p.note].join(' ').toLowerCase().includes(q)&&Number(p.rating||0)>=min);
+ document.getElementById('count').textContent=arr.length+' bad';
+ document.getElementById('cards').innerHTML=arr.map(p=>`<article class="card" data-id="${p.id}">
+   <div class="card-top"><div><h3>${esc(p.name)}</h3><div class="place">${esc(p.city||'Östergötland')}</div></div>
+   <div><div class="stars">${stars(p.rating)}</div><div style="font-size:10px;color:#658087;text-align:right;margin-top:2px">${p.rating}/10</div></div></div>
+   ${p.note?`<div class="note">${esc(p.note)}</div>`:''}
+   ${valid(p)?`<div class="precision">● VERIFIERAD KARTPUNKT</div>`:`<div class="precision" style="color:#657b82;background:#f7fbfb;border-color:#dbeaea">○ GOOGLE MAPS-PUNKT</div>`}
+   <div class="actions">
+     <a class="action" href="${mapsUrl(p)}" target="_blank" rel="noopener">📍 Google Maps</a>
+     ${valid(p)?`<button type="button" class="action secondary show-map" data-id="${p.id}">↗ Visa på kartan</button>`:''}
+   </div>
+ </article>`).join('');
+ document.querySelectorAll('.card').forEach(c=>{
+   c.onclick=e=>{
+     if(e.target.closest('a')||e.target.closest('button'))return;
+     const p=places.find(x=>String(x.id)===c.dataset.id);focusPlace(p);
+   }
+ });
+ document.querySelectorAll('.show-map').forEach(b=>b.onclick=()=>{
+   const p=places.find(x=>String(x.id)===b.dataset.id);focusPlace(p);
+ });
+}
+document.getElementById('search').oninput=render;
+document.getElementById('rating').onchange=render;
+render();
+</script></body></html>
