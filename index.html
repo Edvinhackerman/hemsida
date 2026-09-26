@@ -1,3 +1,68 @@
+Hoppa till huvudinnehåll
+Ctrl+J
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+index.html
+
+
+
 <!doctype html>
 <html lang="sv">
 <head>
@@ -18,20 +83,13 @@
 :root{
   --bg:#020a12;
   --panel:#061018;
-  --panel2:#0a1620;
-  --red:#ff1838;
-  --red2:#ff4a58;
-  --red-dark:#8e0018;
   --cyan:#3dd6ff;
   --cyan2:#7aecff;
   --aqua:#1a8fbf;
-  --deep:#031018;
   --white:#f0f7fb;
   --muted:#7a93a5;
   --line:rgba(61,214,255,.22);
-  --line-soft:rgba(255,255,255,.08);
   --glow:0 0 28px rgba(61,214,255,.25);
-  --glow-red:0 0 28px rgba(255,24,56,.22);
   --radius:22px;
 }
 
@@ -43,13 +101,11 @@ body{
   background:
     radial-gradient(ellipse at 20% 0%,rgba(61,214,255,.12),transparent 35%),
     radial-gradient(ellipse at 85% 20%,rgba(26,143,191,.1),transparent 40%),
-    radial-gradient(ellipse at 50% 100%,rgba(255,24,56,.06),transparent 45%),
     linear-gradient(180deg,#020a12 0%,#031820 40%,#020e16 100%);
   min-height:100vh;
   overflow-x:hidden;
 }
 
-/* Underwater caustic / light rays */
 body:before{
   content:"";
   position:fixed;
@@ -57,22 +113,12 @@ body:before{
   pointer-events:none;
   z-index:9998;
   opacity:.04;
-  background:
-    repeating-linear-gradient(
-      -12deg,
-      transparent 0px,
-      rgba(122,236,255,.9) 1px,
-      transparent 2px,
-      transparent 28px
-    );
+  background:repeating-linear-gradient(-12deg,transparent 0px,rgba(122,236,255,.9) 1px,transparent 2px,transparent 28px);
   mix-blend-mode:screen;
   animation:causticShift 18s linear infinite;
 }
-@keyframes causticShift{
-  to{background-position:120px 80px}
-}
+@keyframes causticShift{to{background-position:120px 80px}}
 
-/* Soft scanlines */
 body:after{
   content:"";
   position:fixed;
@@ -80,23 +126,11 @@ body:after{
   pointer-events:none;
   z-index:9999;
   opacity:.03;
-  background:repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,.7) 0px,
-    rgba(255,255,255,.7) 1px,
-    transparent 1px,
-    transparent 4px
-  );
+  background:repeating-linear-gradient(to bottom,rgba(255,255,255,.7) 0px,rgba(255,255,255,.7) 1px,transparent 1px,transparent 4px);
   mix-blend-mode:screen;
 }
 
-#particles{
-  position:fixed;
-  inset:0;
-  z-index:-3;
-  overflow:hidden;
-  pointer-events:none;
-}
+#particles{position:fixed;inset:0;z-index:-3;overflow:hidden;pointer-events:none}
 .particle{
   position:absolute;
   border-radius:50%;
@@ -112,79 +146,55 @@ body:after{
   to{transform:translate3d(var(--dx),-115vh,0) scale(1.1);opacity:0}
 }
 
-/* Wave layers at bottom */
 .wave-wrap{
-  position:fixed;
-  left:0;right:0;bottom:0;
-  height:180px;
-  z-index:-1;
-  pointer-events:none;
-  overflow:hidden;
+  position:fixed;left:0;right:0;bottom:0;height:160px;z-index:-1;pointer-events:none;overflow:hidden;
 }
-.wave{
-  position:absolute;
-  left:-5%;
-  width:110%;
-  height:100%;
-  opacity:.35;
-}
-.wave path{fill:rgba(61,214,255,.08)}
-.wave.w2{opacity:.25;animation:waveMove 9s ease-in-out infinite alternate}
-.wave.w3{opacity:.18;animation:waveMove 13s ease-in-out infinite alternate-reverse}
+.wave{position:absolute;left:-5%;width:110%;height:100%;opacity:.3}
+.wave path{fill:rgba(61,214,255,.1)}
 .wave.w1{animation:waveMove 7s ease-in-out infinite alternate}
-@keyframes waveMove{
-  from{transform:translateX(0)}
-  to{transform:translateX(-40px)}
-}
+.wave.w2{opacity:.2;animation:waveMove 11s ease-in-out infinite alternate-reverse;bottom:8px}
+@keyframes waveMove{from{transform:translateX(0)}to{transform:translateX(-36px)}}
 
 .grid-bg{
-  position:fixed;
-  inset:auto -20% 0;
-  height:50vh;
-  z-index:-2;
-  pointer-events:none;
+  position:fixed;inset:auto -20% 0;height:48vh;z-index:-2;pointer-events:none;
   background:
-    linear-gradient(rgba(61,214,255,.09) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(61,214,255,.09) 1px,transparent 1px);
+    linear-gradient(rgba(61,214,255,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(61,214,255,.08) 1px,transparent 1px);
   background-size:42px 42px;
   transform:perspective(450px) rotateX(62deg) translateY(35%);
   transform-origin:center bottom;
-  mask-image:linear-gradient(to top,rgba(0,0,0,.7),transparent);
+  mask-image:linear-gradient(to top,rgba(0,0,0,.65),transparent);
   animation:gridMove 14s linear infinite;
 }
-@keyframes gridMove{
-  to{background-position:0 42px,42px 0}
-}
+@keyframes gridMove{to{background-position:0 42px,42px 0}}
 
 a{color:inherit}
 button,input,select{font:inherit}
 
 .topline{
   height:3px;
-  background:linear-gradient(90deg,transparent,var(--cyan),var(--red),var(--cyan),transparent);
-  box-shadow:0 0 25px var(--cyan);
+  background:linear-gradient(90deg,transparent,var(--cyan),#ff4a58,var(--cyan),transparent);
+  box-shadow:0 0 22px var(--cyan);
 }
 
 .hero{
-  min-height:690px;
+  min-height:620px;
   position:relative;
   overflow:hidden;
   display:flex;
   align-items:center;
   border-bottom:1px solid var(--line);
   background:
-    radial-gradient(circle at 72% 25%,rgba(61,214,255,.16),transparent 26%),
-    radial-gradient(circle at 18% 75%,rgba(26,143,191,.12),transparent 32%),
-    radial-gradient(circle at 50% 100%,rgba(255,24,56,.07),transparent 40%),
+    radial-gradient(circle at 72% 25%,rgba(61,214,255,.14),transparent 26%),
+    radial-gradient(circle at 18% 75%,rgba(26,143,191,.1),transparent 32%),
     linear-gradient(160deg,#020a12,#041420 50%,#061828);
 }
 .hero:before{
   content:"";
-  position:absolute;
-  inset:0;
+  position:absolute;inset:0;
   background:
-    linear-gradient(90deg,transparent 49.8%,rgba(61,214,255,.1) 50%,transparent 50.2%),
-    linear-gradient(transparent 49.8%,rgba(61,214,255,.06) 50%,transparent 50.2%);
+    linear-gradient(90deg,transparent 49.8%,rgba(61,214,255,.08) 50%,transparent 50.2%),
+    linear-gradient(transparent 49.8%,rgba(61,214,255,.05) 50%,transparent 50.2%);
   background-size:100px 100px;
   mask-image:radial-gradient(circle at center,#000,transparent 75%);
   opacity:.7;
@@ -192,760 +202,735 @@ button,input,select{font:inherit}
 .hero:after{
   content:"";
   position:absolute;
-  width:520px;height:520px;
-  right:-180px;top:50px;
-  border:1px solid rgba(61,214,255,.25);
+  width:480px;height:480px;right:-160px;top:40px;
+  border:1px solid rgba(61,214,255,.22);
   border-radius:50%;
-  box-shadow:
-    0 0 0 45px rgba(61,214,255,.03),
-    0 0 0 90px rgba(61,214,255,.02),
-    0 0 90px rgba(61,214,255,.15);
+  box-shadow:0 0 0 40px rgba(61,214,255,.03),0 0 0 80px rgba(61,214,255,.02),0 0 80px rgba(61,214,255,.12);
   animation:pulseRing 5s ease-in-out infinite;
 }
-@keyframes pulseRing{
-  50%{transform:scale(1.05);opacity:.7}
-}
+@keyframes pulseRing{50%{transform:scale(1.05);opacity:.7}}
 
-nav{
-  position:absolute;
-  top:0;left:0;right:0;
-  z-index:20;
-  padding:25px 0;
-}
-.nav{
-  width:min(1240px,92%);
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.logo{
-  font:800 13px/1 Orbitron,sans-serif;
-  letter-spacing:2px;
-}
+nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:22px 0}
+.nav{width:min(1240px,92%);margin:auto;display:flex;justify-content:space-between;align-items:center}
+.logo{font:800 13px/1 Orbitron,sans-serif;letter-spacing:2px}
 .logo span{color:var(--cyan)}
-.nav-links{display:flex;gap:9px}
+.nav-links{display:flex;gap:8px}
 .nav-btn{
-  text-decoration:none;
-  padding:11px 15px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:rgba(0,20,30,.4);
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.7px;
-  transition:.2s;
+  text-decoration:none;padding:10px 14px;border:1px solid var(--line);border-radius:999px;
+  background:rgba(0,20,30,.4);font-size:11px;font-weight:800;letter-spacing:.7px;transition:.2s;
 }
-.nav-btn:hover{
-  border-color:var(--cyan);
-  box-shadow:var(--glow);
-  transform:translateY(-2px);
-  color:var(--cyan2);
-}
+.nav-btn:hover{border-color:var(--cyan);box-shadow:var(--glow);transform:translateY(-2px);color:var(--cyan2)}
 
-.hero-inner{
-  width:min(1240px,92%);
-  margin:auto;
-  position:relative;
-  z-index:3;
-  padding:120px 0 110px;
-}
+.hero-inner{width:min(1240px,92%);margin:auto;position:relative;z-index:3;padding:110px 0 100px}
 .eyebrow{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font:700 11px/1 Orbitron,sans-serif;
-  letter-spacing:3px;
-  color:#8aabb8;
-  text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+  font:700 11px/1 Orbitron,sans-serif;letter-spacing:3px;color:#8aabb8;text-transform:uppercase;
 }
-.eyebrow:before{
-  content:"";
-  width:34px;height:2px;
-  background:linear-gradient(90deg,var(--cyan),var(--red));
-  box-shadow:0 0 12px var(--cyan);
-}
+.eyebrow:before{content:"";width:32px;height:2px;background:linear-gradient(90deg,var(--cyan),#ff4a58);box-shadow:0 0 10px var(--cyan)}
 h1{
-  font:900 clamp(58px,11vw,145px)/.82 Orbitron,sans-serif;
-  letter-spacing:-8px;
-  margin:25px 0 28px;
-  max-width:1050px;
-  text-transform:uppercase;
-  text-shadow:
-    0 0 18px rgba(61,214,255,.2),
-    0 0 60px rgba(61,214,255,.08);
+  font:900 clamp(52px,10vw,130px)/.84 Orbitron,sans-serif;
+  letter-spacing:-7px;margin:22px 0 24px;max-width:1000px;text-transform:uppercase;
+  text-shadow:0 0 18px rgba(61,214,255,.18),0 0 50px rgba(61,214,255,.06);
 }
-h1 .red{
-  color:var(--cyan);
-  text-shadow:0 0 24px rgba(61,214,255,.5),0 0 80px rgba(61,214,255,.2);
+h1 .accent{
   background:linear-gradient(135deg,var(--cyan2),var(--cyan),#1a8fbf);
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
 }
-.hero-copy{
-  max-width:690px;
-  color:#9bb4c4;
-  font-size:17px;
-  line-height:1.75;
-}
-.badges{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:32px;
-}
+.hero-copy{max-width:660px;color:#9bb4c4;font-size:16px;line-height:1.75}
+.badges{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
 .badge{
-  padding:11px 14px;
-  border:1px solid rgba(61,214,255,.15);
-  border-radius:12px;
-  background:rgba(61,214,255,.05);
-  color:#c8dce8;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.4px;
+  padding:10px 13px;border:1px solid rgba(61,214,255,.15);border-radius:12px;
+  background:rgba(61,214,255,.05);color:#c8dce8;font-size:11px;font-weight:800;letter-spacing:.4px;
   backdrop-filter:blur(12px);
 }
 .badge strong{color:var(--cyan2)}
 
 .hero-stat{
-  position:absolute;
-  right:3%;
-  bottom:90px;
-  width:190px;
-  padding:18px;
-  border:1px solid rgba(61,214,255,.3);
-  background:rgba(4,16,24,.75);
-  backdrop-filter:blur(15px);
-  box-shadow:var(--glow);
-  transform:rotate(-3deg);
+  position:absolute;right:3%;bottom:80px;width:180px;padding:16px;
+  border:1px solid rgba(61,214,255,.28);background:rgba(4,16,24,.75);
+  backdrop-filter:blur(15px);box-shadow:var(--glow);transform:rotate(-3deg);
 }
-.hero-stat small{
-  color:#6a8a9a;
-  font:700 9px Orbitron,sans-serif;
-  letter-spacing:1.5px;
-}
-.hero-stat b{
-  display:block;
-  margin-top:7px;
-  font:800 30px Orbitron,sans-serif;
-  color:var(--cyan2);
-}
+.hero-stat small{color:#6a8a9a;font:700 9px Orbitron,sans-serif;letter-spacing:1.4px}
+.hero-stat b{display:block;margin-top:6px;font:800 28px Orbitron,sans-serif;color:var(--cyan2)}
 
-main{
-  width:min(1240px,92%);
-  margin:-65px auto 80px;
-  position:relative;
-  z-index:5;
-}
+main{width:min(1240px,92%);margin:-55px auto 70px;position:relative;z-index:5}
 
-.dashboard{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-bottom:14px;
-}
+.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 .stat{
-  padding:18px 20px;
-  border:1px solid rgba(61,214,255,.12);
-  border-radius:16px;
+  padding:16px 18px;border:1px solid rgba(61,214,255,.12);border-radius:16px;
   background:linear-gradient(145deg,rgba(8,24,36,.95),rgba(4,14,22,.96));
-  box-shadow:0 15px 45px rgba(0,0,0,.3);
-  position:relative;
-  overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,.28);position:relative;overflow:hidden;
 }
 .stat:before{
-  content:"";
-  position:absolute;
-  left:0;top:0;bottom:0;width:3px;
-  background:linear-gradient(var(--cyan),var(--aqua));
-  box-shadow:0 0 15px var(--cyan);
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(var(--cyan),var(--aqua));box-shadow:0 0 12px var(--cyan);
 }
-.stat-label{
-  color:#6a8898;
-  font:700 9px Orbitron,sans-serif;
-  letter-spacing:1.5px;
-}
-.stat-value{
-  margin-top:7px;
-  font:800 25px Orbitron,sans-serif;
-}
-.stat-value.red{color:var(--cyan2)}
+.stat-label{color:#6a8898;font:700 9px Orbitron,sans-serif;letter-spacing:1.4px}
+.stat-value{margin-top:6px;font:800 24px Orbitron,sans-serif}
+.stat-value.cyan{color:var(--cyan2)}
 
 .app{
-  border:1px solid rgba(61,214,255,.22);
-  border-radius:24px;
-  background:rgba(4,16,26,.9);
-  box-shadow:0 30px 100px rgba(0,0,0,.5),0 0 40px rgba(61,214,255,.08);
-  overflow:hidden;
-  backdrop-filter:blur(18px);
+  border:1px solid rgba(61,214,255,.2);border-radius:22px;background:rgba(4,16,26,.9);
+  box-shadow:0 28px 90px rgba(0,0,0,.48),0 0 36px rgba(61,214,255,.07);
+  overflow:hidden;backdrop-filter:blur(16px);
 }
 
 .toolbar{
-  padding:17px;
-  display:grid;
-  grid-template-columns:1fr auto auto;
-  gap:10px;
+  padding:15px;display:grid;grid-template-columns:1fr auto auto;gap:10px;
   border-bottom:1px solid rgba(61,214,255,.1);
-  background:linear-gradient(90deg,rgba(61,214,255,.06),transparent 60%);
+  background:linear-gradient(90deg,rgba(61,214,255,.05),transparent 60%);
 }
 .search-wrap{position:relative}
-.search-icon{
-  position:absolute;
-  left:15px;top:50%;
-  transform:translateY(-50%);
-  color:var(--cyan);
-  font-size:14px;
-}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:14px}
 .search{
-  width:100%;
-  padding:14px 16px 14px 42px;
-  border:1px solid rgba(61,214,255,.12);
-  border-radius:12px;
-  outline:none;
-  background:#061018;
-  color:#fff;
+  width:100%;padding:13px 15px 13px 40px;border:1px solid rgba(61,214,255,.12);
+  border-radius:12px;outline:none;background:#061018;color:#fff;
 }
 .search:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(61,214,255,.1)}
 select,.tool-btn{
-  padding:14px 15px;
-  border:1px solid rgba(61,214,255,.12);
-  border-radius:12px;
-  background:#061018;
-  color:#e0eef5;
-  outline:none;
+  padding:13px 14px;border:1px solid rgba(61,214,255,.12);border-radius:12px;
+  background:#061018;color:#e0eef5;outline:none;
 }
-.tool-btn{
-  cursor:pointer;
-  font-weight:800;
-  font-size:11px;
-  transition:.2s;
-}
+.tool-btn{cursor:pointer;font-weight:800;font-size:11px;transition:.2s}
 .tool-btn:hover{border-color:var(--cyan);color:#fff;box-shadow:var(--glow)}
 
-.content{
-  display:grid;
-  grid-template-columns:430px 1fr;
-  min-height:720px;
-}
-.list{
-  padding:18px;
-  max-height:720px;
-  overflow:auto;
-  border-right:1px solid rgba(61,214,255,.1);
-}
+.content{display:grid;grid-template-columns:410px 1fr;min-height:680px}
+.list{padding:16px;max-height:680px;overflow:auto;border-right:1px solid rgba(61,214,255,.1)}
 .list::-webkit-scrollbar{width:5px}
 .list::-webkit-scrollbar-thumb{background:#0a4058;border-radius:10px}
-.list-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:0 2px 14px;
-}
-.count{
-  font:800 11px Orbitron,sans-serif;
-  letter-spacing:1px;
-}
+.list-head{display:flex;justify-content:space-between;align-items:center;margin:0 2px 12px}
+.count{font:800 11px Orbitron,sans-serif;letter-spacing:1px}
 .count span{color:var(--cyan2)}
 .sort-info{font-size:10px;color:#5a7a8a}
 
 .cards{display:flex;flex-direction:column;gap:10px}
 .card{
-  position:relative;
-  padding:17px;
-  border:1px solid rgba(61,214,255,.1);
-  border-radius:17px;
-  background:linear-gradient(145deg,#0a1a26,#061018);
-  cursor:pointer;
-  transition:.22s ease;
-  overflow:hidden;
+  position:relative;padding:15px;border:1px solid rgba(61,214,255,.1);border-radius:16px;
+  background:linear-gradient(145deg,#0a1a26,#061018);cursor:pointer;transition:.2s ease;overflow:hidden;
 }
 .card:before{
-  content:"";
-  position:absolute;
-  left:0;top:0;bottom:0;
-  width:3px;
-  background:linear-gradient(var(--cyan),#0a4a68);
-  opacity:.75;
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(var(--cyan),#0a4a68);opacity:.75;
 }
-.card:hover{
-  transform:translateX(4px);
-  border-color:rgba(61,214,255,.4);
-  box-shadow:0 0 28px rgba(61,214,255,.1);
-}
-.card.active{
-  border-color:var(--cyan);
-  box-shadow:0 0 28px rgba(61,214,255,.16);
-}
+.card:hover{transform:translateX(3px);border-color:rgba(61,214,255,.38);box-shadow:0 0 24px rgba(61,214,255,.1)}
+.card.active{border-color:var(--cyan);box-shadow:0 0 24px rgba(61,214,255,.15)}
 .card-top{display:flex;justify-content:space-between;gap:12px}
 .card h3{font-size:15px;line-height:1.25}
-.place{color:#6a8898;font-size:10px;margin-top:4px}
-.stars{
-  white-space:nowrap;
-  color:#ffba22;
-  font-size:15px;
-  letter-spacing:-2px;
-  filter:drop-shadow(0 0 5px rgba(255,186,34,.2));
-}
-.score{
-  text-align:right;
-  margin-top:3px;
-  color:#6a8898;
-  font:700 8px Orbitron,sans-serif;
-}
+.place{color:#6a8898;font-size:10px;margin-top:3px}
+.stars{white-space:nowrap;color:#ffba22;font-size:14px;letter-spacing:-2px}
+.score{text-align:right;margin-top:2px;color:#6a8898;font:700 8px Orbitron,sans-serif}
 
-/* Review preview box on cards */
 .review-preview{
-  margin-top:11px;
-  padding:11px 13px;
-  border-radius:12px;
-  border:1px solid rgba(61,214,255,.12);
-  background:rgba(61,214,255,.04);
-  font-size:12px;
-  line-height:1.55;
-  color:#9bb4c4;
+  margin-top:10px;padding:10px 12px;border-radius:11px;
+  border:1px solid rgba(61,214,255,.12);background:rgba(61,214,255,.04);
+  font-size:12px;line-height:1.5;color:#9bb4c4;
 }
 .review-preview.empty-prev{
-  border-style:dashed;
-  border-color:rgba(255,255,255,.08);
-  background:rgba(255,255,255,.02);
-  color:#5a7a8a;
-  font-size:11px;
+  border-style:dashed;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.02);color:#5a7a8a;font-size:11px;
 }
 .review-preview strong{
-  display:block;
-  color:var(--cyan2);
-  font:800 8px Orbitron,sans-serif;
-  letter-spacing:1px;
-  margin-bottom:5px;
+  display:block;color:var(--cyan2);font:800 8px Orbitron,sans-serif;letter-spacing:1px;margin-bottom:4px;
 }
 
 .precision{
-  display:inline-flex;
-  margin-top:10px;
-  padding:5px 8px;
-  border-radius:999px;
-  border:1px solid rgba(61,214,255,.2);
-  background:rgba(61,214,255,.06);
-  color:var(--cyan2);
-  font:700 8px Orbitron,sans-serif;
-  letter-spacing:.5px;
+  display:inline-flex;margin-top:9px;padding:4px 8px;border-radius:999px;
+  border:1px solid rgba(61,214,255,.2);background:rgba(61,214,255,.06);
+  color:var(--cyan2);font:700 8px Orbitron,sans-serif;letter-spacing:.5px;
 }
-.precision.maps{
-  color:#6a8898;
-  border-color:rgba(255,255,255,.08);
-  background:rgba(255,255,255,.025);
-}
-.actions{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap}
+.precision.maps{color:#6a8898;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
+.actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
 .action{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  text-decoration:none;
-  border:1px solid rgba(61,214,255,.28);
-  color:var(--cyan2);
-  background:rgba(61,214,255,.06);
-  padding:8px 10px;
-  border-radius:9px;
-  font-size:10px;
-  font-weight:800;
-  cursor:pointer;
+  display:inline-flex;align-items:center;gap:5px;text-decoration:none;
+  border:1px solid rgba(61,214,255,.26);color:var(--cyan2);background:rgba(61,214,255,.06);
+  padding:7px 10px;border-radius:9px;font-size:10px;font-weight:800;cursor:pointer;
 }
-.action:hover{background:var(--cyan);color:#021018;box-shadow:0 0 18px rgba(61,214,255,.35)}
+.action:hover{background:var(--cyan);color:#021018;box-shadow:0 0 16px rgba(61,214,255,.3)}
 .action.secondary{color:#8aabb8;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
 
-.map-panel{
-  min-width:0;
-  position:relative;
-  padding:12px;
-  background:#031018;
-}
-#map{
-  width:100%;
-  height:696px;
-  border-radius:17px;
-  border:1px solid rgba(61,214,255,.22);
-  overflow:hidden;
-  background:#031018;
-}
-.map-overlay{
-  position:absolute;
-  top:25px;left:25px;
-  z-index:500;
-  pointer-events:none;
-}
+.map-panel{min-width:0;position:relative;padding:12px;background:#031018}
+#map{width:100%;height:656px;border-radius:16px;border:1px solid rgba(61,214,255,.2);overflow:hidden;background:#031018}
+.map-overlay{position:absolute;top:24px;left:24px;z-index:500;pointer-events:none}
 .live{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:9px 11px;
-  border:1px solid rgba(61,214,255,.3);
-  border-radius:999px;
-  background:rgba(3,16,24,.85);
-  backdrop-filter:blur(10px);
-  box-shadow:0 0 20px rgba(61,214,255,.12);
-  font:800 8px Orbitron,sans-serif;
-  letter-spacing:1px;
+  display:flex;align-items:center;gap:8px;padding:8px 11px;
+  border:1px solid rgba(61,214,255,.28);border-radius:999px;
+  background:rgba(3,16,24,.85);backdrop-filter:blur(10px);
+  box-shadow:0 0 18px rgba(61,214,255,.1);font:800 8px Orbitron,sans-serif;letter-spacing:1px;
 }
-.dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--cyan);
-  box-shadow:0 0 12px var(--cyan);
-  animation:blink 1.4s infinite;
-}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:blink 1.4s infinite}
 @keyframes blink{50%{opacity:.35;transform:scale(.75)}}
 
 .leaflet-container{font-family:"DM Sans",sans-serif;background:#031018}
-.leaflet-control-zoom a{
-  background:#061018!important;
-  color:var(--cyan)!important;
-  border-color:rgba(61,214,255,.25)!important;
-}
-.leaflet-control-attribution{
-  background:rgba(0,0,0,.7)!important;
-  color:#5a7a8a!important;
-}
+.leaflet-control-zoom a{background:#061018!important;color:var(--cyan)!important;border-color:rgba(61,214,255,.22)!important}
+.leaflet-control-attribution{background:rgba(0,0,0,.7)!important;color:#5a7a8a!important}
 .leaflet-control-attribution a{color:#8aabb8!important}
 
 .pin-icon{
-  width:40px;height:40px;
-  border-radius:50% 50% 50% 0;
-  transform:rotate(-45deg);
+  width:38px;height:38px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
   background:radial-gradient(circle at 35% 30%,#7aecff,var(--cyan) 45%,#0a5a80);
-  border:2px solid #fff;
-  box-shadow:0 0 17px rgba(61,214,255,.7),0 7px 22px rgba(0,0,0,.7);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  border:2px solid #fff;box-shadow:0 0 15px rgba(61,214,255,.65),0 6px 18px rgba(0,0,0,.65);
+  display:flex;align-items:center;justify-content:center;
 }
-.pin-icon b{
-  transform:rotate(45deg);
-  color:#021018;
-  font:900 9px Orbitron,sans-serif;
-}
-.marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{
-  background:rgba(61,214,255,.15)!important;
-}
+.pin-icon b{transform:rotate(45deg);color:#021018;font:900 9px Orbitron,sans-serif}
+.marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{background:rgba(61,214,255,.14)!important}
 .marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{
-  background:linear-gradient(135deg,var(--cyan),#0a5a80)!important;
-  color:#021018!important;
-  font:900 11px Orbitron,sans-serif;
-  box-shadow:0 0 25px rgba(61,214,255,.45);
+  background:linear-gradient(135deg,var(--cyan),#0a5a80)!important;color:#021018!important;
+  font:900 11px Orbitron,sans-serif;box-shadow:0 0 22px rgba(61,214,255,.4);
 }
-.leaflet-popup-content-wrapper,.leaflet-popup-tip{
-  background:#061018;
-  color:#e0eef5;
-  border:1px solid rgba(61,214,255,.25);
-}
-.leaflet-popup-content-wrapper{box-shadow:0 15px 50px rgba(0,0,0,.55)}
-.popup-kicker{
-  color:var(--cyan);
-  font:800 8px Orbitron,sans-serif;
-  letter-spacing:1.5px;
-  margin-bottom:6px;
-}
-.popup-title{font-size:17px;font-weight:800}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#061018;color:#e0eef5;border:1px solid rgba(61,214,255,.22)}
+.leaflet-popup-content-wrapper{box-shadow:0 14px 45px rgba(0,0,0,.5)}
+.popup-kicker{color:var(--cyan);font:800 8px Orbitron,sans-serif;letter-spacing:1.4px;margin-bottom:5px}
+.popup-title{font-size:16px;font-weight:800}
 .popup-city{font-size:10px;color:#6a8898}
-.popup-score{margin:8px 0;color:#ffba22}
+.popup-score{margin:7px 0;color:#ffba22}
 .popup-link{color:var(--cyan2);font-size:11px;font-weight:800;text-decoration:none}
 
-.info-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-top:14px;
-}
-.info-card{
-  padding:21px;
-  border:1px solid rgba(61,214,255,.1);
-  border-radius:18px;
-  background:rgba(6,20,30,.85);
-}
-.info-card b{
-  font:800 10px Orbitron,sans-serif;
-  letter-spacing:1px;
-}
-.info-card b span{color:var(--cyan)}
-.info-card p{
-  color:#6a8898;
-  font-size:11px;
-  line-height:1.7;
-  margin-top:8px;
-}
+.empty{padding:36px 14px;text-align:center;color:#5a7a8a}
+.empty b{display:block;color:#8aabb8;margin-bottom:5px}
 
-.empty{
-  padding:40px 15px;
-  text-align:center;
-  color:#5a7a8a;
-}
-.empty b{display:block;color:#8aabb8;margin-bottom:6px}
-
-footer{
-  padding:45px 20px 65px;
-  text-align:center;
-  color:#4a6a7a;
-  font:700 9px Orbitron,sans-serif;
-  letter-spacing:1.5px;
-}
+footer{padding:40px 20px 55px;text-align:center;color:#4a6a7a;font:700 9px Orbitron,sans-serif;letter-spacing:1.4px}
 footer span{color:var(--cyan)}
 
 @media(max-width:1050px){
-  .content{grid-template-columns:360px 1fr}
+  .content{grid-template-columns:340px 1fr}
   .dashboard{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:800px){
-  .hero{min-height:650px}
+  .hero{min-height:580px}
   .hero-stat{display:none}
   .nav-links .nav-btn:first-child{display:none}
   .toolbar{grid-template-columns:1fr 1fr}
   .search-wrap{grid-column:1/-1}
   .content{grid-template-columns:1fr}
   .list{max-height:none;border-right:0;border-bottom:1px solid rgba(61,214,255,.1)}
-  #map{height:530px}
+  #map{height:480px}
   .map-panel{order:-1}
-  .info-grid{grid-template-columns:1fr}
 }
 @media(max-width:560px){
   .nav{width:90%}
   .logo{font-size:10px}
-  .hero-inner{width:90%;padding-top:115px}
-  h1{font-size:52px;letter-spacing:-4px}
+  .hero-inner{width:90%;padding-top:100px}
+  h1{font-size:48px;letter-spacing:-3px}
   .hero-copy{font-size:14px}
-  main{width:94%;margin-top:-35px}
+  main{width:94%;margin-top:-30px}
   .dashboard{gap:7px}
-  .stat{padding:14px}
+  .stat{padding:13px}
   .stat-value{font-size:18px}
-  .stat-label{font-size:7px}
   .toolbar{grid-template-columns:1fr}
   .search-wrap{grid-column:auto}
-  #map{height:470px}
-  .map-overlay{top:20px;left:20px}
+  #map{height:420px}
 }
 
-/* === PLACE DETAIL / REVIEW PANEL === */
+/* Detail panel */
 .detail-backdrop{
-  position:fixed;
-  inset:0;
-  z-index:10000;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  background:rgba(1,8,14,.82);
-  backdrop-filter:blur(16px);
+  position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;
+  padding:22px;background:rgba(1,8,14,.82);backdrop-filter:blur(14px);
 }
 .detail-backdrop.open{display:flex;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 .detail-panel{
-  width:min(900px,100%);
-  max-height:min(820px,92vh);
-  overflow:auto;
-  position:relative;
-  border:1px solid rgba(61,214,255,.35);
-  border-radius:28px;
+  width:min(880px,100%);max-height:min(800px,92vh);overflow:auto;position:relative;
+  border:1px solid rgba(61,214,255,.32);border-radius:26px;
   background:
-    radial-gradient(circle at 85% 8%,rgba(61,214,255,.14),transparent 30%),
-    radial-gradient(circle at 10% 90%,rgba(26,143,191,.1),transparent 35%),
+    radial-gradient(circle at 85% 8%,rgba(61,214,255,.12),transparent 30%),
     linear-gradient(145deg,#0a1c28,#041018 60%,#061820);
-  box-shadow:0 35px 120px rgba(0,0,0,.75),0 0 60px rgba(61,214,255,.12);
+  box-shadow:0 32px 110px rgba(0,0,0,.72),0 0 50px rgba(61,214,255,.1);
 }
 .detail-panel::-webkit-scrollbar{width:6px}
 .detail-panel::-webkit-scrollbar-thumb{background:#0a4058;border-radius:10px}
 
 .detail-close{
-  position:absolute;
-  top:18px;right:18px;
-  z-index:4;
-  width:40px;height:40px;
-  border:1px solid rgba(61,214,255,.2);
-  border-radius:50%;
-  background:rgba(0,15,25,.5);
-  color:#fff;
-  cursor:pointer;
-  font-size:20px;
+  position:absolute;top:16px;right:16px;z-index:4;width:38px;height:38px;
+  border:1px solid rgba(61,214,255,.18);border-radius:50%;background:rgba(0,15,25,.5);
+  color:#fff;cursor:pointer;font-size:19px;
 }
-.detail-close:hover{
-  border-color:var(--cyan);
-  color:var(--cyan);
-  box-shadow:0 0 20px rgba(61,214,255,.25);
-}
+.detail-close:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 18px rgba(61,214,255,.22)}
 
-.detail-top{
-  padding:38px 42px 30px;
-  border-bottom:1px solid rgba(61,214,255,.12);
-}
-.detail-kicker{
-  color:var(--cyan);
-  font:800 9px Orbitron,sans-serif;
-  letter-spacing:2px;
-}
-.detail-title{
-  margin-top:12px;
-  padding-right:45px;
-  font:800 clamp(30px,5vw,54px)/1 Orbitron,sans-serif;
-  letter-spacing:-2px;
-}
-.detail-location{
-  color:#6a8898;
-  font-size:13px;
-  margin-top:9px;
-}
-.detail-score-row{
-  display:flex;
-  align-items:center;
-  gap:18px;
-  flex-wrap:wrap;
-  margin-top:22px;
-}
-.detail-stars{
-  color:#ffba22;
-  font-size:27px;
-  letter-spacing:-3px;
-  filter:drop-shadow(0 0 7px rgba(255,186,34,.2));
-}
-.detail-score{
-  padding-left:18px;
-  border-left:1px solid rgba(61,214,255,.15);
-  font:800 22px Orbitron,sans-serif;
-}
-.detail-score small{
-  display:block;
-  color:#5a7a8a;
-  font:700 8px Orbitron,sans-serif;
-  letter-spacing:1px;
-  margin-bottom:4px;
-}
+.detail-top{padding:34px 38px 26px;border-bottom:1px solid rgba(61,214,255,.1)}
+.detail-kicker{color:var(--cyan);font:800 9px Orbitron,sans-serif;letter-spacing:2px}
+.detail-title{margin-top:10px;padding-right:42px;font:800 clamp(28px,4.5vw,48px)/1 Orbitron,sans-serif;letter-spacing:-1.5px}
+.detail-location{color:#6a8898;font-size:13px;margin-top:8px}
+.detail-score-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:18px}
+.detail-stars{color:#ffba22;font-size:24px;letter-spacing:-2px}
+.detail-score{padding-left:16px;border-left:1px solid rgba(61,214,255,.14);font:800 20px Orbitron,sans-serif}
+.detail-score small{display:block;color:#5a7a8a;font:700 8px Orbitron,sans-serif;letter-spacing:1px;margin-bottom:3px}
 
-.detail-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-  padding:22px 42px;
-}
-.detail-box{
-  border:1px solid rgba(61,214,255,.12);
-  border-radius:18px;
-  padding:20px;
-  background:rgba(61,214,255,.03);
-}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 38px}
+.detail-box{border:1px solid rgba(61,214,255,.12);border-radius:16px;padding:18px;background:rgba(61,214,255,.03)}
 .detail-box.full{grid-column:1/-1}
 .detail-box.review-box{
-  border-color:rgba(61,214,255,.25);
-  background:
-    linear-gradient(135deg,rgba(61,214,255,.07),rgba(26,143,191,.04));
-  position:relative;
-  overflow:hidden;
+  border-color:rgba(61,214,255,.24);
+  background:linear-gradient(135deg,rgba(61,214,255,.06),rgba(26,143,191,.03));
+  position:relative;overflow:hidden;
 }
 .detail-box.review-box:before{
-  content:"";
-  position:absolute;
-  top:0;left:0;right:0;
-  height:3px;
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
   background:linear-gradient(90deg,var(--cyan),var(--aqua),transparent);
 }
-.detail-label{
-  color:#5a7a8a;
-  font:800 8px Orbitron,sans-serif;
-  letter-spacing:1.5px;
-  margin-bottom:10px;
-}
-.detail-text{
-  color:#a8c0d0;
-  font-size:13px;
-  line-height:1.75;
-}
-.review-empty{
-  color:#5a7a8a;
-  font-size:13px;
-  line-height:1.7;
-}
-.review-empty strong{
-  display:block;
-  color:#8aabb8;
-  margin-bottom:5px;
-}
+.detail-label{color:#5a7a8a;font:800 8px Orbitron,sans-serif;letter-spacing:1.4px;margin-bottom:9px}
+.detail-text{color:#a8c0d0;font-size:13px;line-height:1.7}
+.review-empty{color:#5a7a8a;font-size:13px;line-height:1.65}
+.review-empty strong{display:block;color:#8aabb8;margin-bottom:4px}
 .review-note{
-  border-left:3px solid var(--cyan);
-  padding:14px 16px;
-  background:rgba(61,214,255,.06);
-  color:#c8dce8;
-  line-height:1.8;
-  font-size:14px;
-  border-radius:0 12px 12px 0;
+  border-left:3px solid var(--cyan);padding:12px 14px;background:rgba(61,214,255,.05);
+  color:#c8dce8;line-height:1.75;font-size:14px;border-radius:0 11px 11px 0;
 }
 
-.detail-actions{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  padding:0 42px 34px;
-}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap;padding:0 38px 28px}
 .detail-action{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-  min-height:44px;
-  padding:0 15px;
-  border:1px solid rgba(61,214,255,.3);
-  border-radius:11px;
-  background:rgba(61,214,255,.08);
-  color:var(--cyan2);
-  text-decoration:none;
-  font-size:11px;
-  font-weight:800;
-  cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:0 14px;
+  border:1px solid rgba(61,214,255,.28);border-radius:11px;background:rgba(61,214,255,.07);
+  color:var(--cyan2);text-decoration:none;font-size:11px;font-weight:800;cursor:pointer;
 }
-.detail-action:hover{
-  background:var(--cyan);
-  color:#021018;
-  box-shadow:0 0 25px rgba(61,214,255,.35);
-}
-.detail-action.secondary{
-  border-color:rgba(255,255,255,.1);
-  color:#8aabb8;
-  background:rgba(255,255,255,.025);
-}
+.detail-action:hover{background:var(--cyan);color:#021018;box-shadow:0 0 22px rgba(61,214,255,.3)}
+.detail-action.secondary{border-color:rgba(255,255,255,.1);color:#8aabb8;background:rgba(255,255,255,.025)}
 .detail-status{
-  display:inline-flex;
-  align-items:center;
-  padding:7px 10px;
-  border:1px solid rgba(61,214,255,.25);
-  border-radius:999px;
-  color:var(--cyan2);
-  background:rgba(61,214,255,.06);
-  font:800 8px Orbitron,sans-serif;
-  letter-spacing:.6px;
+  display:inline-flex;align-items:center;padding:6px 10px;border:1px solid rgba(61,214,255,.22);
+  border-radius:999px;color:var(--cyan2);background:rgba(61,214,255,.05);
+  font:800 8px Orbitron,sans-serif;letter-spacing:.5px;
 }
-.detail-status.gray{
-  color:#6a8898;
-  border-color:rgba(255,255,255,.08);
-  background:rgba(255,255,255,.025);
-}
+.detail-status.gray{color:#6a8898;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
 
 @media(max-width:650px){
   .detail-backdrop{padding:10px}
-  .detail-top{padding:30px 22px 24px}
-  .detail-title{font-size:30px}
-  .detail-grid{grid-template-columns:1fr;padding:16px 22px}
+  .detail-top{padding:28px 20px 22px}
+  .detail-title{font-size:28px}
+  .detail-grid{grid-template-columns:1fr;padding:14px 20px}
   .detail-box.full{grid-column:auto}
-  .detail-actions{padding:0 22px 25px}
-  .detail-stars{font-size:22px}
+  .detail-actions{padding:0 20px 22px}
+  .detail-stars{font-size:20px}
 }
-
 </style>
 </head>
-
 <body>
 <div class="topline"></div>
 <div id="particles"></div>
 <div class="grid-bg"></div>
 
-<!-- Wave decoration -->
 <div class="wave-wrap" aria-hidden="true">
   <svg class="wave w1" viewBox="0 0 1440 120" preserveAspectRatio="none">
     <path d="M0,60 C240,100 480,20 720,55 C960,90 1200,30 1440,60 L1440,120 L0,120 Z"/>
   </svg>
-  <svg class="wave w2" viewBox="0 0 1440 120" preserveAspectRatio="none" style="bottom:10px">
-    <path d="M0,70 C200,30 400,90 720,50 C1000,15 1200,80 
+  <svg class="wave w2" viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <path d="M0,70 C200,30 400,90 720,50 C1000,15 1200,80 1440,45 L1440,120 L0,120 Z"/>
+  </svg>
+</div>
+
+<header class="hero">
+  <nav>
+    <div class="nav">
+      <div class="logo">BADVLOGG <span>//</span> ÖSTERGÖTLAND</div>
+      <div class="nav-links">
+        <a class="nav-btn" href="#kartan">KARTAN ↓</a>
+        <a class="nav-btn" href="#listan">BADEN</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero-inner">
+    <div class="eyebrow">49 BAD // 1 LÄN // PERSONLIGA BETYG</div>
+    <h1>BAD.<br><span class="accent">KARTAN.</span></h1>
+    <p class="hero-copy">
+      Min badlogg över Östergötland. Utforska platserna, jämför betygen,
+      hitta dem på kartan och hoppa direkt till Google Maps.
+    </p>
+    <div class="badges">
+      <div class="badge"><strong>49</strong> BADPLATSER</div>
+      <div class="badge"><strong>★</strong> 1–10 BETYG</div>
+      <div class="badge"><strong>↗</strong> GOOGLE MAPS</div>
+      <div class="badge"><strong>●</strong> LIVEKARTA</div>
+    </div>
+  </div>
+
+  <div class="hero-stat">
+    <small>HÖGSTA BETYG</small>
+    <b id="heroBest">10/10</b>
+  </div>
+</header>
+
+<main id="kartan">
+  <section class="dashboard">
+    <div class="stat">
+      <div class="stat-label">ALLA BAD</div>
+      <div class="stat-value" id="statTotal">49</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">KARTLAGDA</div>
+      <div class="stat-value cyan" id="statMapped">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">SNITTBETYG</div>
+      <div class="stat-value" id="statAvg">0.0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">TOPPBETYG</div>
+      <div class="stat-value cyan" id="statBest">10/10</div>
+    </div>
+  </section>
+
+  <section class="app">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input id="search" class="search" type="search" placeholder="Sök badplats eller ort...">
+      </div>
+      <select id="rating">
+        <option value="0">Alla betyg</option>
+        <option value="9">9/10 eller bättre</option>
+        <option value="8">8/10 eller bättre</option>
+        <option value="7">7/10 eller bättre</option>
+        <option value="6">6/10 eller bättre</option>
+        <option value="5">5/10 eller bättre</option>
+      </select>
+      <button id="fitAll" class="tool-btn" type="button">⌖ VISA ALLA</button>
+    </div>
+
+    <div class="content">
+      <aside class="list" id="listan">
+        <div class="list-head">
+          <div class="count"><span id="count">49</span> BAD</div>
+          <div class="sort-info">KLICKA FÖR ATT FOKUSERA</div>
+        </div>
+        <div id="cards" class="cards"></div>
+      </aside>
+
+      <section class="map-panel">
+        <div class="map-overlay">
+          <div class="live"><span class="dot"></span> LIVEKARTA // ÖSTERGÖTLAND</div>
+        </div>
+        <div id="map"></div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<div id="detailBackdrop" class="detail-backdrop" aria-hidden="true">
+  <section class="detail-panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <button id="detailClose" class="detail-close" type="button" aria-label="Stäng">×</button>
+
+    <div class="detail-top">
+      <div class="detail-kicker">BADPLATS // DETALJVY</div>
+      <h2 id="detailTitle" class="detail-title">—</h2>
+      <div id="detailLocation" class="detail-location">—</div>
+      <div class="detail-score-row">
+        <div id="detailStars" class="detail-stars">★★★★★</div>
+        <div class="detail-score">
+          <small>DITT BETYG</small>
+          <span id="detailRating">—/10</span>
+        </div>
+        <div id="detailStatus" class="detail-status">● KARTPUNKT</div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-box full review-box">
+        <div class="detail-label">MIN RECENSION</div>
+        <div id="detailReview" class="review-empty">
+          <strong>Recension saknas än så länge</strong>
+          Här kan du lägga in din egen text om badplatsen.
+        </div>
+      </div>
+      <div class="detail-box">
+        <div class="detail-label">POSITION</div>
+        <div id="detailCoordinates" class="detail-text">—</div>
+      </div>
+      <div class="detail-box">
+        <div class="detail-label">KARTSTATUS</div>
+        <div id="detailMapStatus" class="detail-text">—</div>
+      </div>
+    </div>
+
+    <div class="detail-actions">
+      <a id="detailMaps" class="detail-action" href="#" target="_blank" rel="noopener">📍 ÖPPNA GOOGLE MAPS</a>
+      <button id="detailShowMap" class="detail-action secondary" type="button">↗ VISA PÅ KARTAN</button>
+    </div>
+  </section>
+</div>
+
+<footer>
+  BADVLOGG <span>//</span> ÖSTERGÖTLAND · 49 BAD · BUILT FOR THE NEXT SWIM
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script>
+const places = [
+  {"id":1,"name":"Stureforsbadet","city":"Sturefors","lat":58.32431,"lng":15.72571,"rating":9,"note":"","mapsQuery":"Stureforsbadet, Östergötland","coordType":"exakt"},
+  {"id":2,"name":"Johannelundsbadet","city":"Linköping","lat":58.398332,"lng":15.661632,"rating":6,"note":"","mapsQuery":"Johannelundsbadet, Östergötland","coordType":"exakt"},
+  {"id":3,"name":"Kolbyttemon","city":"Linköping","lat":58.32778,"lng":15.63673,"rating":9,"note":"","mapsQuery":"Kolbyttemon, Östergötland","coordType":"exakt"},
+  {"id":4,"name":"Hultsjön","city":"Ljungsbro","lat":58.574,"lng":15.510489,"rating":10,"note":"","mapsQuery":"Hultsjön, Ljungsbro, Östergötland","coordType":"exakt"},
+  {"id":5,"name":"Svartmåla -","city":"Linköping","lat":58.25844,"lng":15.6993,"rating":8,"note":"","mapsQuery":"Svartmåla badplats, Östergötland","coordType":"exakt"},
+  {"id":6,"name":"Prästgårdskajen","city":"Sturefors","lat":null,"lng":null,"rating":10,"note":"","mapsQuery":"Prästgårdskajen, Sturefors, Östergötland"},
+  {"id":7,"name":"Strandbaden borensberg","city":"Borensberg","lat":58.555455,"lng":15.277286,"rating":7,"note":"","mapsQuery":"Strandbaden borensberg, Östergötland","coordType":"exakt"},
+  {"id":8,"name":"Ekebyborna","city":"Borensberg","lat":58.537424,"lng":15.183728,"rating":5,"note":"","mapsQuery":"Ekebyborna, Borensberg, Östergötland","coordType":"exakt"},
+  {"id":9,"name":"Bergs slussar","city":"Berg / Linköping","lat":58.486859,"lng":15.540502,"rating":10,"note":"","mapsQuery":"Bergsbaden, Bergs slussar, Östergötland","coordType":"exakt"},
+  {"id":10,"name":"Piren","city":"Sturefors","lat":58.32423,"lng":15.72562,"rating":8,"note":"","mapsQuery":"Piren, Sturefors, Östergötland","coordType":"exakt"},
+  {"id":11,"name":"Grebo","city":"Grebo","lat":58.30214,"lng":15.87167,"rating":10,"note":"","mapsQuery":"Grebo badplats, Östergötland","coordType":"exakt"},
+  {"id":12,"name":"Roxenbaden","city":"Vreta Kloster","lat":58.538944,"lng":15.621988,"rating":1,"note":"","mapsQuery":"Roxenbaden, Östergötland","coordType":"exakt"},
+  {"id":13,"name":"Sibborpesjön","city":"Ljungsbro","lat":58.573714,"lng":15.434753,"rating":7,"note":"","mapsQuery":"Sibborpesjön, Ljungsbro, Östergötland","coordType":"sjöposition"},
+  {"id":14,"name":"Ljungbadet","city":"Ljung","lat":58.528016,"lng":15.451824,"rating":8,"note":"","mapsQuery":"Ljungbadet, Ljung, Östergötland","coordType":"exakt"},
+  {"id":15,"name":"Varamon","city":"Motala","lat":58.5498,"lng":15.00525,"rating":6,"note":"","mapsQuery":"Varamobaden, Motala, Östergötland","coordType":"exakt"},
+  {"id":16,"name":"Råssnäs","city":"Motala","lat":58.529369,"lng":14.991059,"rating":8,"note":"","mapsQuery":"Råssnäs, Motala, Östergötland","coordType":"exakt"},
+  {"id":17,"name":"Pariserviken","city":"Motala","lat":58.533775,"lng":14.986491,"rating":5,"note":"","mapsQuery":"Pariserviken, Motala, Östergötland","coordType":"exakt"},
+  {"id":18,"name":"Jerusalemsbadet","city":"Motala","lat":58.511077,"lng":15.0117,"rating":6,"note":"","mapsQuery":"Jerusalemsbadet, Motala, Östergötland","coordType":"exakt"},
+  {"id":19,"name":"Vadstena camping","city":"","lat":58.464904,"lng":14.879684,"rating":7,"note":"","mapsQuery":"Vadstena Camping, Östergötland","coordType":"exakt"},
+  {"id":20,"name":"Tycklingebadet","city":"Vadstena","lat":58.462701,"lng":14.895388,"rating":4,"note":"","mapsQuery":"Tycklingebadet, Vadstena, Östergötland","coordType":"exakt"},
+  {"id":21,"name":"Bårstad friluftsbad","city":"Vadstena","lat":58.396338,"lng":14.712135,"rating":3,"note":"","mapsQuery":"Bårstad friluftsbad, Vadstena, Östergötland","coordType":"exakt"},
+  {"id":22,"name":"Borghamn","city":"Vadstena","lat":null,"lng":null,"rating":8,"note":"","mapsQuery":"Borghamn, Vadstena, Östergötland"},
+  {"id":23,"name":"Hästholmen","city":"Ödeshög","lat":58.278229,"lng":14.634559,"rating":8,"note":"","mapsQuery":"Hästholmens badplats, Ödeshög, Östergötland","coordType":"exakt"},
+  {"id":24,"name":"Stora Lund","city":"Ödeshög","lat":58.2678,"lng":14.61921,"rating":9,"note":"","mapsQuery":"Stora Lund badplats, Ödeshög, Östergötland","coordType":"exakt"},
+  {"id":25,"name":"Linköpings småbåtshamn","city":"Linköping","lat":null,"lng":null,"rating":2,"note":"","mapsQuery":"Linköpings småbåtshamn, Östergötland"},
+  {"id":26,"name":"Viggebysand","city":"Brokind","lat":58.202366,"lng":15.641928,"rating":9,"note":"","mapsQuery":"Viggebysand, Östergötland","coordType":"exakt"},
+  {"id":27,"name":"Badholmarna Arkösund","city":"Arkösund","lat":58.490648,"lng":16.942691,"rating":8,"note":"","mapsQuery":"Arkösund, Badholmarna, Östergötland","coordType":"exakt"},
+  {"id":28,"name":"Bjärka Säby","city":"Bjärka-Säby","lat":58.26833,"lng":15.74094,"rating":10,"note":"","mapsQuery":"Bjärka-Säby badplats, Östergötland","coordType":"exakt"},
+  {"id":29,"name":"Timmeröbadet","city":"Boxholm","lat":58.1844,"lng":15.0576,"rating":5,"note":"","mapsQuery":"Timmeröbadet, Boxholm, Östergötland","coordType":"exakt"},
+  {"id":30,"name":"Sjögarpbadet","city":"Boxholm","lat":null,"lng":null,"rating":4,"note":"","mapsQuery":"Sjögarpbadet, Boxholm, Östergötland"},
+  {"id":31,"name":"Skogssjön","city":"Mjölby","lat":58.345169,"lng":15.119286,"rating":8,"note":"","mapsQuery":"Skogssjöbadet, Mjölby, Östergötland","coordType":"exakt"},
+  {"id":32,"name":"Lillsjön","city":"Nykil","lat":58.2757326,"lng":15.4046085,"rating":8,"note":"","mapsQuery":"Lillsjön, Nykil, Östergötland","coordType":"exakt"},
+  {"id":33,"name":"Storsjön badklippor","city":"Nykil","lat":null,"lng":null,"rating":6,"note":"","mapsQuery":"Storsjön badklippor, Östergötland"},
+  {"id":34,"name":"Blå lagunen Slaka","city":"Skänninge","lat":58.441358,"lng":15.125754,"rating":6,"note":"","mapsQuery":"Blå lagunen, Skänninge, Östergötland","coordType":"exakt"},
+  {"id":35,"name":"Hycklingebadet","city":"Östergötland","lat":57.9282434,"lng":15.9111752,"rating":9,"note":"","mapsQuery":"Hycklingebadet, Östergötland","coordType":"exakt"},
+  {"id":36,"name":"Rosöbadet","city":"Östergötland","lat":null,"lng":null,"rating":9,"note":"","mapsQuery":"Rosöbadet, Östergötland"},
+  {"id":37,"name":"Trossbonäsbadet","city":"Östergötland","lat":57.9562156,"lng":15.8355796,"rating":4,"note":"","mapsQuery":"Trossbonäsbadet, Östergötland","coordType":"exakt"},
+  {"id":38,"name":"Björkebergsbadet","city":"Östergötland","lat":58.4628889,"lng":15.4104444,"rating":5,"note":"","mapsQuery":"Björkebergsbadet, Östergötland","coordType":"exakt"},
+  {"id":39,"name":"NederlösaBadet","city":"Normlösa","lat":58.43511413282853,"lng":15.249665127181828,"rating":7,"note":"","mapsQuery":"NederlösaBadet, Östergötland","coordType":"exakt"},
+  {"id":40,"name":"Väderkvarnsbacken","city":"Skänninge","lat":58.3964,"lng":15.0718,"rating":8,"note":"","mapsQuery":"Månsjön Väderkvarnsbacken, Skänninge, Östergötland","coordType":"exakt"},
+  {"id":41,"name":"Hövernbadet","city":"Östra Ryd","lat":58.382499,"lng":16.033492,"rating":5,"note":"","mapsQuery":"Hövernbadet, Östergötland","coordType":"exakt"},
+  {"id":42,"name":"Hjulsbrobadet","city":"Hjulsbro","lat":58.37455,"lng":15.714005,"rating":4,"note":"","mapsQuery":"Hjulsbrobadet, Östergötland","coordType":"exakt"},
+  {"id":43,"name":"Jakobsdalsbadet","city":"","lat":58.389435,"lng":15.684228,"rating":5,"note":"","mapsQuery":"Jakobsdalsbadet, Östergötland","coordType":"exakt"},
+  {"id":44,"name":"HjulsbroSluss","city":"Hjulsbro","lat":null,"lng":null,"rating":3,"note":"","mapsQuery":"HjulsbroSluss, Östergötland"},
+  {"id":45,"name":"Sundsbo Båtramp","city":"Östergötland","lat":58.343056445197895,"lng":15.761192237325975,"rating":5,"note":"","mapsQuery":"Sundsbo Båtramp, Östergötland","coordType":"exakt"},
+  {"id":46,"name":"Öjebrobadet","city":"Öjebro","lat":null,"lng":null,"rating":6,"note":"","mapsQuery":"Öjebrobadet, Östergötland"},
+  {"id":47,"name":"Hackefors stenen","city":"Hackefors","lat":58.38222141666456,"lng":15.704268859562957,"rating":5,"note":"","mapsQuery":"Hackefors stenen, Östergötland","coordType":"exakt"},
+  {"id":48,"name":"Järnevidbadet","city":"Vadstena","lat":58.454621,"lng":14.789423,"rating":6,"note":"","mapsQuery":"Järnevid friluftsbad, Vadstena, Östergötland","coordType":"exakt"},
+  {"id":49,"name":"Lönningen","city":"Östergötland","lat":null,"lng":null,"rating":6,"note":"","mapsQuery":"Lönningen, Östergötland"}
+];
+
+const map = L.map('map',{zoomControl:true,preferCanvas:true}).setView([58.45,15.4],9);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+  maxZoom:20,attribution:'&copy; OpenStreetMap &copy; CARTO'
+}).addTo(map);
+
+const markers = new Map();
+const markerLayer = L.markerClusterGroup({
+  showCoverageOnHover:false,maxClusterRadius:45,disableClusteringAtZoom:13,spiderfyOnMaxZoom:true
+});
+map.addLayer(markerLayer);
+
+function valid(p){return Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng))}
+function mapsUrl(p){
+  const q=p.mapsQuery||[p.name,p.city,'Östergötland'].filter(Boolean).join(', ');
+  return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
+}
+function directCoordsUrl(p){
+  return valid(p)?'https://www.google.com/maps/search/?api=1&query='+p.lat+','+p.lng:mapsUrl(p);
+}
+function stars(r){
+  const five=(Number(r)||0)/2;
+  return Array.from({length:5},(_,i)=>{
+    const color=i+1<=five?'#ffba22':(i<five?'#ffba22':'#4b4b50');
+    return '<span style="color:'+color+'">★</span>';
+  }).join('');
+}
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+function pinIcon(id){
+  return L.divIcon({
+    className:'',html:'<div class="pin-icon"><b>'+id+'</b></div>',
+    iconSize:[38,38],iconAnchor:[19,38],popupAnchor:[0,-34]
+  });
+}
+
+places.forEach(p=>{
+  if(!valid(p)) return;
+  const m=L.marker([Number(p.lat),Number(p.lng)],{icon:pinIcon(p.id)});
+  const kind=p.coordType==='sjöposition'?'SJÖPOSITION':'VERIFIERAD KARTPUNKT';
+  m.bindPopup(
+    '<div style="min-width:200px">'+
+      '<div class="popup-kicker">'+kind+'</div>'+
+      '<div class="popup-title">'+esc(p.name)+'</div>'+
+      '<div class="popup-city">'+esc(p.city||'Östergötland')+'</div>'+
+      '<div class="popup-score">'+stars(p.rating)+' <b style="color:#fff;font-size:11px">'+p.rating+'/10</b></div>'+
+      '<a class="popup-link" href="'+directCoordsUrl(p)+'" target="_blank" rel="noopener">ÖPPNA I GOOGLE MAPS →</a>'+
+    '</div>'
+  );
+  m.on('click',()=>openDetail(p));
+  markerLayer.addLayer(m);
+  markers.set(p.id,m);
+});
+
+const allMapped=places.filter(valid);
+function fitAll(){
+  if(!allMapped.length) return;
+  const bounds=L.latLngBounds(allMapped.map(p=>[Number(p.lat),Number(p.lng)]));
+  map.fitBounds(bounds.pad(.08),{padding:[28,28],animate:true});
+}
+fitAll();
+
+function focusPlace(p){
+  if(!p) return;
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+  const card=document.querySelector('.card[data-id="'+p.id+'"]');
+  if(card) card.classList.add('active');
+  if(valid(p)){
+    map.setView([Number(p.lat),Number(p.lng)],15,{animate:true});
+    const marker=markers.get(p.id);
+    if(marker) setTimeout(()=>marker.openPopup(),260);
+    document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'});
+  }else{
+    window.open(mapsUrl(p),'_blank','noopener');
+  }
+}
+
+function openDetail(p){
+  if(!p) return;
+  const backdrop=document.getElementById('detailBackdrop');
+  const review=p.note&&p.note.trim()
+    ?'<div class="review-note">'+esc(p.note)+'</div>'
+    :'<div class="review-empty"><strong>Recension saknas än så länge</strong>Här kan du lägga in din egen text om badplatsen – t.ex. vatten, botten, bryggor, parkering.</div>';
+
+  document.getElementById('detailTitle').textContent=p.name;
+  document.getElementById('detailLocation').textContent=p.city||'Östergötland';
+  document.getElementById('detailStars').innerHTML=stars(p.rating);
+  document.getElementById('detailRating').textContent=p.rating+'/10';
+  document.getElementById('detailReview').innerHTML=review;
+
+  const status=document.getElementById('detailStatus');
+  const mapStatus=document.getElementById('detailMapStatus');
+  const coords=document.getElementById('detailCoordinates');
+
+  if(valid(p)){
+    status.className='detail-status';
+    status.textContent=p.coordType==='sjöposition'?'● SJÖPOSITION':'● VERIFIERAD KARTPUNKT';
+    coords.textContent=Number(p.lat).toFixed(6)+' , '+Number(p.lng).toFixed(6);
+    mapStatus.textContent='Platsen har en koordinat och visas direkt på kartan.';
+    document.getElementById('detailShowMap').style.display='inline-flex';
+  }else{
+    status.className='detail-status gray';
+    status.textContent='○ GOOGLE MAPS-PUNKT';
+    coords.textContent='Ingen koordinat angiven';
+    mapStatus.textContent='Ingen exakt punkt i datan. Google Maps används istället.';
+    document.getElementById('detailShowMap').style.display='none';
+  }
+
+  document.getElementById('detailMaps').href=directCoordsUrl(p);
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  document.getElementById('detailShowMap').onclick=()=>{closeDetail();setTimeout(()=>focusPlace(p),120)};
+}
+
+function closeDetail(){
+  const backdrop=document.getElementById('detailBackdrop');
+  backdrop.classList.remove('open');
+  backdrop.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+
+document.getElementById('detailClose').addEventListener('click',closeDetail);
+document.getElementById('detailBackdrop').addEventListener('click',e=>{if(e.target.id==='detailBackdrop') closeDetail()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeDetail()});
+
+function render(){
+  const q=document.getElementById('search').value.toLowerCase().trim();
+  const min=Number(document.getElementById('rating').value);
+  const arr=places.filter(p=>
+    [p.name,p.city,p.note].join(' ').toLowerCase().includes(q)&&Number(p.rating||0)>=min
+  );
+  document.getElementById('count').textContent=arr.length;
+
+  if(!arr.length){
+    document.getElementById('cards').innerHTML='<div class="empty"><b>INGET TRÄFF</b>Testa ett annat namn eller betyg.</div>';
+    return;
+  }
+
+  document.getElementById('cards').innerHTML=arr.map(p=>{
+    const exact=valid(p);
+    const hasNote=p.note&&p.note.trim();
+    return `
+      <article class="card" data-id="${p.id}">
+        <div class="card-top">
+          <div>
+            <h3>${esc(p.name)}</h3>
+            <div class="place">${esc(p.city||'Östergötland')}</div>
+          </div>
+          <div>
+            <div class="stars">${stars(p.rating)}</div>
+            <div class="score">${p.rating}/10</div>
+          </div>
+        </div>
+        <div class="review-preview ${hasNote?'':'empty-prev'}">
+          ${hasNote
+            ?'<strong>RECENSION</strong>'+esc(p.note.length>90?p.note.slice(0,90)+'…':p.note)
+            :'<strong>RECENSION</strong>Ingen text än – klicka för att öppna.'}
+        </div>
+        <div class="precision ${exact?'':'maps'}">${exact?'● KARTPUNKT':'○ GOOGLE MAPS-PUNKT'}</div>
+        <div class="actions">
+          <button type="button" class="action open-detail" data-id="${p.id}">▣ ÖPPNA RECENSION</button>
+          <a class="action" href="${mapsUrl(p)}" target="_blank" rel="noopener">📍 GOOGLE MAPS</a>
+          ${exact?'<button type="button" class="action secondary show-map" data-id="'+p.id+'">↗ VISA PÅ KARTAN</button>':''}
+        </div>
+      </article>`;
+  }).join('');
+
+  document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click',e=>{
+      if(e.target.closest('a')||e.target.closest('button')) return;
+      openDetail(places.find(x=>String(x.id)===card.dataset.id));
+    });
+  });
+  document.querySelectorAll('.open-detail').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      openDetail(places.find(x=>String(x.id)===btn.dataset.id));
+    });
+  });
+  document.querySelectorAll('.show-map').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      focusPlace(places.find(x=>String(x.id)===btn.dataset.id));
+    });
+  });
+}
+
+function updateStats(){
+  const total=places.length;
+  const mapped=places.filter(valid).length;
+  const avg=places.reduce((s,p)=>s+Number(p.rating||0),0)/total;
+  const best=Math.max(...places.map(p=>Number(p.rating||0)));
+  document.getElementById('statTotal').textContent=total;
+  document.getElementById('statMapped').textContent=mapped;
+  document.getElementById('statAvg').textContent=avg.toFixed(1);
+  document.getElementById('statBest').textContent=best+'/10';
+  document.getElementById('heroBest').textContent=best+'/10';
+}
+
+document.getElementById('search').addEventListener('input',render);
+document.getElementById('rating').addEventListener('change',render);
+document.getElementById('fitAll').addEventListener('click',fitAll);
+
+updateStats();
+render();
+
+const particleRoot=document.getElementById('particles');
+for(let i=0;i<42;i++){
+  const p=document.createElement('i');
+  p.className='particle';
+  p.style.left=(Math.random()*100)+'%';
+  p.style.top=(55+Math.random()*50)+'%';
+  p.style.setProperty('--dx',((Math.random()-.5)*110)+'px');
+  p.style.animationDuration=(8+Math.random()*13)+'s';
+  p.style.animationDelay=(-Math.random()*14)+'s';
+  const s=3+Math.random()*7;
+  p.style.width=s+'px';
+  p.style.height=s+'px';
+  particleRoot.appendChild(p);
+}
+
+setTimeout(()=>map.invalidateSize(),250);
+window.addEventListener('resize',()=>map.invalidateSize());
+</script>
+</body>
+</html>
+Badvlogg hemsida uppdatering vattenrecensioner - Grok
