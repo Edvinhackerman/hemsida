@@ -1,66 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!doctype html>
 <html lang="sv">
 <head>
@@ -705,9 +642,23 @@ const places = [
 ];
 
 const map = L.map('map',{zoomControl:true,preferCanvas:true}).setView([58.45,15.4],9);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-  maxZoom:20,attribution:'&copy; OpenStreetMap &copy; CARTO'
-}).addTo(map);
+
+/* Mörk karta utan API-nyckel (Esri). Fallback till OpenStreetMap om något strular. */
+const esriDark = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',{
+  maxZoom:16,
+  attribution:'Tiles &copy; Esri'
+});
+const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19,
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+esriDark.addTo(map);
+esriDark.on('tileerror',function(){
+  if(!map.hasLayer(osm)){
+    map.removeLayer(esriDark);
+    osm.addTo(map);
+  }
+});
 
 const markers = new Map();
 const markerLayer = L.markerClusterGroup({
@@ -715,7 +666,9 @@ const markerLayer = L.markerClusterGroup({
 });
 map.addLayer(markerLayer);
 
-function valid(p){return Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng))}
+function valid(p){
+  return p.lat!=null && p.lng!=null && Number.isFinite(Number(p.lat)) && Number.isFinite(Number(p.lng));
+}
 function mapsUrl(p){
   const q=p.mapsQuery||[p.name,p.city,'Östergötland'].filter(Boolean).join(', ');
   return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
@@ -762,9 +715,8 @@ const allMapped=places.filter(valid);
 function fitAll(){
   if(!allMapped.length) return;
   const bounds=L.latLngBounds(allMapped.map(p=>[Number(p.lat),Number(p.lng)]));
-  map.fitBounds(bounds.pad(.08),{padding:[28,28],animate:true});
+  map.fitBounds(bounds.pad(.12),{padding:[30,30],maxZoom:10,animate:true});
 }
-fitAll();
 
 function focusPlace(p){
   if(!p) return;
@@ -926,9 +878,13 @@ for(let i=0;i<42;i++){
   particleRoot.appendChild(p);
 }
 
-setTimeout(()=>map.invalidateSize(),250);
-window.addEventListener('resize',()=>map.invalidateSize());
+function refreshMap(){
+  map.invalidateSize();
+  fitAll();
+}
+setTimeout(refreshMap,300);
+setTimeout(refreshMap,800);
+window.addEventListener('resize',()=>{map.invalidateSize();});
 </script>
 </body>
 </html>
-
