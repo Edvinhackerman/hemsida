@@ -1,179 +1,951 @@
 <!doctype html>
-<html lang="sv"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#020a12">
 <title>BADVLOGG // ÖSTERGÖTLAND</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+
 <style>
-:root{--ink:#062a33;--muted:#658087;--aqua:#16c6c9;--blue:#087bb5;--sand:#fffaf0;--white:#fff;--line:#d9ecec;--shadow:0 18px 55px rgba(4,56,70,.12)}
-*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:"DM Sans",sans-serif;color:var(--ink);background:linear-gradient(180deg,#f5ffff,#fff 32%,#fffaf0);min-height:100vh}
-.hero{min-height:560px;position:relative;overflow:hidden;display:flex;align-items:center;color:#fff;background:radial-gradient(circle at 75% 25%,rgba(255,255,255,.4),transparent 24%),linear-gradient(145deg,#063e4c,#087da0 48%,#19c7c5)}
-.hero:after{content:"";position:absolute;left:-10%;right:-10%;bottom:-100px;height:240px;background:var(--sand);border-radius:50% 50% 0 0/55% 55% 0 0}
-nav{position:absolute;top:24px;left:0;right:0;z-index:5}.nav{width:min(1180px,92%);margin:auto;display:flex;justify-content:space-between;align-items:center}
-.logo{font-weight:800;letter-spacing:2px}nav a{font-size:12px;font-weight:700;text-decoration:none;padding:10px 14px;border:1px solid #ffffff40;border-radius:999px}
-.hero-inner{width:min(1180px,92%);margin:auto;position:relative;z-index:2;padding:90px 0 130px}
-.eyebrow{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;opacity:.8}
-h1{font:800 clamp(55px,9vw,112px)/.88 Manrope,sans-serif;letter-spacing:-5px;margin:20px 0}
-.hero p{max-width:650px;font-size:18px;line-height:1.7;color:#ffffffd8}.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
-.badge{padding:10px 14px;border:1px solid #ffffff40;background:#ffffff18;border-radius:999px;font-weight:700;font-size:12px}
-main{width:min(1180px,92%);margin:-40px auto 70px;position:relative;z-index:3}.app{background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);overflow:hidden}
-.toolbar{padding:20px;display:flex;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
-input,select{font:inherit}.search{flex:1;min-width:220px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;outline:none;background:#f8ffff}
-select{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
-.content{display:grid;grid-template-columns:1fr 1.2fr;min-height:650px}.list{padding:22px;max-height:720px;overflow:auto}#map{width:100%;height:100%;min-height:650px}
-.count{display:flex;justify-content:space-between;margin:0 4px 14px;font-size:12px;color:var(--muted)}.count strong{color:var(--ink);font-size:14px}
-.card{border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:12px;background:linear-gradient(135deg,#fff,#f6ffff);cursor:pointer;transition:.2s}
-.card:hover{transform:translateY(-2px);border-color:#8ddedf;box-shadow:0 10px 25px #04647314}.card-top{display:flex;justify-content:space-between;gap:10px}
-.card h3{font-size:16px}.place{color:var(--muted);font-size:11px;margin-top:4px}.stars{font-size:18px;letter-spacing:-2px;white-space:nowrap;color:#ffb52e}.stars .empty{color:#d7e1e1}.stars .half{background:linear-gradient(90deg,#ffb52e 50%,#d7e1e1 50%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.note{font-size:12px;color:#557078;line-height:1.6;margin-top:10px}.action{display:inline-block;text-decoration:none;font-size:11px;font-weight:800;padding:9px 11px;border-radius:10px;background:#eafafa;color:#067c82;margin-top:12px}
-.info{width:min(1180px,92%);margin:0 auto 70px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.info article{padding:25px;border:1px solid var(--line);border-radius:20px;background:#ffffffb8}.info p{font-size:12px;color:var(--muted);line-height:1.65;margin-top:8px}
-footer{text-align:center;padding:40px;color:#789096;font-size:11px}
-@media(max-width:850px){.content{grid-template-columns:1fr}#map{min-height:430px}.list{max-height:none}.info{grid-template-columns:1fr}}
+:root{
+  --bg:#020a12;
+  --panel:#061018;
+  --panel2:#0a1620;
+  --red:#ff1838;
+  --red2:#ff4a58;
+  --red-dark:#8e0018;
+  --cyan:#3dd6ff;
+  --cyan2:#7aecff;
+  --aqua:#1a8fbf;
+  --deep:#031018;
+  --white:#f0f7fb;
+  --muted:#7a93a5;
+  --line:rgba(61,214,255,.22);
+  --line-soft:rgba(255,255,255,.08);
+  --glow:0 0 28px rgba(61,214,255,.25);
+  --glow-red:0 0 28px rgba(255,24,56,.22);
+  --radius:22px;
+}
 
-.map-status{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 12px}
-.map-status>div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:0 10px 30px rgba(4,56,70,.07)}
-.map-status b{display:block;font-size:10px;letter-spacing:1.5px;color:var(--blue);margin-bottom:4px}
-.map-status span{font-size:12px;color:var(--muted);line-height:1.5}
-.pin-icon{width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#087bb5;border:3px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.24);display:flex;align-items:center;justify-content:center}
-.pin-icon b{transform:rotate(45deg);color:#fff;font-size:11px;font-family:DM Sans,sans-serif}
-.precision{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.5px;color:#087bb5;background:#eafaff;border:1px solid #c8eff5;border-radius:999px;padding:5px 8px;margin-top:8px}
-.card .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.card .action{margin-top:0}
-.action.secondary{background:#f2fbfc;color:#087bb5;border:1px solid #ccebed}
-.leaflet-popup-content-wrapper{border-radius:16px}
-.leaflet-popup-content{margin:14px 16px;font-family:"DM Sans",sans-serif}
-@media(max-width:720px){.map-status{grid-template-columns:1fr}}
-.source-note{width:min(1180px,92%);margin:20px auto 50px;color:#71858a;font-size:11px;line-height:1.6;text-align:center}\n
-body{background:radial-gradient(circle at 8% 0%,rgba(31,194,210,.14),transparent 30%),radial-gradient(circle at 95% 15%,rgba(0,102,153,.12),transparent 28%),#f4fbfc}
-.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#062b3a,#074b61 48%,#008aa0);color:#fff;border-radius:0 0 34px 34px;box-shadow:0 18px 60px rgba(0,55,75,.22)}
-.hero:before{content:"";position:absolute;inset:-50%;background:repeating-linear-gradient(115deg,transparent 0 24px,rgba(255,255,255,.035) 25px 26px);transform:rotate(7deg)}
-.hero>*{position:relative}
-.hero h1{font-size:clamp(42px,7vw,82px);letter-spacing:-4px;text-shadow:0 8px 28px rgba(0,0,0,.22)}
-.hero p{color:#c8f7fb}
-.badges span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#dfffff;backdrop-filter:blur(10px)}
-.controls{background:rgba(255,255,255,.84);backdrop-filter:blur(18px);border:1px solid rgba(0,100,120,.12);box-shadow:0 14px 50px rgba(0,65,80,.10);border-radius:24px}
-#map{height:610px;border-radius:26px;border:1px solid #cde8ec;box-shadow:0 18px 60px rgba(0,68,84,.14);overflow:hidden}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.card{position:relative;background:rgba(255,255,255,.92);border:1px solid #d7ecef;border-radius:22px;padding:18px;box-shadow:0 10px 35px rgba(0,66,82,.07);transition:.2s}
-.card:hover{transform:translateY(-4px);box-shadow:0 18px 45px rgba(0,66,82,.13);border-color:#7bd8e2}
-.card:after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:22px 0 0 22px;background:linear-gradient(#12b7c7,#087bb5)}
-.map-status{background:linear-gradient(135deg,#062b3a,#087b92)!important;border:0!important;color:#fff!important}
-.map-status>div{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.12)!important;box-shadow:none!important}
-.map-status b{color:#7eeef5!important}.map-status span{color:#d6f5f7!important}
-.pin-icon{width:38px;height:38px;border-radius:50% 50% 50% 0;background:linear-gradient(135deg,#0bc0ce,#0870a8);border:3px solid #fff;box-shadow:0 8px 22px rgba(0,70,100,.35)}
-.pin-icon b{font-size:10px}
-@media(max-width:850px){.cards{grid-template-columns:1fr}#map{height:480px}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"DM Sans",sans-serif;
+  color:var(--white);
+  background:
+    radial-gradient(ellipse at 20% 0%,rgba(61,214,255,.12),transparent 35%),
+    radial-gradient(ellipse at 85% 20%,rgba(26,143,191,.1),transparent 40%),
+    radial-gradient(ellipse at 50% 100%,rgba(255,24,56,.06),transparent 45%),
+    linear-gradient(180deg,#020a12 0%,#031820 40%,#020e16 100%);
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-:root{--neon:#19f7ff;--hot:#ff3cac;--violet:#7c3cff;--deep:#050a1a}
-body{background:#050816;color:#e9fbff}
-.hero{min-height:420px;background:
-radial-gradient(circle at 15% 25%,rgba(25,247,255,.35),transparent 22%),
-radial-gradient(circle at 82% 18%,rgba(255,60,172,.32),transparent 23%),
-radial-gradient(circle at 55% 90%,rgba(124,60,255,.32),transparent 30%),
-linear-gradient(135deg,#050816,#081d35 48%,#18072b);
-border-radius:0 0 45px 45px;box-shadow:0 0 70px rgba(25,247,255,.12),inset 0 -1px rgba(255,255,255,.1)}
-.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(to bottom,#000,transparent)}
-.hero h1{font-size:clamp(46px,8vw,96px);letter-spacing:-5px;text-shadow:0 0 15px rgba(25,247,255,.5),0 0 50px rgba(255,60,172,.25)}
-.hero p{color:#bdeff5}
-.badges span{background:rgba(255,255,255,.055);border:1px solid rgba(25,247,255,.25);box-shadow:0 0 18px rgba(25,247,255,.06);color:#dfffff}
-.controls{background:rgba(7,14,35,.8);border:1px solid rgba(25,247,255,.18);box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.controls input,.controls select{background:#080f25;color:#eaffff;border:1px solid rgba(25,247,255,.2)}
-#map{height:680px;border:1px solid rgba(25,247,255,.28);box-shadow:0 0 50px rgba(25,247,255,.1),0 25px 80px rgba(0,0,0,.35);background:#07101f}
-.map-status{background:linear-gradient(110deg,#061329,#13072b)!important;border:1px solid rgba(255,60,172,.25)!important;box-shadow:0 0 30px rgba(124,60,255,.12)}
-.map-status>div{background:rgba(255,255,255,.035)!important;border-color:rgba(25,247,255,.12)!important}
-.map-status b{color:var(--neon)!important}
-.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.card{background:linear-gradient(145deg,rgba(10,20,45,.96),rgba(13,9,31,.96));border:1px solid rgba(25,247,255,.13);color:#eaffff;box-shadow:0 12px 40px rgba(0,0,0,.25)}
-.card:hover{transform:translateY(-7px) scale(1.01);border-color:rgba(255,60,172,.55);box-shadow:0 0 30px rgba(255,60,172,.12),0 20px 55px rgba(0,0,0,.35)}
-.card:after{background:linear-gradient(#19f7ff,#ff3cac)}
-.card .place,.card .note{color:#8eb1bd}
-.stars span.full,.stars span.half{filter:drop-shadow(0 0 5px rgba(255,206,70,.55))}
-.precision{background:rgba(25,247,255,.06);border-color:rgba(25,247,255,.2);color:#66faff}
-.pin-icon{background:linear-gradient(135deg,#19f7ff,#7c3cff 55%,#ff3cac);box-shadow:0 0 18px rgba(25,247,255,.55),0 8px 24px rgba(0,0,0,.5);border-color:#fff}
-.marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{background:rgba(25,247,255,.18)!important}
-.marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{background:linear-gradient(135deg,#19f7ff,#7c3cff)!important;color:#fff!important;font-weight:900;box-shadow:0 0 25px rgba(25,247,255,.4)}
-.leaflet-control-zoom a{background:#071329!important;color:#19f7ff!important;border-color:rgba(25,247,255,.2)!important}
-@media(max-width:1000px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.cards{grid-template-columns:1fr}#map{height:520px}.hero h1{letter-spacing:-3px}}
-</style></head>
+/* Underwater caustic / light rays */
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9998;
+  opacity:.04;
+  background:
+    repeating-linear-gradient(
+      -12deg,
+      transparent 0px,
+      rgba(122,236,255,.9) 1px,
+      transparent 2px,
+      transparent 28px
+    );
+  mix-blend-mode:screen;
+  animation:causticShift 18s linear infinite;
+}
+@keyframes causticShift{
+  to{background-position:120px 80px}
+}
+
+/* Soft scanlines */
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+  opacity:.03;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.7) 0px,
+    rgba(255,255,255,.7) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  mix-blend-mode:screen;
+}
+
+#particles{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  overflow:hidden;
+  pointer-events:none;
+}
+.particle{
+  position:absolute;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,#fff,var(--cyan2) 40%,transparent 70%);
+  opacity:.4;
+  animation:bubbleRise linear infinite;
+  box-shadow:0 0 8px rgba(61,214,255,.5);
+}
+@keyframes bubbleRise{
+  from{transform:translate3d(0,20px,0) scale(.6);opacity:0}
+  12%{opacity:.55}
+  80%{opacity:.25}
+  to{transform:translate3d(var(--dx),-115vh,0) scale(1.1);opacity:0}
+}
+
+/* Wave layers at bottom */
+.wave-wrap{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  height:180px;
+  z-index:-1;
+  pointer-events:none;
+  overflow:hidden;
+}
+.wave{
+  position:absolute;
+  left:-5%;
+  width:110%;
+  height:100%;
+  opacity:.35;
+}
+.wave path{fill:rgba(61,214,255,.08)}
+.wave.w2{opacity:.25;animation:waveMove 9s ease-in-out infinite alternate}
+.wave.w3{opacity:.18;animation:waveMove 13s ease-in-out infinite alternate-reverse}
+.wave.w1{animation:waveMove 7s ease-in-out infinite alternate}
+@keyframes waveMove{
+  from{transform:translateX(0)}
+  to{transform:translateX(-40px)}
+}
+
+.grid-bg{
+  position:fixed;
+  inset:auto -20% 0;
+  height:50vh;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(61,214,255,.09) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(61,214,255,.09) 1px,transparent 1px);
+  background-size:42px 42px;
+  transform:perspective(450px) rotateX(62deg) translateY(35%);
+  transform-origin:center bottom;
+  mask-image:linear-gradient(to top,rgba(0,0,0,.7),transparent);
+  animation:gridMove 14s linear infinite;
+}
+@keyframes gridMove{
+  to{background-position:0 42px,42px 0}
+}
+
+a{color:inherit}
+button,input,select{font:inherit}
+
+.topline{
+  height:3px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--red),var(--cyan),transparent);
+  box-shadow:0 0 25px var(--cyan);
+}
+
+.hero{
+  min-height:690px;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+  background:
+    radial-gradient(circle at 72% 25%,rgba(61,214,255,.16),transparent 26%),
+    radial-gradient(circle at 18% 75%,rgba(26,143,191,.12),transparent 32%),
+    radial-gradient(circle at 50% 100%,rgba(255,24,56,.07),transparent 40%),
+    linear-gradient(160deg,#020a12,#041420 50%,#061828);
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,transparent 49.8%,rgba(61,214,255,.1) 50%,transparent 50.2%),
+    linear-gradient(transparent 49.8%,rgba(61,214,255,.06) 50%,transparent 50.2%);
+  background-size:100px 100px;
+  mask-image:radial-gradient(circle at center,#000,transparent 75%);
+  opacity:.7;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  width:520px;height:520px;
+  right:-180px;top:50px;
+  border:1px solid rgba(61,214,255,.25);
+  border-radius:50%;
+  box-shadow:
+    0 0 0 45px rgba(61,214,255,.03),
+    0 0 0 90px rgba(61,214,255,.02),
+    0 0 90px rgba(61,214,255,.15);
+  animation:pulseRing 5s ease-in-out infinite;
+}
+@keyframes pulseRing{
+  50%{transform:scale(1.05);opacity:.7}
+}
+
+nav{
+  position:absolute;
+  top:0;left:0;right:0;
+  z-index:20;
+  padding:25px 0;
+}
+.nav{
+  width:min(1240px,92%);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font:800 13px/1 Orbitron,sans-serif;
+  letter-spacing:2px;
+}
+.logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:9px}
+.nav-btn{
+  text-decoration:none;
+  padding:11px 15px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(0,20,30,.4);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.7px;
+  transition:.2s;
+}
+.nav-btn:hover{
+  border-color:var(--cyan);
+  box-shadow:var(--glow);
+  transform:translateY(-2px);
+  color:var(--cyan2);
+}
+
+.hero-inner{
+  width:min(1240px,92%);
+  margin:auto;
+  position:relative;
+  z-index:3;
+  padding:120px 0 110px;
+}
+.eyebrow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font:700 11px/1 Orbitron,sans-serif;
+  letter-spacing:3px;
+  color:#8aabb8;
+  text-transform:uppercase;
+}
+.eyebrow:before{
+  content:"";
+  width:34px;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--red));
+  box-shadow:0 0 12px var(--cyan);
+}
+h1{
+  font:900 clamp(58px,11vw,145px)/.82 Orbitron,sans-serif;
+  letter-spacing:-8px;
+  margin:25px 0 28px;
+  max-width:1050px;
+  text-transform:uppercase;
+  text-shadow:
+    0 0 18px rgba(61,214,255,.2),
+    0 0 60px rgba(61,214,255,.08);
+}
+h1 .red{
+  color:var(--cyan);
+  text-shadow:0 0 24px rgba(61,214,255,.5),0 0 80px rgba(61,214,255,.2);
+  background:linear-gradient(135deg,var(--cyan2),var(--cyan),#1a8fbf);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero-copy{
+  max-width:690px;
+  color:#9bb4c4;
+  font-size:17px;
+  line-height:1.75;
+}
+.badges{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:32px;
+}
+.badge{
+  padding:11px 14px;
+  border:1px solid rgba(61,214,255,.15);
+  border-radius:12px;
+  background:rgba(61,214,255,.05);
+  color:#c8dce8;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.4px;
+  backdrop-filter:blur(12px);
+}
+.badge strong{color:var(--cyan2)}
+
+.hero-stat{
+  position:absolute;
+  right:3%;
+  bottom:90px;
+  width:190px;
+  padding:18px;
+  border:1px solid rgba(61,214,255,.3);
+  background:rgba(4,16,24,.75);
+  backdrop-filter:blur(15px);
+  box-shadow:var(--glow);
+  transform:rotate(-3deg);
+}
+.hero-stat small{
+  color:#6a8a9a;
+  font:700 9px Orbitron,sans-serif;
+  letter-spacing:1.5px;
+}
+.hero-stat b{
+  display:block;
+  margin-top:7px;
+  font:800 30px Orbitron,sans-serif;
+  color:var(--cyan2);
+}
+
+main{
+  width:min(1240px,92%);
+  margin:-65px auto 80px;
+  position:relative;
+  z-index:5;
+}
+
+.dashboard{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:14px;
+}
+.stat{
+  padding:18px 20px;
+  border:1px solid rgba(61,214,255,.12);
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(8,24,36,.95),rgba(4,14,22,.96));
+  box-shadow:0 15px 45px rgba(0,0,0,.3);
+  position:relative;
+  overflow:hidden;
+}
+.stat:before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(var(--cyan),var(--aqua));
+  box-shadow:0 0 15px var(--cyan);
+}
+.stat-label{
+  color:#6a8898;
+  font:700 9px Orbitron,sans-serif;
+  letter-spacing:1.5px;
+}
+.stat-value{
+  margin-top:7px;
+  font:800 25px Orbitron,sans-serif;
+}
+.stat-value.red{color:var(--cyan2)}
+
+.app{
+  border:1px solid rgba(61,214,255,.22);
+  border-radius:24px;
+  background:rgba(4,16,26,.9);
+  box-shadow:0 30px 100px rgba(0,0,0,.5),0 0 40px rgba(61,214,255,.08);
+  overflow:hidden;
+  backdrop-filter:blur(18px);
+}
+
+.toolbar{
+  padding:17px;
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  gap:10px;
+  border-bottom:1px solid rgba(61,214,255,.1);
+  background:linear-gradient(90deg,rgba(61,214,255,.06),transparent 60%);
+}
+.search-wrap{position:relative}
+.search-icon{
+  position:absolute;
+  left:15px;top:50%;
+  transform:translateY(-50%);
+  color:var(--cyan);
+  font-size:14px;
+}
+.search{
+  width:100%;
+  padding:14px 16px 14px 42px;
+  border:1px solid rgba(61,214,255,.12);
+  border-radius:12px;
+  outline:none;
+  background:#061018;
+  color:#fff;
+}
+.search:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(61,214,255,.1)}
+select,.tool-btn{
+  padding:14px 15px;
+  border:1px solid rgba(61,214,255,.12);
+  border-radius:12px;
+  background:#061018;
+  color:#e0eef5;
+  outline:none;
+}
+.tool-btn{
+  cursor:pointer;
+  font-weight:800;
+  font-size:11px;
+  transition:.2s;
+}
+.tool-btn:hover{border-color:var(--cyan);color:#fff;box-shadow:var(--glow)}
+
+.content{
+  display:grid;
+  grid-template-columns:430px 1fr;
+  min-height:720px;
+}
+.list{
+  padding:18px;
+  max-height:720px;
+  overflow:auto;
+  border-right:1px solid rgba(61,214,255,.1);
+}
+.list::-webkit-scrollbar{width:5px}
+.list::-webkit-scrollbar-thumb{background:#0a4058;border-radius:10px}
+.list-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:0 2px 14px;
+}
+.count{
+  font:800 11px Orbitron,sans-serif;
+  letter-spacing:1px;
+}
+.count span{color:var(--cyan2)}
+.sort-info{font-size:10px;color:#5a7a8a}
+
+.cards{display:flex;flex-direction:column;gap:10px}
+.card{
+  position:relative;
+  padding:17px;
+  border:1px solid rgba(61,214,255,.1);
+  border-radius:17px;
+  background:linear-gradient(145deg,#0a1a26,#061018);
+  cursor:pointer;
+  transition:.22s ease;
+  overflow:hidden;
+}
+.card:before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:linear-gradient(var(--cyan),#0a4a68);
+  opacity:.75;
+}
+.card:hover{
+  transform:translateX(4px);
+  border-color:rgba(61,214,255,.4);
+  box-shadow:0 0 28px rgba(61,214,255,.1);
+}
+.card.active{
+  border-color:var(--cyan);
+  box-shadow:0 0 28px rgba(61,214,255,.16);
+}
+.card-top{display:flex;justify-content:space-between;gap:12px}
+.card h3{font-size:15px;line-height:1.25}
+.place{color:#6a8898;font-size:10px;margin-top:4px}
+.stars{
+  white-space:nowrap;
+  color:#ffba22;
+  font-size:15px;
+  letter-spacing:-2px;
+  filter:drop-shadow(0 0 5px rgba(255,186,34,.2));
+}
+.score{
+  text-align:right;
+  margin-top:3px;
+  color:#6a8898;
+  font:700 8px Orbitron,sans-serif;
+}
+
+/* Review preview box on cards */
+.review-preview{
+  margin-top:11px;
+  padding:11px 13px;
+  border-radius:12px;
+  border:1px solid rgba(61,214,255,.12);
+  background:rgba(61,214,255,.04);
+  font-size:12px;
+  line-height:1.55;
+  color:#9bb4c4;
+}
+.review-preview.empty-prev{
+  border-style:dashed;
+  border-color:rgba(255,255,255,.08);
+  background:rgba(255,255,255,.02);
+  color:#5a7a8a;
+  font-size:11px;
+}
+.review-preview strong{
+  display:block;
+  color:var(--cyan2);
+  font:800 8px Orbitron,sans-serif;
+  letter-spacing:1px;
+  margin-bottom:5px;
+}
+
+.precision{
+  display:inline-flex;
+  margin-top:10px;
+  padding:5px 8px;
+  border-radius:999px;
+  border:1px solid rgba(61,214,255,.2);
+  background:rgba(61,214,255,.06);
+  color:var(--cyan2);
+  font:700 8px Orbitron,sans-serif;
+  letter-spacing:.5px;
+}
+.precision.maps{
+  color:#6a8898;
+  border-color:rgba(255,255,255,.08);
+  background:rgba(255,255,255,.025);
+}
+.actions{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap}
+.action{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  text-decoration:none;
+  border:1px solid rgba(61,214,255,.28);
+  color:var(--cyan2);
+  background:rgba(61,214,255,.06);
+  padding:8px 10px;
+  border-radius:9px;
+  font-size:10px;
+  font-weight:800;
+  cursor:pointer;
+}
+.action:hover{background:var(--cyan);color:#021018;box-shadow:0 0 18px rgba(61,214,255,.35)}
+.action.secondary{color:#8aabb8;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
+
+.map-panel{
+  min-width:0;
+  position:relative;
+  padding:12px;
+  background:#031018;
+}
+#map{
+  width:100%;
+  height:696px;
+  border-radius:17px;
+  border:1px solid rgba(61,214,255,.22);
+  overflow:hidden;
+  background:#031018;
+}
+.map-overlay{
+  position:absolute;
+  top:25px;left:25px;
+  z-index:500;
+  pointer-events:none;
+}
+.live{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 11px;
+  border:1px solid rgba(61,214,255,.3);
+  border-radius:999px;
+  background:rgba(3,16,24,.85);
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 20px rgba(61,214,255,.12);
+  font:800 8px Orbitron,sans-serif;
+  letter-spacing:1px;
+}
+.dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+  animation:blink 1.4s infinite;
+}
+@keyframes blink{50%{opacity:.35;transform:scale(.75)}}
+
+.leaflet-container{font-family:"DM Sans",sans-serif;background:#031018}
+.leaflet-control-zoom a{
+  background:#061018!important;
+  color:var(--cyan)!important;
+  border-color:rgba(61,214,255,.25)!important;
+}
+.leaflet-control-attribution{
+  background:rgba(0,0,0,.7)!important;
+  color:#5a7a8a!important;
+}
+.leaflet-control-attribution a{color:#8aabb8!important}
+
+.pin-icon{
+  width:40px;height:40px;
+  border-radius:50% 50% 50% 0;
+  transform:rotate(-45deg);
+  background:radial-gradient(circle at 35% 30%,#7aecff,var(--cyan) 45%,#0a5a80);
+  border:2px solid #fff;
+  box-shadow:0 0 17px rgba(61,214,255,.7),0 7px 22px rgba(0,0,0,.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pin-icon b{
+  transform:rotate(45deg);
+  color:#021018;
+  font:900 9px Orbitron,sans-serif;
+}
+.marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{
+  background:rgba(61,214,255,.15)!important;
+}
+.marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{
+  background:linear-gradient(135deg,var(--cyan),#0a5a80)!important;
+  color:#021018!important;
+  font:900 11px Orbitron,sans-serif;
+  box-shadow:0 0 25px rgba(61,214,255,.45);
+}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{
+  background:#061018;
+  color:#e0eef5;
+  border:1px solid rgba(61,214,255,.25);
+}
+.leaflet-popup-content-wrapper{box-shadow:0 15px 50px rgba(0,0,0,.55)}
+.popup-kicker{
+  color:var(--cyan);
+  font:800 8px Orbitron,sans-serif;
+  letter-spacing:1.5px;
+  margin-bottom:6px;
+}
+.popup-title{font-size:17px;font-weight:800}
+.popup-city{font-size:10px;color:#6a8898}
+.popup-score{margin:8px 0;color:#ffba22}
+.popup-link{color:var(--cyan2);font-size:11px;font-weight:800;text-decoration:none}
+
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:14px;
+}
+.info-card{
+  padding:21px;
+  border:1px solid rgba(61,214,255,.1);
+  border-radius:18px;
+  background:rgba(6,20,30,.85);
+}
+.info-card b{
+  font:800 10px Orbitron,sans-serif;
+  letter-spacing:1px;
+}
+.info-card b span{color:var(--cyan)}
+.info-card p{
+  color:#6a8898;
+  font-size:11px;
+  line-height:1.7;
+  margin-top:8px;
+}
+
+.empty{
+  padding:40px 15px;
+  text-align:center;
+  color:#5a7a8a;
+}
+.empty b{display:block;color:#8aabb8;margin-bottom:6px}
+
+footer{
+  padding:45px 20px 65px;
+  text-align:center;
+  color:#4a6a7a;
+  font:700 9px Orbitron,sans-serif;
+  letter-spacing:1.5px;
+}
+footer span{color:var(--cyan)}
+
+@media(max-width:1050px){
+  .content{grid-template-columns:360px 1fr}
+  .dashboard{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:800px){
+  .hero{min-height:650px}
+  .hero-stat{display:none}
+  .nav-links .nav-btn:first-child{display:none}
+  .toolbar{grid-template-columns:1fr 1fr}
+  .search-wrap{grid-column:1/-1}
+  .content{grid-template-columns:1fr}
+  .list{max-height:none;border-right:0;border-bottom:1px solid rgba(61,214,255,.1)}
+  #map{height:530px}
+  .map-panel{order:-1}
+  .info-grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .nav{width:90%}
+  .logo{font-size:10px}
+  .hero-inner{width:90%;padding-top:115px}
+  h1{font-size:52px;letter-spacing:-4px}
+  .hero-copy{font-size:14px}
+  main{width:94%;margin-top:-35px}
+  .dashboard{gap:7px}
+  .stat{padding:14px}
+  .stat-value{font-size:18px}
+  .stat-label{font-size:7px}
+  .toolbar{grid-template-columns:1fr}
+  .search-wrap{grid-column:auto}
+  #map{height:470px}
+  .map-overlay{top:20px;left:20px}
+}
+
+/* === PLACE DETAIL / REVIEW PANEL === */
+.detail-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:rgba(1,8,14,.82);
+  backdrop-filter:blur(16px);
+}
+.detail-backdrop.open{display:flex;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.detail-panel{
+  width:min(900px,100%);
+  max-height:min(820px,92vh);
+  overflow:auto;
+  position:relative;
+  border:1px solid rgba(61,214,255,.35);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 85% 8%,rgba(61,214,255,.14),transparent 30%),
+    radial-gradient(circle at 10% 90%,rgba(26,143,191,.1),transparent 35%),
+    linear-gradient(145deg,#0a1c28,#041018 60%,#061820);
+  box-shadow:0 35px 120px rgba(0,0,0,.75),0 0 60px rgba(61,214,255,.12);
+}
+.detail-panel::-webkit-scrollbar{width:6px}
+.detail-panel::-webkit-scrollbar-thumb{background:#0a4058;border-radius:10px}
+
+.detail-close{
+  position:absolute;
+  top:18px;right:18px;
+  z-index:4;
+  width:40px;height:40px;
+  border:1px solid rgba(61,214,255,.2);
+  border-radius:50%;
+  background:rgba(0,15,25,.5);
+  color:#fff;
+  cursor:pointer;
+  font-size:20px;
+}
+.detail-close:hover{
+  border-color:var(--cyan);
+  color:var(--cyan);
+  box-shadow:0 0 20px rgba(61,214,255,.25);
+}
+
+.detail-top{
+  padding:38px 42px 30px;
+  border-bottom:1px solid rgba(61,214,255,.12);
+}
+.detail-kicker{
+  color:var(--cyan);
+  font:800 9px Orbitron,sans-serif;
+  letter-spacing:2px;
+}
+.detail-title{
+  margin-top:12px;
+  padding-right:45px;
+  font:800 clamp(30px,5vw,54px)/1 Orbitron,sans-serif;
+  letter-spacing:-2px;
+}
+.detail-location{
+  color:#6a8898;
+  font-size:13px;
+  margin-top:9px;
+}
+.detail-score-row{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+.detail-stars{
+  color:#ffba22;
+  font-size:27px;
+  letter-spacing:-3px;
+  filter:drop-shadow(0 0 7px rgba(255,186,34,.2));
+}
+.detail-score{
+  padding-left:18px;
+  border-left:1px solid rgba(61,214,255,.15);
+  font:800 22px Orbitron,sans-serif;
+}
+.detail-score small{
+  display:block;
+  color:#5a7a8a;
+  font:700 8px Orbitron,sans-serif;
+  letter-spacing:1px;
+  margin-bottom:4px;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  padding:22px 42px;
+}
+.detail-box{
+  border:1px solid rgba(61,214,255,.12);
+  border-radius:18px;
+  padding:20px;
+  background:rgba(61,214,255,.03);
+}
+.detail-box.full{grid-column:1/-1}
+.detail-box.review-box{
+  border-color:rgba(61,214,255,.25);
+  background:
+    linear-gradient(135deg,rgba(61,214,255,.07),rgba(26,143,191,.04));
+  position:relative;
+  overflow:hidden;
+}
+.detail-box.review-box:before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--aqua),transparent);
+}
+.detail-label{
+  color:#5a7a8a;
+  font:800 8px Orbitron,sans-serif;
+  letter-spacing:1.5px;
+  margin-bottom:10px;
+}
+.detail-text{
+  color:#a8c0d0;
+  font-size:13px;
+  line-height:1.75;
+}
+.review-empty{
+  color:#5a7a8a;
+  font-size:13px;
+  line-height:1.7;
+}
+.review-empty strong{
+  display:block;
+  color:#8aabb8;
+  margin-bottom:5px;
+}
+.review-note{
+  border-left:3px solid var(--cyan);
+  padding:14px 16px;
+  background:rgba(61,214,255,.06);
+  color:#c8dce8;
+  line-height:1.8;
+  font-size:14px;
+  border-radius:0 12px 12px 0;
+}
+
+.detail-actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  padding:0 42px 34px;
+}
+.detail-action{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:44px;
+  padding:0 15px;
+  border:1px solid rgba(61,214,255,.3);
+  border-radius:11px;
+  background:rgba(61,214,255,.08);
+  color:var(--cyan2);
+  text-decoration:none;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+}
+.detail-action:hover{
+  background:var(--cyan);
+  color:#021018;
+  box-shadow:0 0 25px rgba(61,214,255,.35);
+}
+.detail-action.secondary{
+  border-color:rgba(255,255,255,.1);
+  color:#8aabb8;
+  background:rgba(255,255,255,.025);
+}
+.detail-status{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 10px;
+  border:1px solid rgba(61,214,255,.25);
+  border-radius:999px;
+  color:var(--cyan2);
+  background:rgba(61,214,255,.06);
+  font:800 8px Orbitron,sans-serif;
+  letter-spacing:.6px;
+}
+.detail-status.gray{
+  color:#6a8898;
+  border-color:rgba(255,255,255,.08);
+  background:rgba(255,255,255,.025);
+}
+
+@media(max-width:650px){
+  .detail-backdrop{padding:10px}
+  .detail-top{padding:30px 22px 24px}
+  .detail-title{font-size:30px}
+  .detail-grid{grid-template-columns:1fr;padding:16px 22px}
+  .detail-box.full{grid-column:auto}
+  .detail-actions{padding:0 22px 25px}
+  .detail-stars{font-size:22px}
+}
+
+</style>
+</head>
+
 <body>
-<header class="hero"><nav><div class="nav"><div class="logo">BADVLOGG // ÖSTERGÖTLAND</div><a href="#kartan">ÖPPNA KARTAN ↓</a></div></nav>
-<div class="hero-inner"><div class="eyebrow">49 bad // 1 län // din badguide</div>
-<h1>HITTA DITT<br>PERFEKTA BAD.</h1><p>En samlad badkarta över Östergötland. Se alla badplatser, kolla mitt betyg i stjärnor och öppna platsen direkt i Google Maps.</p>
-<div class="badges"><div class="badge">💦 49 BADPLATSER</div><div class="badge">⭐ PERSONLIGA BETYG</div><div class="badge">📍 GOOGLE MAPS</div></div></div></header>
+<div class="topline"></div>
+<div id="particles"></div>
+<div class="grid-bg"></div>
 
-<main id="kartan"><div class="app"><div class="toolbar">
-<input id="search" class="search" type="search" placeholder="Sök badplats eller ort...">
-<select id="rating"><option value="0">Alla betyg</option><option value="9">9/10 eller bättre</option><option value="8">8/10 eller bättre</option><option value="7">7/10 eller bättre</option><option value="6">6/10 eller bättre</option><option value="5">5/10 eller bättre</option></select>
-</div><div class="content"><div class="list"><div class="count"><strong id="count">49 bad</strong><span>Klicka på ett bad för att zooma</span></div><div id="cards"></div></div><div class="map-status">
-  <div><b>LIVEKARTA</b><span>Kartpunkterna använder dina exakta koordinater — inga gissade punkter.</span></div>
-  <div><b>GOOGLE MAPS</b><span>Alla 49 platser har en direkt kartlänk — även de punkter som jag inte ville gissa koordinater för.</span></div>
-</div>
-<div id="map"></div></div></div><div class="source-note">Kartpunkter är inlagda från verifierade kart-/badplatsuppgifter där exakt badpunkt kunde beläggas. För övriga platser öppnas en direkt Google Maps-sökning så att ingen påhittad koordinat används.</div></main>
-
-<section class="info"><article><b>⭐ Betyg</b><p>Dina betyg är 1–10 och visas samtidigt som stjärnor. 10/10 = 5 ★.</p></article>
-<article><b>📍 Google Maps</b><p>Varje plats öppnas direkt i Google Maps. Google Maps URLs fungerar utan Google Maps API-nyckel.</p></article>
-<article><b>✏️ Lätt att uppdatera</b><p>Alla 49 bad ligger i en enda JavaScript-lista längst ner. Designen behöver du inte röra.</p></article></section>
-<footer>BADVLOGG // ÖSTERGÖTLAND · 49 BAD</footer>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-<script>
-const places=[{"id": 1, "name": "Stureforsbadet", "city": "Sturefors", "lat": 58.32431, "lng": 15.72571, "rating": 9, "note": "", "mapsQuery": "Stureforsbadet, Östergötland", "coordType": "exakt"}, {"id": 2, "name": "Johannelundsbadet", "city": "Linköping", "lat": 58.398332, "lng": 15.661632, "rating": 6, "note": "", "mapsQuery": "Johannelundsbadet, Östergötland", "coordType": "exakt"}, {"id": 3, "name": "Kolbyttemon", "city": "Linköping", "lat": 58.32778, "lng": 15.63673, "rating": 9, "note": "", "mapsQuery": "Kolbyttemon, Östergötland", "coordType": "exakt"}, {"id": 4, "name": "Hultsjön", "city": "Ljungsbro", "lat": 58.574, "lng": 15.510489, "rating": 10, "note": "", "mapsQuery": "Hultsjön, Ljungsbro, Östergötland", "coordType": "exakt"}, {"id": 5, "name": "Svartmåla -", "city": "Linköping", "lat": 58.25844, "lng": 15.6993, "rating": 8, "note": "", "mapsQuery": "Svartmåla badplats, Östergötland", "coordType": "exakt"}, {"id": 6, "name": "Prästgårdskajen", "city": "Sturefors", "lat": null, "lng": null, "rating": 10, "note": "", "mapsQuery": "Prästgårdskajen, Sturefors, Östergötland"}, {"id": 7, "name": "Strandbaden borensberg", "city": "Borensberg", "lat": 58.555455, "lng": 15.277286, "rating": 7, "note": "", "mapsQuery": "Strandbaden borensberg, Östergötland", "coordType": "exakt"}, {"id": 8, "name": "Ekebyborna", "city": "Borensberg", "lat": 58.537424, "lng": 15.183728, "rating": 5, "note": "", "mapsQuery": "Ekebyborna, Borensberg, Östergötland", "coordType": "exakt"}, {"id": 9, "name": "Bergs slussar", "city": "Berg / Linköping", "lat": 58.486859, "lng": 15.540502, "rating": 10, "note": "", "mapsQuery": "Bergsbaden, Bergs slussar, Östergötland", "coordType": "exakt"}, {"id": 10, "name": "Piren", "city": "Sturefors", "lat": 58.32423, "lng": 15.72562, "rating": 8, "note": "", "mapsQuery": "Piren, Sturefors, Östergötland", "coordType": "exakt"}, {"id": 11, "name": "Grebo", "city": "Grebo", "lat": 58.30214, "lng": 15.87167, "rating": 10, "note": "", "mapsQuery": "Grebo badplats, Östergötland", "coordType": "exakt"}, {"id": 12, "name": "Roxenbaden", "city": "Vreta Kloster", "lat": 58.538944, "lng": 15.621988, "rating": 1, "note": "", "mapsQuery": "Roxenbaden, Östergötland", "coordType": "exakt"}, {"id": 13, "name": "Sibborpesjön", "city": "Ljungsbro", "lat": 58.573714, "lng": 15.434753, "rating": 7, "note": "", "mapsQuery": "Sibborpesjön, Ljungsbro, Östergötland", "coordType": "sjöposition"}, {"id": 14, "name": "Ljungbadet", "city": "Ljung", "lat": 58.528016, "lng": 15.451824, "rating": 8, "note": "", "mapsQuery": "Ljungbadet, Ljung, Östergötland", "coordType": "exakt"}, {"id": 15, "name": "Varamon", "city": "Motala", "lat": 58.5498, "lng": 15.00525, "rating": 6, "note": "", "mapsQuery": "Varamobaden, Motala, Östergötland", "coordType": "exakt"}, {"id": 16, "name": "Råssnäs", "city": "Motala", "lat": 58.529369, "lng": 14.991059, "rating": 8, "note": "", "mapsQuery": "Råssnäs, Motala, Östergötland", "coordType": "exakt"}, {"id": 17, "name": "Pariserviken", "city": "Motala", "lat": 58.533775, "lng": 14.986491, "rating": 5, "note": "", "mapsQuery": "Pariserviken, Motala, Östergötland", "coordType": "exakt"}, {"id": 18, "name": "Jerusalemsbadet", "city": "Motala", "lat": 58.511077, "lng": 15.0117, "rating": 6, "note": "", "mapsQuery": "Jerusalemsbadet, Motala, Östergötland", "coordType": "exakt"}, {"id": 19, "name": "Vadstena camping", "city": "", "lat": 58.464904, "lng": 14.879684, "rating": 7, "note": "", "mapsQuery": "Vadstena Camping, Östergötland", "coordType": "exakt"}, {"id": 20, "name": "Tycklingebadet", "city": "Vadstena", "lat": 58.462701, "lng": 14.895388, "rating": 4, "note": "", "mapsQuery": "Tycklingebadet, Vadstena, Östergötland", "coordType": "exakt"}, {"id": 21, "name": "Bårstad friluftsbad", "city": "Vadstena", "lat": 58.396338, "lng": 14.712135, "rating": 3, "note": "", "mapsQuery": "Bårstad friluftsbad, Vadstena, Östergötland", "coordType": "exakt"}, {"id": 22, "name": "Borghamn", "city": "Vadstena", "lat": null, "lng": null, "rating": 8, "note": "", "mapsQuery": "Borghamn, Vadstena, Östergötland"}, {"id": 23, "name": "Hästholmen", "city": "Ödeshög", "lat": 58.278229, "lng": 14.634559, "rating": 8, "note": "", "mapsQuery": "Hästholmens badplats, Ödeshög, Östergötland", "coordType": "exakt"}, {"id": 24, "name": "Stora Lund", "city": "Ödeshög", "lat": 58.2678, "lng": 14.61921, "rating": 9, "note": "", "mapsQuery": "Stora Lund badplats, Ödeshög, Östergötland", "coordType": "exakt"}, {"id": 25, "name": "Linköpings småbåtshamn", "city": "Linköping", "lat": null, "lng": null, "rating": 2, "note": "", "mapsQuery": "Linköpings småbåtshamn, Östergötland"}, {"id": 26, "name": "Viggebysand", "city": "Brokind", "lat": 58.202366, "lng": 15.641928, "rating": 9, "note": "", "mapsQuery": "Viggebysand, Östergötland", "coordType": "exakt"}, {"id": 27, "name": "Badholmarna Arkösund", "city": "Arkösund", "lat": 58.490648, "lng": 16.942691, "rating": 8, "note": "", "mapsQuery": "Arkösund, Badholmarna, Östergötland", "coordType": "exakt"}, {"id": 28, "name": "Bjärka Säby", "city": "Bjärka-Säby", "lat": 58.26833, "lng": 15.74094, "rating": 10, "note": "", "mapsQuery": "Bjärka-Säby badplats, Östergötland", "coordType": "exakt"}, {"id": 29, "name": "Timmeröbadet", "city": "Boxholm", "lat": 58.1844, "lng": 15.0576, "rating": 5, "note": "", "mapsQuery": "Timmeröbadet, Boxholm, Östergötland", "coordType": "exakt"}, {"id": 30, "name": "Sjögarpbadet", "city": "Boxholm", "lat": null, "lng": null, "rating": 4, "note": "", "mapsQuery": "Sjögarpbadet, Boxholm, Östergötland"}, {"id": 31, "name": "Skogssjön", "city": "Mjölby", "lat": 58.345169, "lng": 15.119286, "rating": 8, "note": "", "mapsQuery": "Skogssjöbadet, Mjölby, Östergötland", "coordType": "exakt"}, {"id": 32, "name": "Lillsjön", "city": "Nykil", "lat": 58.2757326, "lng": 15.4046085, "rating": 8, "note": "", "mapsQuery": "Lillsjön, Nykil, Östergötland", "coordType": "exakt"}, {"id": 33, "name": "Storsjön badklippor", "city": "Nykil", "lat": null, "lng": null, "rating": 6, "note": "", "mapsQuery": "Storsjön badklippor, Östergötland"}, {"id": 34, "name": "Blå lagunen Slaka", "city": "Skänninge", "lat": 58.441358, "lng": 15.125754, "rating": 6, "note": "", "mapsQuery": "Blå lagunen, Skänninge, Östergötland", "coordType": "exakt"}, {"id": 35, "name": "Hycklingebadet", "city": "Östergötland", "lat": 57.9282434, "lng": 15.9111752, "rating": 9, "note": "", "mapsQuery": "Hycklingebadet, Östergötland", "coordType": "exakt"}, {"id": 36, "name": "Rosöbadet", "city": "Östergötland", "lat": null, "lng": null, "rating": 9, "note": "", "mapsQuery": "Rosöbadet, Östergötland"}, {"id": 37, "name": "Trossbonäsbadet", "city": "Östergötland", "lat": 57.9562156, "lng": 15.8355796, "rating": 4, "note": "", "mapsQuery": "Trossbonäsbadet, Östergötland", "coordType": "exakt"}, {"id": 38, "name": "Björkebergsbadet", "city": "Östergötland", "lat": 58.4628889, "lng": 15.4104444, "rating": 5, "note": "", "mapsQuery": "Björkebergsbadet, Östergötland", "coordType": "exakt"}, {"id": 39, "name": "NederlösaBadet", "city": "Normlösa", "lat": 58.43511413282853, "lng": 15.249665127181828, "rating": 7, "note": "", "mapsQuery": "NederlösaBadet, Östergötland", "coordType": "exakt"}, {"id": 40, "name": "Väderkvarnsbacken", "city": "Skänninge", "lat": 58.3964, "lng": 15.0718, "rating": 8, "note": "", "mapsQuery": "Månsjön Väderkvarnsbacken, Skänninge, Östergötland", "coordType": "exakt"}, {"id": 41, "name": "Hövernbadet", "city": "Östra Ryd", "lat": 58.382499, "lng": 16.033492, "rating": 5, "note": "", "mapsQuery": "Hövernbadet, Östergötland", "coordType": "exakt"}, {"id": 42, "name": "Hjulsbrobadet", "city": "Hjulsbro", "lat": 58.37455, "lng": 15.714005, "rating": 4, "note": "", "mapsQuery": "Hjulsbrobadet, Östergötland", "coordType": "exakt"}, {"id": 43, "name": "Jakobsdalsbadet", "city": "", "lat": 58.389435, "lng": 15.684228, "rating": 5, "note": "", "mapsQuery": "Jakobsdalsbadet, Östergötland", "coordType": "exakt"}, {"id": 44, "name": "HjulsbroSluss", "city": "Hjulsbro", "lat": null, "lng": null, "rating": 3, "note": "", "mapsQuery": "HjulsbroSluss, Östergötland"}, {"id": 45, "name": "Sundsbo Båtramp", "city": "Östergötland", "lat": 58.343056445197895, "lng": 15.761192237325975, "rating": 5, "note": "", "mapsQuery": "Sundsbo Båtramp, Östergötland", "coordType": "exakt"}, {"id": 46, "name": "Öjebrobadet", "city": "Öjebro", "lat": null, "lng": null, "rating": 6, "note": "", "mapsQuery": "Öjebrobadet, Östergötland"}, {"id": 47, "name": "Hackefors stenen", "city": "Hackefors", "lat": 58.38222141666456, "lng": 15.704268859562957, "rating": 5, "note": "", "mapsQuery": "Hackefors stenen, Östergötland", "coordType": "exakt"}, {"id": 48, "name": "Järnevidbadet", "city": "Vadstena", "lat": 58.454621, "lng": 14.789423, "rating": 6, "note": "", "mapsQuery": "Järnevid friluftsbad, Vadstena, Östergötland", "coordType": "exakt"}, {"id": 49, "name": "Lönningen", "city": "Östergötland", "lat": null, "lng": null, "rating": 6, "note": "", "mapsQuery": "Lönningen, Östergötland"}];
-const map=L.map('map').setView([58.45,15.4],9);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
-const markers=new Map();
-const markerLayer=L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:42,disableClusteringAtZoom:13});
-map.addLayer(markerLayer);
-function valid(p){return Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng))}
-function mapsUrl(p){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.mapsQuery||[p.name,p.city,'Östergötland'].filter(Boolean).join(', '))}
-function directCoordsUrl(p){return valid(p)?'https://www.google.com/maps/search/?api=1&query='+p.lat+','+p.lng:mapsUrl(p)}
-function stars(r){r=Number(r)||0;const five=r/2;return Array.from({length:5},(_,i)=>{const cls=i+1<=five?'full':(i<five?'half':'empty');return `<span class="${cls}">★</span>`}).join('')}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
-function pinIcon(id){return L.divIcon({className:'',html:`<div class="pin-icon"><b>${id}</b></div>`,iconSize:[38,38],iconAnchor:[19,38],popupAnchor:[0,-35]})}
-places.forEach(p=>{
- if(valid(p)){
-   const m=L.marker([Number(p.lat),Number(p.lng)],{icon:pinIcon(p.id)});
-   const kind=p.coordType==='sjöposition'?'Sjöposition':'Exakt kartpunkt';
-   m.bindPopup(`<div style="min-width:190px"><div style="font-size:10px;letter-spacing:1.5px;color:#087bb5;font-weight:900">${kind}</div><b style="font-size:17px">${esc(p.name)}</b><br><small>${esc(p.city||'Östergötland')}</small><br><div style="margin:7px 0">${stars(p.rating)} <b>${p.rating}/10</b></div><a href="${directCoordsUrl(p)}" target="_blank" rel="noopener">Öppna i Google Maps →</a></div>`);
-   markerLayer.addLayer(m);markers.set(p.id,m);
- }
-});
-const allMapped=places.filter(valid);
-if(allMapped.length){const bounds=L.latLngBounds(allMapped.map(p=>[Number(p.lat),Number(p.lng)]));map.fitBounds(bounds.pad(.08),{padding:[30,30]});}
-function focusPlace(p){if(!p)return;if(valid(p)){map.setView([Number(p.lat),Number(p.lng)],15,{animate:true});markers.get(p.id)?.openPopup();document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'})}else window.open(mapsUrl(p),'_blank','noopener')}
-function focusPlace(p){
-  if(!p)return;
-  if(valid(p)){map.setView([p.lat,p.lng],15,{animate:true});markers.get(p.id)?.openPopup();document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'})}
-  else {window.open(mapsUrl(p),'_blank','noopener')}
-}
-function render(){
- const q=document.getElementById('search').value.toLowerCase().trim(),min=Number(document.getElementById('rating').value);
- const arr=places.filter(p=>[p.name,p.city,p.note].join(' ').toLowerCase().includes(q)&&Number(p.rating||0)>=min);
- document.getElementById('count').textContent=arr.length+' bad';
- document.getElementById('cards').innerHTML=arr.map(p=>`<article class="card" data-id="${p.id}">
-   <div class="card-top"><div><h3>${esc(p.name)}</h3><div class="place">${esc(p.city||'Östergötland')}</div></div>
-   <div><div class="stars">${stars(p.rating)}</div><div style="font-size:10px;color:#658087;text-align:right;margin-top:2px">${p.rating}/10</div></div></div>
-   ${p.note?`<div class="note">${esc(p.note)}</div>`:''}
-   ${valid(p)?`<div class="precision">● VERIFIERAD KARTPUNKT</div>`:`<div class="precision" style="color:#657b82;background:#f7fbfb;border-color:#dbeaea">○ GOOGLE MAPS-PUNKT</div>`}
-   <div class="actions">
-     <a class="action" href="${mapsUrl(p)}" target="_blank" rel="noopener">📍 Google Maps</a>
-     ${valid(p)?`<button type="button" class="action secondary show-map" data-id="${p.id}">↗ Visa på kartan</button>`:''}
-   </div>
- </article>`).join('');
- document.querySelectorAll('.card').forEach(c=>{
-   c.onclick=e=>{
-     if(e.target.closest('a')||e.target.closest('button'))return;
-     const p=places.find(x=>String(x.id)===c.dataset.id);focusPlace(p);
-   }
- });
- document.querySelectorAll('.show-map').forEach(b=>b.onclick=()=>{
-   const p=places.find(x=>String(x.id)===b.dataset.id);focusPlace(p);
- });
-}
-document.getElementById('search').oninput=render;
-document.getElementById('rating').onchange=render;
-render();
-</script></body></html>
+<!-- Wave decoration -->
+<div class="wave-wrap" aria-hidden="true">
+  <svg class="wave w1" viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <path d="M0,60 C240,100 480,20 720,55 C960,90 1200,30 1440,60 L1440,120 L0,120 Z"/>
+  </svg>
+  <svg class="wave w2" viewBox="0 0 1440 120" preserveAspectRatio="none" style="bottom:10px">
+    <path d="M0,70 C200,30 400,90 720,50 C1000,15 1200,80 
