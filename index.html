@@ -28,90 +28,17 @@ footer{padding:40px 0 55px;color:#717a75;font-size:13px;text-align:center}.modal
 .weather-box{margin:18px 0;padding:16px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#f5f8ef,#eef7f4)}\n.weather-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.weather-temp{font:800 34px/1 "Space Grotesk"}.weather-desc{font-weight:700}.weather-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.weather-stat{background:#fffdf8;border:1px solid var(--line);border-radius:13px;padding:10px}.weather-stat b{display:block;font-size:14px}.weather-stat span{font-size:12px;color:var(--muted)}.weather-loading{color:var(--muted);font-size:13px}.water-box{margin:12px 0;padding:14px;border-radius:18px;background:#eaf7f2;border:1px solid #d4ebe3}.water-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.water-temp{font:800 28px/1 "Space Grotesk"}.water-form{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}.gallery{margin-top:22px}.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.gallery-item{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:#edf1eb}.gallery-item img{width:100%;height:100%;object-fit:cover}.gallery-remove{position:absolute;right:6px;top:6px;width:28px;height:28px;border-radius:9px;background:rgba(255,255,255,.92);font-weight:800}.upload-label{display:flex;align-items:center;justify-content:center;min-height:110px;border:1px dashed #b7c2ba;border-radius:14px;background:#f7f8f2;cursor:pointer;font-weight:700;color:#59645d}.upload-label input{display:none}.source-note{font-size:11px;color:var(--muted);margin-top:8px}@media(max-width:600px){.weather-grid{grid-template-columns:1fr 1fr}.gallery-grid{grid-template-columns:1fr 1fr}.water-form{grid-template-columns:1fr}}.mini-weather{margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:#45605a}.mini-weather span{background:#f4f7ee;border:1px solid #e1ead9;border-radius:999px;padding:5px 8px}.mini-weather b{color:#193b32}.weather-temp{font-size:34px;font-weight:800;letter-spacing:-1px}.water-temp{font-size:30px;font-weight:800;color:#193b32}.water-source{font-size:11px;color:#65716b;margin-top:5px}.water-official{background:#eef7f1;border-color:#cfe7d8}.water-user{background:#eaf7f2}.water-distance{font-size:11px;color:#65716b}\n
 .today-panel{margin:26px 0 34px;padding:22px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,#fffdf8 0%,#eef8f3 100%);box-shadow:0 12px 35px rgba(35,50,43,.06)}.today-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:stretch}.today-main{padding:8px}.today-main h2{font-family:"Space Grotesk";font-size:32px;letter-spacing:-.04em;margin:4px 0 8px}.today-main p{color:var(--muted);line-height:1.55}.today-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;cursor:pointer;text-align:left}.today-card h3{font-family:"Space Grotesk";font-size:25px;letter-spacing:-.03em;margin:5px 0}.today-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.today-chip{display:inline-flex;align-items:center;gap:5px;padding:7px 10px;border-radius:999px;background:#f3f6ef;border:1px solid #e0e8dd;font-size:12px;font-weight:700}.quick-filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.quick-filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 12px;font-weight:700;cursor:pointer}.quick-filters button:hover{transform:translateY(-1px)}@media(max-width:760px){.today-grid{grid-template-columns:1fr}.today-main h2{font-size:27px}}
 
-/* ===== KVÄLLSLÄGE: automatiskt från 19:00 ===== */
-body.night-mode{
-  --paper:#101817;
-  --paper2:#151f1d;
-  --ink:#f2f6ef;
-  --muted:#9eaca6;
-  --line:#2b3935;
-  --card:#18221f;
-  --lime:#c9ef59;
-  --lime2:#3a4b2c;
-  --aqua:#5cc7b6;
-  --aqua2:#173a35;
-  --shadow:0 20px 60px rgba(0,0,0,.28);
-  background:
-    radial-gradient(circle at 88% 7%,rgba(61,112,101,.24) 0,transparent 22rem),
-    radial-gradient(circle at 8% 38%,rgba(104,126,42,.13) 0,transparent 19rem),
-    var(--paper);
-  color:var(--ink);
-}
-body,body *{transition:background-color .45s ease,border-color .45s ease,color .35s ease,box-shadow .45s ease}
-body.night-mode .topbar nav a,
-body.night-mode .navbtn{color:#dce6e0}
-body.night-mode .navbtn:hover,
-body.night-mode nav a:hover{background:#1d2925}
-body.night-mode .hero-card,
-body.night-mode .stat,
-body.night-mode .place,
-body.night-mode .top-card,
-body.night-mode .panel,
-body.night-mode .today-card,
-body.night-mode .modal-card,
-body.night-mode .field,
-body.night-mode .empty,
-body.night-mode .btn-soft{background:#18221f;color:var(--ink)}
-body.night-mode .hero-card,
-body.night-mode .stat,
-body.night-mode .place,
-body.night-mode .top-card,
-body.night-mode .panel,
-body.night-mode .today-card,
-body.night-mode .modal-card{border-color:#2b3935}
-body.night-mode .hero-card{background:rgba(24,34,31,.82)}
-body.night-mode .field::placeholder{color:#78857f}
-body.night-mode .field:focus{border-color:#92b642;box-shadow:0 0 0 3px rgba(201,239,89,.12)}
-body.night-mode .mini span,
-body.night-mode .heart,
-body.night-mode .likebtn,
-body.night-mode .today-chip,
-body.night-mode .quick-filters button{background:#202c28;border-color:#34423d;color:#dce6e0}
-body.night-mode .heart.on{background:#46302d}
-body.night-mode .empty{border-color:#40504a}
-body.night-mode .score{background:#173a35;color:#bcebe2}
-body.night-mode .pill{background:#173a35;color:#c9eee7}
-body.night-mode .note{background:#202c28;color:#c7d2cc}
-body.night-mode .close{background:#26322e;color:#e8f0eb}
-body.night-mode .btn-primary{background:#f2f6ef;color:#101817;box-shadow:0 10px 24px rgba(0,0,0,.25)}
-body.night-mode .btn-soft{border-color:#35443f}
-body.night-mode .btn-lime{color:#14200f}
-body.night-mode .modal{background:rgba(3,8,7,.76)}
-body.night-mode .weather-box{background:linear-gradient(135deg,#182824,#183733);border-color:#2e4740}
-body.night-mode .weather-stat{background:#1d2925;border-color:#33423d}
-body.night-mode .water-box{background:#173a35;border-color:#28564f}
-body.night-mode .water-official{background:#183a31;border-color:#2d6252}
-body.night-mode .water-user{background:#173a35}
-body.night-mode .upload-label{background:#1d2925;border-color:#40504a;color:#cbd7d1}
-body.night-mode .gallery-item{background:#1d2925}
-body.night-mode .today-panel{background:linear-gradient(135deg,#17211e 0%,#17332f 100%);border-color:#2b3935}
-body.night-mode .quick-filters button{border-color:#34423d}
-body.night-mode #map{background:#14221f;border-color:#2b3935}
-body.night-mode #map .leaflet-tile-pane{filter:brightness(.62) saturate(.78)}
-body.night-mode .leaflet-popup-content-wrapper,
-body.night-mode .leaflet-popup-tip{background:#18221f;color:#f2f6ef}
-body.night-mode .popup p{color:#9eaca6}
-body.night-mode .popup button{background:#f2f6ef;color:#101817}
-body.night-mode .leaflet-control-zoom a,
-body.night-mode .leaflet-control-layers{background:#18221f;color:#f2f6ef;border-color:#35443f}
-body.night-mode .leaflet-control-attribution{background:rgba(16,24,23,.78);color:#9eaca6}
-body.night-mode .leaflet-control-attribution a{color:#b9d9d1}
-body.night-mode .marker-pin{border-color:#dce9e3;box-shadow:0 6px 18px rgba(0,0,0,.4)}
-body.night-mode footer{color:#7f8d87}
-.night-badge{position:fixed;right:16px;bottom:16px;z-index:9000;padding:9px 12px;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(17,27,24,.86);backdrop-filter:blur(12px);color:#e7f1ec;font-size:12px;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.2);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .3s ease,transform .3s ease}
-body.night-mode .night-badge{opacity:1;transform:translateY(0)}
-@media(max-width:600px){.night-badge{right:10px;bottom:10px}}
-
+/* AUTOMATISKT KVÄLLSLÄGE */
+body.evening-mode{--paper:#101815;--paper2:#151e1a;--ink:#f2f6ee;--muted:#aab7ae;--line:#2d3933;--card:#18221e;--shadow:0 18px 50px rgba(0,0,0,.28);background:radial-gradient(circle at 88% 7%,#16332d 0,transparent 22rem),radial-gradient(circle at 8% 38%,#29331a 0,transparent 19rem),var(--paper);transition:background .6s,color .6s}
+body.evening-mode .topbar,body.evening-mode .hero-card,body.evening-mode .stat,body.evening-mode .place,body.evening-mode .top-card,body.evening-mode .panel,body.evening-mode .modal-card,body.evening-mode .today-card,body.evening-mode .field,body.evening-mode .btn-soft{background:var(--card);color:var(--ink);border-color:var(--line)}
+body.evening-mode .btn-primary{background:#f2f6ee;color:#101815}
+body.evening-mode .note,body.evening-mode .weather-box,body.evening-mode .water-box,body.evening-mode .mini span,body.evening-mode .mini-weather span,body.evening-mode .today-chip{background:#202b26;color:var(--ink);border-color:var(--line)}
+body.evening-mode .leaflet-tile{filter:brightness(.62) saturate(.75) hue-rotate(8deg)}
+body.evening-mode .leaflet-control-zoom a,.evening-mode .leaflet-control-attribution{background:#18221e;color:#dce6df;border-color:#334139}
+body.evening-mode .leaflet-popup-content-wrapper,body.evening-mode .leaflet-popup-tip{background:#18221e;color:#f2f6ee}
+body.evening-mode .popup p{color:#aab7ae}
+#eveningBadge{position:fixed;right:16px;bottom:16px;z-index:10001;padding:9px 12px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(16,24,21,.9);color:#eef5ec;font-size:12px;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.2);opacity:0;transform:translateY(10px);pointer-events:none;transition:.35s}
+#eveningBadge.show{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
@@ -177,13 +104,19 @@ body.night-mode .night-badge{opacity:1;transform:translateY(0)}
 <footer>EDVINS BADVLOGG · byggd för dopp, upptäckter och dåliga idéer vid vattnet.</footer>
 <div class="modal" id="modal"><div class="modal-card"><button class="close" id="closeModal">×</button><div id="modalContent"></div></div></div>
 <div class="toast" id="toast"></div>
+<div id="eveningBadge">🌙 Kvällsläge · 19:00–06:59</div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-const SUPABASE_URL = '';
-const SUPABASE_KEY = '';
-const supabase = null;
+import { createClient } from '@supabase/supabase-js';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+  throw new Error('Supabase-miljövariabler saknas. Kontrollera att .env innehåller VITE_SUPABASE_URL och VITE_SUPABASE_PUBLISHABLE_KEY och starta om Vite.');
+}
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 let places = [
 {"id":1,"name":"Stureforsbadet","city":"Sturefors","lat":58.32431,"lng":15.72571,"rating":9,"note":"Fin stor gräsyta, bra bryggor och den passar bra till barnfamiljer! Ligger nära idrottsplatsen i Sturefors vilket gör att man kan planera in en fotbollsdag med bad. Det finns även en kiosk här som ägs av pizzerian.","mapsQuery":"Stureforsbadet, Östergötland"},
 {"id":2,"name":"Johannelundsbadet","city":"Linköping","lat":58.398332,"lng":15.661632,"rating":6,"note":"Det närmaste badet i Linköping för många som bor centralt. Här finns kiosk och två volleybollplaner. Hyfsat nära Johannelunds IP och Johannelunds centrum. Mindre bra med parkeringar.","mapsQuery":"Johannelundsbadet, Östergötland"},
@@ -264,7 +197,6 @@ let comments={}, favorites=read(KEY.favorites,[]), liked=read(KEY.liked,{}), pla
 let activeId=null, showOnlyFavorites=false, userLayer=null;
 
 async function hydrateSupabase(){
-  if(!supabase) return;
   const [{data:placeRows,error:placeError},{data:commentRows,error:commentError},{data:waterRows,error:waterError},{data:photoRows,error:photoError},{data:likeRows,error:likeError}]=await Promise.all([
     supabase.from('places').select('*').order('id',{ascending:true}),
     supabase.from('comments').select('*').order('created_at',{ascending:false}),
@@ -335,8 +267,8 @@ function render(){renderList();renderTop()}
 function toggleFavorite(id){favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];save();render();toast(favorites.includes(id)?'Sparad bland favoriter ❤️':'Borttagen från favoriter')}
 function openPlace(id, keepOpen=false){const p=places.find(x=>x.id===id);if(!p)return;activeId=id;const cs=comments[id]||[];const imgs=placeImages[id]||[];const wt=waterTemps[id];const likes=placeLikeCounts[id]||0;$('#modalContent').innerHTML=`<div class="modal-head"><div class="eyebrow">${esc(p.city||'Östergötland')} · badplats ${p.id}</div><h2>${esc(p.name)}</h2><div class="modal-meta">⭐ <b>${p.rating}/10</b> · ${cs.length} kommentar${cs.length===1?'':'er'} · ❤️ ${likes} likes</div></div><div class="note">${p.note?esc(p.note):'Ingen beskrivning ännu. Var först med att lämna en kommentar.'}</div><div class="modal-actions"><button class="btn ${favorites.includes(id)?'btn-lime':'btn-soft'}" onclick="toggleFavorite(${id});openPlace(${id},true)">${favorites.includes(id)?'♥ Sparad':'♡ Spara favorit'}</button><a class="btn btn-soft" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.mapsQuery)}">🗺️ Öppna i Google Maps</a>${p.lat&&p.lng?`<button class="btn btn-soft" onclick="focusPlace(${id})">📍 Visa på karta</button>`:''}</div><div class="modal-actions"><button class="btn ${placeLiked[id]?'btn-lime':'btn-soft'}" onclick="likePlace(${id})">❤️ ${placeLiked[id]?'Gillad':'Gilla'} · ${likes}</button></div><div class="weather-box" id="weatherBox"><div class="weather-head"><div><div class="eyebrow">Aktuellt väder</div><div class="weather-desc">Hämtar väder…</div></div><div class="weather-temp">—</div></div><div class="weather-loading">Live väder/prognos hämtas automatiskt för badplatsens koordinater.</div></div><div class="water-box" id="waterBox"><div class="water-row"><div><div class="eyebrow">Vattentemperatur</div><div class="water-temp">${wt?esc(wt.temp)+' °C':'Söker…'}</div><div class="water-source">${wt?(wt.source==='community'?'Senaste badarrapport':'Din senaste rapport'):'Letar efter närmaste SMHI-mätning'}</div></div><div class="hint">${wt?esc(wt.date):'—'}</div></div><div class="water-distance" id="waterDistance">Officiell mätning visas bara om en relevant station finns i närheten.</div><form class="water-form" onsubmit="addWaterTemp(event,${id})"><input class="field" name="temp" type="number" step="0.1" min="-5" max="45" placeholder="T.ex. 21,4" required><button class="btn btn-soft" type="submit">Spara egen temp</button></form><div class="hint">Din rapport sparas gemensamt i Supabase och kan visas för andra badare.</div></div><div class="gallery"><div class="section-head"><div><h3>Bilder från badare</h3><p class="hint">Lägg till egna bilder från badplatsen.</p></div></div><div class="gallery-grid">${imgs.map(src=>`<div class="gallery-item"><img src="${esc(src)}" alt="Bild från ${esc(p.name)}"></div>`).join('')}<label class="upload-label">＋ Lägg till bild<input type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="addImages(event,${id})"></label></div><div class="source-note">Väder: Open-Meteo. Prognosen är modellbaserad och kan skilja sig från lokala förhållanden.</div></div><div class="comments"><h3>Kommentarer</h3>${cs.length?cs.map((c,i)=>`<div class="comment"><div class="comment-head"><span class="comment-name">${esc(c.name||'Anonym badare')}</span><span class="comment-date">${esc(c.date||'')}</span></div><div class="comment-text">${esc(c.text)}</div><button class="likebtn" onclick="likeComment(${id},${i})">👍 ${c.likes||0}</button></div>`).join(''):'<p class="hint">Inga kommentarer ännu. Skriv den första!</p>'}<form class="comment-form" onsubmit="addComment(event,${id})"><div class="row"><input class="field" name="name" maxlength="30" placeholder="Ditt namn (valfritt)"><button class="btn btn-primary" type="submit">Publicera</button></div><textarea class="field" name="text" maxlength="500" required placeholder="Hur var badet? Botten, parkering, barnvänligt, vatten…"></textarea><div class="hint">Kommentaren sparas gemensamt så att andra badare kan se den.</div></form></div>`;$('#modal').classList.add('show');renderList();if(p.lat&&p.lng){loadWeather(p);loadWaterTemperature(p)}}
 function closeModal(){$('#modal').classList.remove('show')}
-async function addComment(e,id){if(!supabase){toast('Förhandsvisningen saknar Supabase-koppling. På riktiga sidan fungerar detta via Vite.');return;} e.preventDefault();const f=e.target,text=f.text.value.trim();if(!text)return;const name=f.name.value.trim()||'Anonym badare';const {error}=await supabase.from('comments').insert({place_id:id,name,text});if(error){toast('Kommentaren kunde inte sparas.');console.error(error);return}f.reset();await hydrateSupabase();render();openPlace(id,true);toast('Kommentaren publicerades 💬')}
-async function likeComment(id,i){if(!supabase){toast('Förhandsvisningen saknar Supabase-koppling. På riktiga sidan fungerar detta via Vite.');return;} const c=comments[id]?.[i];if(!c?.id)return;const next=(c.likes||0)+1;const {error}=await supabase.from('comments').update({likes:next}).eq('id',c.id);if(error){toast('Kunde inte gilla kommentaren.');return}await hydrateSupabase();openPlace(id,true);}
+async function addComment(e,id){e.preventDefault();const f=e.target,text=f.text.value.trim();if(!text)return;const name=f.name.value.trim()||'Anonym badare';const {error}=await supabase.from('comments').insert({place_id:id,name,text});if(error){toast('Kommentaren kunde inte sparas.');console.error(error);return}f.reset();await hydrateSupabase();render();openPlace(id,true);toast('Kommentaren publicerades 💬')}
+async function likeComment(id,i){const c=comments[id]?.[i];if(!c?.id)return;const next=(c.likes||0)+1;const {error}=await supabase.from('comments').update({likes:next}).eq('id',c.id);if(error){toast('Kunde inte gilla kommentaren.');return}await hydrateSupabase();openPlace(id,true);}
 function focusPlace(id){const p=places.find(x=>x.id===id);if(!p.lat)return;closeModal();map.flyTo([p.lat,p.lng],14,{duration:.8});setTimeout(()=>markerById[id]?.openPopup(),800)}
 function setTodayPick(p,label){window.todayPick=p.id;$('#todayName').textContent=p.name;$('#todayCity').textContent=p.city||'Östergötland';$('#todayMeta').innerHTML=`<span class="today-chip">⭐ ${p.rating}/10</span><span class="today-chip" id="todayWeather">🌡️ Hämtar väder…</span><span class="today-chip">💬 ${countComments(p.id)}</span>`;if(p.lat&&p.lng){loadSingleTodayWeather(p)}}
 async function loadSingleTodayWeather(p){const el=$('#todayWeather');if(!el)return;try{let d=weatherCache[p.id];if(!d){const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code&forecast_days=1&timezone=auto`;const r=await fetch(u);if(!r.ok)throw new Error();d=await r.json();weatherCache[p.id]=d}el.textContent=`🌡️ ${Math.round(d.current.temperature_2m)}°C · ${weatherText(d.current.weather_code)}`}catch(e){el.textContent='🌡️ Väder ej tillgängligt'}}
@@ -393,9 +325,9 @@ async function loadWaterTemperature(p){
   }
 }
 function distanceKm(a,b,c,d){const R=6371,rad=x=>x*Math.PI/180;const dLat=rad(c-a),dLon=rad(d-b);const x=Math.sin(dLat/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(x));}
-async function addWaterTemp(e,id){if(!supabase){toast('Förhandsvisningen saknar Supabase-koppling. På riktiga sidan fungerar detta via Vite.');return;} e.preventDefault();const v=parseFloat(e.target.temp.value.replace(',','.'));if(!Number.isFinite(v))return;const {error}=await supabase.from('water_reports').insert({place_id:id,temperature:v});if(error){toast('Vattenrapporten kunde inte sparas.');console.error(error);return}await hydrateSupabase();openPlace(id,true);toast('Vattentemperaturen publicerades 🌡️')}
-async function addImages(e,id){if(!supabase){toast('Förhandsvisningen saknar Supabase-koppling. På riktiga sidan fungerar detta via Vite.');return;} const files=[...e.target.files].slice(0,6);e.target.value='';if(!files.length)return;const allowed=['image/jpeg','image/png','image/webp'];for(const file of files){if(!allowed.includes(file.type)){toast('Använd JPG, PNG eller WebP.');continue}if(file.size>5*1024*1024){toast('Bilden är för stor. Max 5 MB.');continue}const safe=file.name.toLowerCase().replace(/[^a-z0-9._-]/g,'-');const path=`${id}/${crypto.randomUUID()}-${safe}`;const {error:uploadError}=await supabase.storage.from('badvlogg-images').upload(path,file,{contentType:file.type,upsert:false});if(uploadError){console.error(uploadError);toast('Bilden kunde inte laddas upp.');continue}const {data:urlData}=supabase.storage.from('badvlogg-images').getPublicUrl(path);const image_url=urlData.publicUrl;const {error:photoError}=await supabase.from('photos').insert({place_id:id,image_url,name:'Anonym badare'});if(photoError){console.error(photoError);toast('Bilden laddades upp men kunde inte sparas.');continue}placeImages[id]=(placeImages[id]||[]).concat(image_url);toast('Bild uppladdad 📸')}await hydrateSupabase();openPlace(id,true)}
-async function likePlace(id){if(!supabase){toast('Förhandsvisningen saknar Supabase-koppling. På riktiga sidan fungerar detta via Vite.');return;} if(placeLiked[id]){toast('Du har redan gillat den här badplatsen ❤️');return}const {error}=await supabase.from('place_likes').insert({place_id:id});if(error){console.error(error);toast('Kunde inte gilla badplatsen.');return}placeLiked[id]=true;save();await hydrateSupabase();openPlace(id,true);toast('Gillat ❤️')}
+async function addWaterTemp(e,id){e.preventDefault();const v=parseFloat(e.target.temp.value.replace(',','.'));if(!Number.isFinite(v))return;const {error}=await supabase.from('water_reports').insert({place_id:id,temperature:v});if(error){toast('Vattenrapporten kunde inte sparas.');console.error(error);return}await hydrateSupabase();openPlace(id,true);toast('Vattentemperaturen publicerades 🌡️')}
+async function addImages(e,id){const files=[...e.target.files].slice(0,6);e.target.value='';if(!files.length)return;const allowed=['image/jpeg','image/png','image/webp'];for(const file of files){if(!allowed.includes(file.type)){toast('Använd JPG, PNG eller WebP.');continue}if(file.size>5*1024*1024){toast('Bilden är för stor. Max 5 MB.');continue}const safe=file.name.toLowerCase().replace(/[^a-z0-9._-]/g,'-');const path=`${id}/${crypto.randomUUID()}-${safe}`;const {error:uploadError}=await supabase.storage.from('badvlogg-images').upload(path,file,{contentType:file.type,upsert:false});if(uploadError){console.error(uploadError);toast('Bilden kunde inte laddas upp.');continue}const {data:urlData}=supabase.storage.from('badvlogg-images').getPublicUrl(path);const image_url=urlData.publicUrl;const {error:photoError}=await supabase.from('photos').insert({place_id:id,image_url,name:'Anonym badare'});if(photoError){console.error(photoError);toast('Bilden laddades upp men kunde inte sparas.');continue}placeImages[id]=(placeImages[id]||[]).concat(image_url);toast('Bild uppladdad 📸')}await hydrateSupabase();openPlace(id,true)}
+async function likePlace(id){if(placeLiked[id]){toast('Du har redan gillat den här badplatsen ❤️');return}const {error}=await supabase.from('place_likes').insert({place_id:id});if(error){console.error(error);toast('Kunde inte gilla badplatsen.');return}placeLiked[id]=true;save();await hydrateSupabase();openPlace(id,true);toast('Gillat ❤️')}
 async function loadWeather(p){const box=document.querySelector('#weatherBox');if(!box||!p.lat||!p.lng)return;if(weatherCache[p.id]){renderWeather(box,weatherCache[p.id]);return}try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&forecast_days=1&timezone=auto`;const r=await fetch(u);if(!r.ok)throw new Error('weather');const d=await r.json();weatherCache[p.id]=d;renderWeather(box,d)}catch(e){box.querySelector('.weather-desc').textContent='Vädret kunde inte hämtas';box.querySelector('.weather-loading').textContent='Försök igen om en stund.'}}
 function weatherText(code){const m={0:'Klart',1:'Mest klart',2:'Delvis molnigt',3:'Mulet',45:'Dimma',48:'Dimma',51:'Lätt duggregn',53:'Duggregn',55:'Kraftigt duggregn',61:'Lätt regn',63:'Regn',65:'Kraftigt regn',71:'Lätt snö',73:'Snö',75:'Kraftigt snöfall',80:'Regnskurar',81:'Regnskurar',82:'Kraftiga regnskurar',95:'Åska',96:'Åska + hagel',99:'Åska + hagel'};return m[code]||'Varierande väder'}
 function weatherIcon(code){if(code===0)return '☀️';if(code<=3)return '🌤️';if(code>=95)return '⛈️';if(code>=80)return '🌦️';if(code>=70)return '❄️';if(code>=45)return '🌫️';return '🌧️'}
@@ -405,24 +337,22 @@ $('#locateBtn').onclick=()=>{if(!navigator.geolocation){toast('Din webbläsare s
 updateStats();render();showBestRated();setTimeout(()=>map.invalidateSize(),300);
 if (!placesError && remotePlaces && remotePlaces.length) toast(`☁️ ${places.length} badplatser hämtade från Supabase`);
 
-
-// Automatiskt kvällsläge från 19:00 till 06:59 enligt besökarens lokala klocka.
-function updateNightMode(){
-  const now=new Date();
-  const hour=now.getHours();
-  const isNight=hour>=19 || hour<7;
-  document.body.classList.toggle('night-mode',isNight);
-  const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.setAttribute('content',isNight?'#101817':'#f7f2e8');
-  let badge=document.querySelector('.night-badge');
-  if(!badge){badge=document.createElement('div');badge.className='night-badge';document.body.appendChild(badge)}
-  badge.textContent=isNight?'🌙 Kvällsläge':'☀️ Dagläge';
-}
-updateNightMode();
-setInterval(updateNightMode,60000);
-
 // Inline HTML handlers behöver dessa funktioner på window även i en ES-modul.
 Object.assign(window,{openPlace,toggleFavorite,focusPlace,addComment,likeComment,addWaterTemp,addImages,likePlace,randomPlace});
+
+function updateEveningMode(){
+  const hour=new Date().getHours();
+  const evening=hour>=19 || hour<7;
+  document.body.classList.toggle('evening-mode',evening);
+  document.documentElement.style.colorScheme=evening?'dark':'light';
+  const badge=document.querySelector('#eveningBadge');
+  if(badge) badge.classList.toggle('show',evening);
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute('content',evening?'#101815':'#f7f2e8');
+  if(typeof map!=='undefined' && map) setTimeout(()=>map.invalidateSize(),100);
+}
+updateEveningMode();
+setInterval(updateEveningMode,60000);
 </script>
 </body>
 </html>
