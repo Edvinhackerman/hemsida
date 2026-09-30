@@ -12,9 +12,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <style>
-:root{--paper:#f7f2e8;--paper2:#fffdf7;--ink:#17201d;--muted:#68726d;--lime:#c9ef59;--lime2:#e7f9a8;--aqua:#8de3d3;--aqua2:#d9f7f1;--line:#dfe4da;--card:#fffefa;--shadow:0 18px 50px rgba(31,47,39,.09);--radius:24px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 88% 7%,#dff7ef 0,transparent 22rem),radial-gradient(circle at 8% 38%,#eef8b9 0,transparent 19rem),var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}a{color:inherit}
-.wrap{width:min(1180px,calc(100% - 32px));margin:auto}.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-family:"Space Grotesk";font-weight:700;letter-spacing:-.05em;font-size:20px}button.brand{border:0;background:transparent;color:inherit;padding:0;cursor:pointer;text-align:left}.brand:focus-visible{outline:3px solid var(--lime);outline-offset:6px;border-radius:10px}.brand span{display:inline-block;background:var(--lime);padding:5px 9px;border-radius:9px;transform:rotate(-2deg)}nav{display:flex;gap:8px;align-items:center}nav a,.navbtn{padding:10px 13px;border-radius:12px;text-decoration:none;color:#3e4844;font-weight:600;background:transparent}.navbtn:hover,nav a:hover{background:#fff}.hero{padding:45px 0 28px;display:grid;grid-template-columns:1.25fr .75fr;gap:36px;align-items:end}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.16em;font-weight:700;color:#65716b;margin-bottom:12px}.hero h1{font-family:"Space Grotesk";font-size:clamp(50px,8vw,96px);line-height:.86;letter-spacing:-.075em;margin:0;max-width:760px}.hero h1 em{font-style:normal;background:var(--lime);padding:0 .12em;border-radius:.14em;box-decoration-break:clone;-webkit-box-decoration-break:clone}.hero p{font-size:18px;line-height:1.55;color:var(--muted);max-width:610px;margin:25px 0 0}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px}.btn{border-radius:15px;padding:13px 17px;font-weight:700;transition:.18s transform,.18s box-shadow}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--ink);color:white;box-shadow:0 10px 24px rgba(23,32,29,.14)}.btn-soft{background:white;border:1px solid var(--line)}.btn-lime{background:var(--lime)}.hero-card{background:rgba(255,255,255,.7);border:1px solid rgba(223,228,218,.9);border-radius:28px;padding:23px;box-shadow:var(--shadow)}.hero-card .big{font-family:"Space Grotesk";font-size:50px;letter-spacing:-.06em}.hero-card p{font-size:14px;margin:3px 0;color:var(--muted)}
+:root{--paper:#f7f2e8;--paper2:#fffdf7;--ink:#17201d;--muted:#68726d;--lime:var(--aqua);--lime2:var(--aqua2);--aqua:#8de3d3;--aqua2:#d9f7f1;--line:#dfe4da;--card:#fffefa;--shadow:0 18px 50px rgba(31,47,39,.09);--radius:24px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 88% 7%,#dff7ef 0,transparent 22rem),radial-gradient(circle at 8% 38%,#edf5f2 0,transparent 19rem),var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}a{color:inherit}
+.wrap{width:min(1180px,calc(100% - 32px));margin:auto}.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-family:"Space Grotesk";font-weight:700;letter-spacing:-.05em;font-size:20px}.brand span{display:inline-block;background:#cdece5;padding:5px 9px;border-radius:9px;transform:rotate(-2deg)}nav{display:flex;gap:8px;align-items:center}nav a,.navbtn{padding:10px 13px;border-radius:12px;text-decoration:none;color:#3e4844;font-weight:600;background:transparent}.navbtn:hover,nav a:hover{background:#fff}.hero{padding:45px 0 28px;display:grid;grid-template-columns:1.25fr .75fr;gap:36px;align-items:end}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.16em;font-weight:700;color:#65716b;margin-bottom:12px}.hero h1{font-family:"Space Grotesk";font-size:clamp(50px,8vw,96px);line-height:.86;letter-spacing:-.075em;margin:0;max-width:760px}.hero h1 em{font-style:normal;background:#dff3ee;padding:0 .12em;border-radius:.14em;box-decoration-break:clone;-webkit-box-decoration-break:clone}.hero p{font-size:18px;line-height:1.55;color:var(--muted);max-width:610px;margin:25px 0 0}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px}.btn{border-radius:15px;padding:13px 17px;font-weight:700;transition:.18s transform,.18s box-shadow}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--ink);color:white;box-shadow:0 10px 24px rgba(23,32,29,.14)}.btn-soft{background:white;border:1px solid var(--line)}.btn-lime{background:var(--aqua);color:#18302b}.hero-card{background:rgba(255,255,255,.7);border:1px solid rgba(223,228,218,.9);border-radius:28px;padding:23px;box-shadow:var(--shadow)}.hero-card .big{font-family:"Space Grotesk";font-size:50px;letter-spacing:-.06em}.hero-card p{font-size:14px;margin:3px 0;color:var(--muted)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0 30px}.stat{background:rgba(255,255,255,.65);border:1px solid var(--line);border-radius:18px;padding:18px}.stat b{font-family:"Space Grotesk";font-size:28px;display:block}.stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
 .section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:45px 0 17px}.section-head h2{font-family:"Space Grotesk";font-size:34px;letter-spacing:-.055em;margin:0}.section-head p{color:var(--muted);margin:5px 0 0}.controls{display:grid;grid-template-columns:1.6fr .75fr .75fr auto;gap:9px;margin-bottom:14px}.field{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 13px;outline:0;width:100%;color:var(--ink)}.field:focus{border-color:#a8c947;box-shadow:0 0 0 3px rgba(201,239,89,.25)}
 .content-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:15px;align-items:start}.list{display:grid;gap:10px;max-height:760px;overflow:auto;padding-right:3px}.place{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:17px;display:grid;grid-template-columns:1fr auto;gap:12px;transition:.18s;box-shadow:0 6px 18px rgba(31,47,39,.04)}.place:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.place.active{outline:3px solid var(--lime2)}.place h3{margin:0 0 4px;font-size:17px}.place .city{color:var(--muted);font-size:13px}.rating{font-weight:800;background:var(--lime);padding:5px 8px;border-radius:10px;white-space:nowrap;height:max-content}.mini{display:flex;gap:6px;align-items:center;margin-top:10px;color:#59635f;font-size:12px}.mini span{background:#f0f3ec;padding:5px 7px;border-radius:8px}.heart{background:#f3f5ef;border-radius:11px;padding:8px;font-size:18px}.heart.on{background:#ffe3de}.empty{padding:25px;background:white;border:1px dashed #cfd7ca;border-radius:18px;color:var(--muted)}
@@ -27,143 +27,216 @@ footer{padding:40px 0 55px;color:#717a75;font-size:13px;text-align:center}.modal
 @media(max-width:600px){.wrap{width:min(100% - 20px,1180px)}.topbar{height:62px}.topbar nav a:nth-child(-n+2){display:none}.hero{padding-top:35px}.hero h1{font-size:55px}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}.controls{grid-template-columns:1fr}.controls .search{grid-column:auto}.top-grid{grid-template-columns:1fr 1fr}.section-head{align-items:start;flex-direction:column}.place{padding:14px}.modal-card{padding:19px}.modal-head h2{font-size:30px}}
 .weather-box{margin:18px 0;padding:16px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#f5f8ef,#eef7f4)}\n.weather-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.weather-temp{font:800 34px/1 "Space Grotesk"}.weather-desc{font-weight:700}.weather-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.weather-stat{background:#fffdf8;border:1px solid var(--line);border-radius:13px;padding:10px}.weather-stat b{display:block;font-size:14px}.weather-stat span{font-size:12px;color:var(--muted)}.weather-loading{color:var(--muted);font-size:13px}.water-box{margin:12px 0;padding:14px;border-radius:18px;background:#eaf7f2;border:1px solid #d4ebe3}.water-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.water-temp{font:800 28px/1 "Space Grotesk"}.water-form{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}.gallery{margin-top:22px}.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.gallery-item{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:#edf1eb}.gallery-item img{width:100%;height:100%;object-fit:cover}.gallery-remove{position:absolute;right:6px;top:6px;width:28px;height:28px;border-radius:9px;background:rgba(255,255,255,.92);font-weight:800}.upload-label{display:flex;align-items:center;justify-content:center;min-height:110px;border:1px dashed #b7c2ba;border-radius:14px;background:#f7f8f2;cursor:pointer;font-weight:700;color:#59645d}.upload-label input{display:none}.source-note{font-size:11px;color:var(--muted);margin-top:8px}@media(max-width:600px){.weather-grid{grid-template-columns:1fr 1fr}.gallery-grid{grid-template-columns:1fr 1fr}.water-form{grid-template-columns:1fr}}.mini-weather{margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:#45605a}.mini-weather span{background:#f4f7ee;border:1px solid #e1ead9;border-radius:999px;padding:5px 8px}.mini-weather b{color:#193b32}.weather-temp{font-size:34px;font-weight:800;letter-spacing:-1px}.water-temp{font-size:30px;font-weight:800;color:#193b32}.water-source{font-size:11px;color:#65716b;margin-top:5px}.water-official{background:#eef7f1;border-color:#cfe7d8}.water-user{background:#eaf7f2}.water-distance{font-size:11px;color:#65716b}\n
 .today-panel{margin:26px 0 34px;padding:22px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,#fffdf8 0%,#eef8f3 100%);box-shadow:0 12px 35px rgba(35,50,43,.06)}.today-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:stretch}.today-main{padding:8px}.today-main h2{font-family:"Space Grotesk";font-size:32px;letter-spacing:-.04em;margin:4px 0 8px}.today-main p{color:var(--muted);line-height:1.55}.today-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;cursor:pointer;text-align:left}.today-card h3{font-family:"Space Grotesk";font-size:25px;letter-spacing:-.03em;margin:5px 0}.today-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.today-chip{display:inline-flex;align-items:center;gap:5px;padding:7px 10px;border-radius:999px;background:#f3f6ef;border:1px solid #e0e8dd;font-size:12px;font-weight:700}.quick-filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.quick-filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 12px;font-weight:700;cursor:pointer}.quick-filters button:hover{transform:translateY(-1px)}@media(max-width:760px){.today-grid{grid-template-columns:1fr}.today-main h2{font-size:27px}}
-
-/* HEMLIGT ADMINLÄGE */
-#adminBadge{position:fixed;left:16px;bottom:16px;z-index:10002;padding:9px 12px;border:1px solid rgba(201,239,89,.35);border-radius:999px;background:rgba(23,32,29,.94);color:#c9ef59;font-size:12px;font-weight:800;letter-spacing:.04em;box-shadow:0 10px 30px rgba(0,0,0,.22);opacity:0;transform:translateY(10px);pointer-events:none;transition:.35s}
-#adminBadge.show{opacity:1;transform:translateY(0)}
-body.admin-mode .brand{filter:drop-shadow(0 0 10px rgba(201,239,89,.35))}
-body.admin-mode .brand span{box-shadow:0 0 0 3px rgba(201,239,89,.16),0 0 22px rgba(201,239,89,.24)}
-.admin-tools{display:none;gap:6px;flex-wrap:wrap;margin-top:8px}
-body.admin-mode .admin-tools{display:flex}
-.admin-tool{border:1px solid #d9e1d9;background:#f4f7f1;color:#26332d;border-radius:10px;padding:6px 9px;font-size:12px;font-weight:800;cursor:pointer}
-.admin-tool.danger{background:#fff0ed;color:#9b3b2e;border-color:#f2c8c1}
-.admin-tool:hover{filter:brightness(.97)}
-.comment.admin-selected,.gallery-item.admin-selected{outline:2px solid #c9ef59;outline-offset:2px}
-.comment-admin{display:none;gap:6px;flex-wrap:wrap;margin-top:8px}
-body.admin-mode .comment-admin{display:flex}
-.admin-panel{display:none;margin:0 0 16px;padding:14px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,#f5f8ef,#eef7f4)}
-body.admin-mode .admin-panel{display:block}
-.admin-panel strong{font-family:"Space Grotesk"}
-body.evening-mode .admin-tool{background:#202b26;color:var(--ink);border-color:var(--line)}
-body.evening-mode .admin-tool.danger{background:#39231f;color:#ffd8d1;border-color:#70443b}
-body.evening-mode .admin-panel{background:#18221e;border-color:var(--line)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-
-/* AUTOMATISKT KVÄLLSLÄGE */
-body.evening-mode{--paper:#101815;--paper2:#151e1a;--ink:#f2f6ee;--muted:#aab7ae;--line:#2d3933;--card:#18221e;--shadow:0 18px 50px rgba(0,0,0,.28);background:radial-gradient(circle at 88% 7%,#16332d 0,transparent 22rem),radial-gradient(circle at 8% 38%,#29331a 0,transparent 19rem),var(--paper);transition:background .6s,color .6s}
-body.evening-mode .topbar,body.evening-mode .hero-card,body.evening-mode .stat,body.evening-mode .place,body.evening-mode .top-card,body.evening-mode .panel,body.evening-mode .modal-card,body.evening-mode .today-card,body.evening-mode .field,body.evening-mode .btn-soft{background:var(--card);color:var(--ink);border-color:var(--line)}
-body.evening-mode .btn-primary{background:#f2f6ee;color:#101815}
-body.evening-mode .note,body.evening-mode .weather-box,body.evening-mode .water-box,body.evening-mode .mini span,body.evening-mode .mini-weather span,body.evening-mode .today-chip{background:#202b26;color:var(--ink);border-color:var(--line)}
-body.evening-mode .leaflet-tile{filter:brightness(.62) saturate(.75) hue-rotate(8deg)}
-body.evening-mode .leaflet-control-zoom a,.evening-mode .leaflet-control-attribution{background:#18221e;color:#dce6df;border-color:#334139}
-body.evening-mode .leaflet-popup-content-wrapper,body.evening-mode .leaflet-popup-tip{background:#18221e;color:#f2f6ee}
-body.evening-mode .popup p{color:#aab7ae}
-#eveningBadge{position:fixed;right:16px;bottom:16px;z-index:10001;padding:9px 12px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(16,24,21,.9);color:#eef5ec;font-size:12px;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.2);opacity:0;transform:translateY(10px);pointer-events:none;transition:.35s}
-#eveningBadge.show{opacity:1;transform:translateY(0)}
-
-/* KVALLSLAGE - komplett kontrastfix for alla kontroller */
-body.evening-mode nav a,
-body.evening-mode .navbtn,
-body.evening-mode .eyebrow,
-body.evening-mode .rank,
-body.evening-mode .top-card .rank,
-body.evening-mode footer { color: var(--muted); }
-body.evening-mode nav a:hover,
-body.evening-mode .navbtn:hover { background: #202b26; color: var(--ink); }
-body.evening-mode .quick-filters button,
-body.evening-mode .likebtn,
-body.evening-mode .heart,
-body.evening-mode .close,
-body.evening-mode .gallery-remove {
-  background: #202b26;
-  color: var(--ink);
-  border-color: var(--line);
+</style>
+<style>
+/* BADVLOGG V7 – compact, clean UI */
+:root{
+  --paper:#f4f6f3;
+  --paper2:#fbfcfa;
+  --ink:#18221f;
+  --muted:#68736e;
+  --aqua:#56d9df;
+  --aqua2:#e2f4f0;
+  --line:#dfe6e2;
+  --card:#ffffff;
+  --shadow:0 10px 28px rgba(24,34,31,.07);
+  --radius:18px;
 }
-body.evening-mode .quick-filters button:hover,
-body.evening-mode .likebtn:hover,
-body.evening-mode .heart:hover,
-body.evening-mode .close:hover {
-  background: #293630;
+body{
+  background:radial-gradient(circle at 90% 4%,#e4f5f1 0,transparent 18rem),var(--paper);
 }
-body.evening-mode .field,
-body.evening-mode input,
-body.evening-mode textarea,
-body.evening-mode select {
-  background: #18221e;
-  color: var(--ink);
-  border-color: var(--line);
+.wrap{width:min(1160px,calc(100% - 28px))}
+.topbar{height:64px}
+.brand span{background:var(--aqua)}
+nav{gap:3px}
+nav a,.navbtn{padding:8px 10px;font-size:14px}
+.hero{padding:32px 0 20px;grid-template-columns:1.35fr .65fr;gap:24px}
+.hero h1{font-size:clamp(42px,6vw,70px)}
+.hero-card{border-radius:18px;padding:20px}
+.stats{margin:8px 0 24px}
+.stat{padding:14px 16px}
+.today-panel{margin:18px 0 28px;padding:18px;border-radius:20px;background:linear-gradient(135deg,#fbfcfa,#edf7f4);box-shadow:0 8px 24px rgba(35,50,43,.045)}
+.today-grid{grid-template-columns:1.15fr .85fr;gap:12px}
+.today-main{padding:6px}
+.today-main h2{font-size:28px}
+.today-card{border-radius:16px;padding:16px}
+.today-card h3{font-size:21px}
+.quick-filters{gap:6px;margin-top:12px}
+.quick-filters button{padding:7px 10px;font-size:13px;border-radius:10px}
+.top-grid{grid-template-columns:repeat(4,1fr);gap:10px}
+.top-card{padding:14px;min-height:126px;border-radius:16px}
+.top-card .rank{font-size:11px}
+.top-card h3{font-size:15px;margin:11px 0 5px}
+.top-card p{font-size:12px}
+.score{font-size:12px;margin-top:8px}
+.top-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.top-tag{
+  display:inline-flex;align-items:center;
+  padding:4px 7px;border-radius:7px;
+  background:#f2f5f3;border:1px solid #e1e7e4;
+  color:#52605a;font-size:11px;font-weight:700;
 }
-body.evening-mode input::placeholder,
-body.evening-mode textarea::placeholder { color: #829188; opacity: 1; }
-body.evening-mode .empty { background: var(--card); color: var(--muted); border-color: var(--line); }
-body.evening-mode .weather-stat { background: #18221e; color: var(--ink); border-color: var(--line); }
-body.evening-mode .weather-stat span,
-body.evening-mode .weather-loading,
-body.evening-mode .water-source,
-body.evening-mode .water-distance,
-body.evening-mode .hint,
-body.evening-mode .source-note { color: var(--muted); }
-body.evening-mode .upload-label { background: #18221e; color: var(--ink); border-color: #46554c; }
-body.evening-mode .mini-weather b,
-body.evening-mode .water-temp { color: #d8f4c2; }
-body.evening-mode .today-panel { background: linear-gradient(135deg,#17211d 0%,#1d302b 100%); border-color: var(--line); }
-body.evening-mode .today-main p,
-body.evening-mode .section-head p,
-body.evening-mode .hero p { color: var(--muted); }
-body.evening-mode .score,
-body.evening-mode .rating { color: #17201d; }
-body.evening-mode .leaflet-control-zoom a { color: #eef5ec; }
-body.evening-mode .leaflet-bar a:hover { background: #293630; }
-body.evening-mode .leaflet-control-attribution a { color: #b9d9ce; }
-body.evening-mode .modal { background: rgba(0,0,0,.68); }
-body.evening-mode .field,
-body.evening-mode .top-card,
-body.evening-mode .panel,
-body.evening-mode .modal-card,
-body.evening-mode .today-card,
-body.evening-mode .weather-stat,
-body.evening-mode .empty,
-body.evening-mode .upload-label,
-body.evening-mode .close,
-body.evening-mode .quick-filters button,
-body.evening-mode .likebtn,
-body.evening-mode .heart,
-body.evening-mode .admin-tool,
-body.evening-mode .admin-tool.danger {
-  background: var(--card);
-  color: var(--ink);
-  border-color: var(--line);
+.top-tag.accent{background:var(--aqua2);border-color:#cfeae4;color:#24685f}
+.content-grid{gap:14px}
+#map{min-height:520px;border-radius:18px}
+.place{border-radius:14px;padding:13px}
+.about{margin:34px 0;gap:12px}
+.panel{border-radius:18px;padding:20px}
+.panel h2{font-size:24px}
+.pill{padding:6px 9px;font-size:12px}
+@media(max-width:900px){
+  .top-grid{grid-template-columns:repeat(2,1fr)}
 }
-body.evening-mode .modal-card { background: var(--card); }
-body.evening-mode .weather-box { background: linear-gradient(135deg,#17211d,#1d302b); }
-body.evening-mode .today-panel { background: linear-gradient(135deg,#17211d 0%,#1d302b 100%); }
-body.evening-mode .today-chip { background: #202b26; color: var(--ink); border-color: var(--line); }
-body.evening-mode .btn-primary { background: #d8f4c2; color: #101815; border-color: #d8f4c2; }
-body.evening-mode .btn-soft { background: #202b26; color: var(--ink); border-color: var(--line); }
-body.evening-mode .admin-tool.danger { background: #382521; color: #ffc5ba; border-color: #674038; }
-body.evening-mode .admin-tool:hover { background: #293630; color: var(--ink); }
-body.evening-mode .today-card:hover,
-body.evening-mode .top-card:hover,
-body.evening-mode .panel:hover { border-color: #46554c; }
-
-
+@media(max-width:760px){
+  .wrap{width:min(100% - 20px,1160px)}
+  .topbar{height:auto;min-height:60px;flex-wrap:wrap;padding:8px 0}
+  nav{width:100%;overflow:auto}
+  .hero{grid-template-columns:1fr;padding-top:24px}
+  .today-grid{grid-template-columns:1fr}
+  .top-grid{grid-template-columns:1fr 1fr}
+  #map{min-height:420px}
+}
+@media(max-width:480px){
+  .top-grid{grid-template-columns:1fr}
+}
+</style>
+<style id="theme-v7">
+html{color-scheme:light}.theme-control{border:1px solid var(--line);background:var(--card);min-width:78px}.theme-control:hover{background:var(--aqua2)}
+body.dark-mode{--paper:#0f1715;--paper2:#151f1c;--ink:#f2f7f5;--muted:#a9b8b2;--line:#2a3934;--card:#17221f;--aqua:#56d9df;--aqua2:#dff8f8;--shadow:0 12px 32px rgba(0,0,0,.25);background:var(--paper);background-image:radial-gradient(circle at 80% 0%,rgba(86,217,223,.12),transparent 360px);color:var(--ink)}
+body.dark-mode nav a,body.dark-mode .navbtn{color:#e8f1ee}body.dark-mode nav a:hover,body.dark-mode .navbtn:hover{background:#20302b}
+body.dark-mode .hero-card,body.dark-mode .today-panel,body.dark-mode .top-card,body.dark-mode .panel,body.dark-mode .place,body.dark-mode .btn-soft,body.dark-mode input,body.dark-mode select,body.dark-mode textarea{background:var(--card);color:var(--ink);border-color:var(--line)}
+body.dark-mode .top-tag{background:#202d29;border-color:#30423c;color:#d4e0db}body.dark-mode .top-tag.accent{background:#173a34;border-color:#2b6258;color:#a9eee2}
+body.dark-mode .today-panel{background:linear-gradient(135deg,#15211e,#10201c)}body.dark-mode .btn-primary{background:#f0f6f3;color:#15201c}body.dark-mode .btn-lime{background:#79d8c8;color:#10201d}body.dark-mode .hero h1 em{background:#244d45;color:#eaf7f3}body.dark-mode .brand span{background:#244d45;color:#eaf7f3}
+body.dark-mode #map{filter:none}body.dark-mode .leaflet-tile{filter:brightness(.68) saturate(.78) contrast(1.08)}body.dark-mode .leaflet-control-zoom a{background:#17221f;color:#e8f1ee;border-color:#2a3934}
+@media(prefers-color-scheme:dark){html{color-scheme:dark}}
+</style>
+<style id="reference-style">
+:root{
+  --paper:#071417;--paper2:#0d2024;--ink:#f4fbfa;--muted:#b6ccca;
+  --aqua:#56d9df;--aqua2:#173b40;--line:#24484d;--card:#0d2024;
+  --shadow:0 16px 38px rgba(0,0,0,.20);--radius:22px;
+}
+body{
+  background:#061316;
+  color:var(--ink);
+  background-image:radial-gradient(circle at 58% 18%,rgba(86,217,223,.10),transparent 420px);
+}
+.wrap{width:min(1180px,calc(100% - 50px))}
+.topbar{height:82px}
+.brand{color:#fff}
+.brand span{background:transparent;color:#fff;padding:0;border-radius:0}
+nav a,.navbtn{color:#a9bfbd}
+nav a:hover,.navbtn:hover{background:#102b2f;color:#fff}
+nav a.active{background:#102b2f;color:#56d9df}
+.theme-control{border:1px solid #24484d!important;background:#0b2024!important;color:#dceceb!important;border-radius:999px!important}
+.hero{padding:17px 0 25px;grid-template-columns:1.65fr .95fr;gap:22px;align-items:stretch}
+.hero>div{
+  background:linear-gradient(135deg,#0b292d,#164f55);
+  border:1px solid #28646b;border-radius:22px;padding:34px;box-shadow:var(--shadow)
+}
+.eyebrow{color:#56d9df}
+.hero h1{font-size:clamp(40px,5vw,58px);line-height:.98;color:#f6fbfa}
+.hero h1 em{background:transparent;color:#56d9df;padding:0}
+.hero p{color:#d0e1df;font-size:16px;margin-top:18px}
+.hero-actions{margin-top:22px}
+.btn{border-radius:999px;padding:12px 16px}
+.btn-primary,.btn-lime,.btn-soft{
+  background:#1b4b50!important;color:#fff!important;border:1px solid #326a70!important;
+  box-shadow:none
+}
+.btn-soft:hover,.btn-primary:hover,.btn-lime:hover{background:#245d63!important}
+.hero-card{
+  background:linear-gradient(150deg,#0d2327,#0a1b1f);
+  border:1px solid #24484d;border-radius:22px;padding:27px;box-shadow:var(--shadow)
+}
+.hero-card .big{font-size:32px;color:#fff;margin:10px 0 3px}
+.hero-card p{color:#a9c1be;margin:0 0 20px}
+.hero-card .btn{display:block;margin-top:20px;text-align:center;background:#16383d!important}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.hero-tags span{
+  background:#102d31;border:1px solid #23484c;color:#d8e9e7;
+  border-radius:999px;padding:9px 12px;font-size:12px;font-weight:700
+}
+.stats{display:none}
+.section-head{margin:30px 0 15px}
+.section-head h2{color:#fff}
+.section-head p{color:#9fb5b2}
+.today-panel,.top-card,.panel,.place,.map-card,.map-side{
+  background:#0d2024!important;border-color:#24484d!important;color:#eef7f5
+}
+.today-main{color:#eef7f5}
+.today-main p{color:#b6ccca}
+.quick-filters button,.today-chip{
+  background:#123338!important;border-color:#28535a!important;color:#d8e9e7!important
+}
+.top-grid .place,.place{box-shadow:0 10px 25px rgba(0,0,0,.16)}
+input,select,textarea{background:#0d2024!important;color:#eef7f5!important;border-color:#24484d!important}
+#map{background:#0a171a}
+.leaflet-control-zoom a{background:#0d2024!important;color:#eef7f5!important;border-color:#24484d!important}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#0d2024;color:#eef7f5}
+body.light-mode{
+  --paper:#f3f5f3;--paper2:#f8faf9;--ink:#17211f;--muted:#72807c;
+  --aqua:#56d9df;--aqua2:#dff8f8;--line:#dce5e2;--card:#fff;
+  background:#f3f5f3;background-image:radial-gradient(circle at 80% 0%,rgba(86,217,223,.12),transparent 360px)
+}
+body.light-mode .brand{color:#17211f}
+body.light-mode nav a,.light-mode .navbtn{color:#687875}
+body.light-mode nav a.active{background:#e7f8f9;color:#20aeb5}
+body.light-mode .hero>div{background:linear-gradient(135deg,#0b292d,#164f55)}
+body.light-mode .hero-card{background:#fff;color:#17211f}
+body.light-mode .hero-card .big{color:#17211f}
+body.light-mode .hero-card p{color:#687875}
+body.light-mode .section-head h2{color:#17211f}
+@media(max-width:800px){
+  .wrap{width:calc(100% - 22px)}
+  .hero{grid-template-columns:1fr}
+  .hero>div{padding:26px}
+  .hero h1{font-size:42px}
+  .hero-card{padding:23px}
+}
 </style>
 </head>
 <body>
 <header class="wrap topbar">
-  <button class="brand" id="adminLogo" type="button" aria-label="EDVINS BADVLOGG"> <span>EDVINS</span> BADVLOGG</button>
-  <nav><a href="#idag">Idag</a><a href="#karta">Kartan</a><a href="#topplista">Topplista</a><a href="#om">Om sidan</a></nav>
+  <div class="brand"><span>EDVINS</span> BADVLOGG</div>
+  <nav><a href="#idag">Idag</a><a href="#karta">Kartan</a><a href="#topplista">Topplista</a><a href="#om">Om sidan</a><button class="navbtn theme-control" id="themeBtn" type="button" aria-label="Färgläge">Tema</button></nav>
 </header>
-<div id="adminBadge" aria-live="polite">🔐 ADMINLÄGE</div>
+<style>
+#adminPanel{display:none;position:fixed;right:18px;bottom:18px;z-index:9999;width:min(360px,calc(100vw - 36px));background:#0b2228;color:#eefefe;border:1px solid #28545b;border-radius:18px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+#adminPanel.show{display:block}
+#adminPanel h3{margin:0 0 4px;font:700 22px/1.1 "Space Grotesk",sans-serif}
+#adminPanel p{margin:0 0 14px;color:#a9c5c5;font-size:12px}
+.admin-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.admin-stat{background:#102f35;border:1px solid #21484e;border-radius:13px;padding:13px}
+.admin-stat b{display:block;font:700 26px/1 "Space Grotesk",sans-serif;color:#56d9df}
+.admin-stat span{display:block;margin-top:5px;color:#b5cdcc;font-size:11px}
+#adminRefresh{margin-top:12px;width:100%;padding:10px 12px;border-radius:11px;background:#56d9df;color:#082024;font-weight:800}
+#adminClose{position:absolute;right:12px;top:10px;background:transparent;color:#9eb8b8;font-size:20px}
+.admin-badge{display:none;position:fixed;left:12px;bottom:12px;z-index:9998;background:#56d9df;color:#072126;padding:7px 10px;border-radius:9px;font:800 11px/1 "DM Sans",sans-serif}
+.admin-badge.show{display:block}
+</style>
+
+<div id="adminPanel">
+  <button id="adminClose" type="button" aria-label="Stäng admin">×</button>
+  <h3>Admin</h3>
+  <p>Besöksstatistik från Supabase</p>
+  <div class="admin-stats">
+    <div class="admin-stat"><b id="adminUnique">–</b><span>unika besökare</span></div>
+    <div class="admin-stat"><b id="adminVisits">–</b><span>totala besök</span></div>
+  </div>
+  <button id="adminRefresh" type="button">Uppdatera statistik</button>
+</div>
+<div class="admin-badge" id="adminBadge">ADMIN</div>
+
 <main class="wrap">
 <section class="hero">
   <div>
-    <div class="eyebrow">Östergötland · 49 platser</div>
-    <h1>Hitta ditt <em>bad.</em></h1>
-    <p>En enkel badkarta för dig som vill hitta nästa brygga, strand, sjö eller hemliga doppställe. Klicka runt, spara favoriter och lämna en kommentar.</p>
-    <div class="hero-actions"><button class="btn btn-primary" id="randomBtn">🎲 Överraska mig</button><button class="btn btn-lime" id="locateBtn">📍 Nära mig</button><a class="btn btn-soft" href="#karta">🗺️ Öppna kartan</a></div>
+    <div class="eyebrow">≋ &nbsp; DAGENS BADTIPS</div>
+    <h1>Var ska du <em>bada</em> idag?</h1>
+    <p>Se ett snabbt förslag från dina badplatser och få väder direkt på platsen. Du kan sedan öppna kartan och välja själv.</p>
+    <div class="hero-actions"><button class="btn btn-soft" id="randomBtn">★ &nbsp;Populära</button><button class="btn btn-soft" id="locateBtn">♨ &nbsp;Vattentemp</button><button class="btn btn-soft" onclick="randomPlace()">◈ &nbsp;Slumpa</button><a class="btn btn-soft" href="#karta">▣ &nbsp;Visa på karta</a></div>
   </div>
-  <aside class="hero-card"><div class="eyebrow">Just nu</div><div class="big" id="heroFavoriteCount">0</div><p>platser sparade som favoriter i din webbläsare.</p></aside>
+  <aside class="hero-card"><div class="eyebrow">✦ &nbsp; DAGENS FÖRSLAG</div><div class="big" id="todayNameHero">Bergs slussar</div><p id="todayCityHero">Berg / Linköping</p><div class="hero-tags"><span>★ 10/10</span><span>♨ 14°C · Mulet</span><span>▱ 1</span></div><a class="btn btn-soft" href="#karta">▣ &nbsp; Visa på karta &nbsp;›</a></aside>
 </section>
 <section class="stats">
   <div class="stat"><b id="statPlaces">49</b><span>badplatser</span></div><div class="stat"><b id="statMapped">0</b><span>på kartan</span></div><div class="stat"><b id="statComments">0</b><span>kommentarer</span></div>
@@ -176,10 +249,10 @@ body.evening-mode .panel:hover { border-color: #46554c; }
       <h2>Var ska du bada idag?</h2>
       <p>Se ett snabbt förslag från dina badplatser och få väder direkt på platsen. Du kan sedan öppna kartan och välja själv.</p>
       <div class="quick-filters">
-        <button onclick="showBestRated()">⭐ Högst betyg</button>
-        <button onclick="showWarmestWeather()">🌡️ Varmast väder</button>
-        <button onclick="randomPlace()">🎲 Överraska mig</button>
-        <button onclick="document.querySelector('#karta').scrollIntoView({behavior:'smooth'})">🗺️ Utforska kartan</button>
+        <button onclick="showBestRated()">Högst betyg</button>
+        <button onclick="showWarmestWeather()">Varmast väder</button>
+        <button onclick="randomPlace()">Överraska mig</button>
+        <button onclick="document.querySelector('#karta').scrollIntoView({behavior:'smooth'})">Utforska kartan</button>
       </div>
     </div>
     <button class="today-card" id="todayCard" onclick="openPlace(window.todayPick||1)">
@@ -192,7 +265,7 @@ body.evening-mode .panel:hover { border-color: #46554c; }
 </section>
 
 <section id="topplista">
-  <div class="section-head"><div><h2>Börja här.</h2><p>Några av platserna med högst betyg i listan.</p></div><button class="btn btn-soft" id="favoritesBtn">❤️ Mina favoriter</button></div>
+  <div class="section-head"><div><h2>Börja här.</h2><p>Några av platserna med högst betyg i listan.</p></div><button class="btn btn-soft" id="favoritesBtn">Mina favoriter</button></div>
   <div class="top-grid" id="topGrid"></div>
 </section>
 <section id="karta">
@@ -213,7 +286,6 @@ body.evening-mode .panel:hover { border-color: #46554c; }
 <footer>EDVINS BADVLOGG · byggd för dopp, upptäckter och dåliga idéer vid vattnet.</footer>
 <div class="modal" id="modal"><div class="modal-card"><button class="close" id="closeModal">×</button><div id="modalContent"></div></div></div>
 <div class="toast" id="toast"></div>
-<div id="eveningBadge">🌙 Kvällsläge · 19:00–06:59</div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script type="module">
@@ -300,20 +372,16 @@ if (placesError) {
   console.log(`Laddade ${places.length} badplatser från Supabase.`);
 }
 
-const KEY={favorites:'badvlogg-favorites-v2',liked:'badvlogg-liked-v2',placeLiked:'badvlogg-place-liked-v1',commentCooldown:'badvlogg-comment-cooldown-v1'};
+const KEY={favorites:'badvlogg-favorites-v2',liked:'badvlogg-liked-v2',images:'badvlogg-images-v1'};
 const read=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
-let comments={}, favorites=read(KEY.favorites,[]), liked=read(KEY.liked,{}), placeLiked=read(KEY.placeLiked,{}), placeImages={}, placeLikeCounts={}, waterTemps={}, weatherCache={};
-const COMMENT_COOLDOWN_MS=5*60*1000;
-let commentCooldownUntil=Number(localStorage.getItem(KEY.commentCooldown)||0);
+let comments={}, favorites=read(KEY.favorites,[]), liked=read(KEY.liked,{}), placeImages=read(KEY.images,{}), waterTemps={}, weatherCache={}, weatherLastUpdated=0;
 let activeId=null, showOnlyFavorites=false, userLayer=null;
 
 async function hydrateSupabase(){
-  const [{data:placeRows,error:placeError},{data:commentRows,error:commentError},{data:waterRows,error:waterError},{data:photoRows,error:photoError},{data:likeRows,error:likeError}]=await Promise.all([
+  const [{data:placeRows,error:placeError},{data:commentRows,error:commentError},{data:waterRows,error:waterError}]=await Promise.all([
     supabase.from('places').select('*').order('id',{ascending:true}),
     supabase.from('comments').select('*').order('created_at',{ascending:false}),
-    supabase.from('water_reports').select('*').order('created_at',{ascending:false}),
-    supabase.from('photos').select('*').order('created_at',{ascending:true}),
-    supabase.from('place_likes').select('place_id')
+    supabase.from('water_reports').select('*').order('created_at',{ascending:false})
   ]);
   if(placeError){
     console.warn('Supabase places:',placeError.message);
@@ -332,22 +400,10 @@ async function hydrateSupabase(){
   }
   if(commentError) console.warn('Supabase comments:',commentError.message);
   if(waterError) console.warn('Supabase water reports:',waterError.message);
-  if(photoError) console.warn('Supabase photos:',photoError.message);
-  if(likeError) console.warn('Supabase place likes:',likeError.message);
   comments={};
   (commentRows||[]).forEach(row=>{
     const id=String(row.place_id);
     (comments[id] ||= []).push({id:row.id,name:row.name||'Anonym badare',text:row.text,date:row.created_at?new Date(row.created_at).toLocaleDateString('sv-SE'):'' ,likes:row.likes||0});
-  });
-  placeImages={};
-  (photoRows||[]).forEach(row=>{
-    const id=String(row.place_id);
-    (placeImages[id] ||= []).push({id:row.id,url:row.image_url,name:row.name||'Anonym badare'});
-  });
-  placeLikeCounts={};
-  (likeRows||[]).forEach(row=>{
-    const id=String(row.place_id);
-    placeLikeCounts[id]=(placeLikeCounts[id]||0)+1;
   });
   waterTemps={};
   (waterRows||[]).forEach(row=>{
@@ -359,7 +415,7 @@ await hydrateSupabase();
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const countComments=id=>(comments[id]||[]).length;
-function save(){localStorage.setItem(KEY.favorites,JSON.stringify(favorites));localStorage.setItem(KEY.liked,JSON.stringify(liked));localStorage.setItem(KEY.placeLiked,JSON.stringify(placeLiked));updateStats()}
+function save(){localStorage.setItem(KEY.favorites,JSON.stringify(favorites));localStorage.setItem(KEY.liked,JSON.stringify(liked));localStorage.setItem(KEY.images,JSON.stringify(placeImages));updateStats()}
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),2200)}
 function updateStats(){$('#statPlaces').textContent=places.length;$('#statMapped').textContent=places.filter(p=>p.lat&&p.lng).length;$('#statComments').textContent=Object.values(comments).reduce((a,x)=>a+x.length,0);$('#heroFavoriteCount').textContent=favorites.length}
 
@@ -371,33 +427,21 @@ function icon(p){return L.divIcon({className:'',html:`<div class="marker-pin"><s
 places.filter(p=>p.lat&&p.lng).forEach(p=>{const m=L.marker([p.lat,p.lng],{icon:icon(p)});m.bindPopup(`<div class="popup"><h4>${esc(p.name)}</h4><p>${esc(p.city||'Östergötland')} · ⭐ ${p.rating}/10</p><button onclick="openPlace(${p.id})">Öppna badplats</button></div>`);m.on('click',()=>{activeId=p.id;renderList()});markerById[p.id]=m;cluster.addLayer(m)});
 
 function filtered(){const q=$('#search').value.trim().toLowerCase(), min=+$('#ratingFilter').value, sort=$('#sort').value;let arr=places.filter(p=>(!q||`${p.name} ${p.city} ${p.note}`.toLowerCase().includes(q))&&p.rating>=min&&(showOnlyFavorites?favorites.includes(p.id):true));if(sort==='name')arr.sort((a,b)=>a.name.localeCompare(b.name,'sv'));if(sort==='comments')arr.sort((a,b)=>countComments(b.id)-countComments(a.id)||b.rating-a.rating);if(sort==='rating')arr.sort((a,b)=>b.rating-a.rating||a.name.localeCompare(b.name,'sv'));return arr}
-function renderTop(){const arr=[...places].sort((a,b)=>b.rating-a.rating||a.name.localeCompare(b.name,'sv')).slice(0,4);$('#topGrid').innerHTML=arr.map((p,i)=>`<button class="top-card" onclick="openPlace(${p.id})"><div class="rank">0${i+1} · ${esc(p.city||'Östergötland')}</div><h3>${esc(p.name)}</h3><p>${countComments(p.id)} kommentar${countComments(p.id)===1?'':'er'}</p><span class="score">⭐ ${p.rating}/10</span></button>`).join('')}
+function renderTop(){const arr=[...places].sort((a,b)=>b.rating-a.rating||a.name.localeCompare(b.name,'sv')).slice(0,4);$('#topGrid').innerHTML=arr.map((p,i)=>{const c=countComments(p.id);return `<button class="top-card" onclick="openPlace(${p.id})"><div class="rank">0${i+1} · ${esc(p.city||'Östergötland')}</div><h3>${esc(p.name)}</h3><div class="top-tags"><span class="top-tag accent">${p.rating}/10</span><span class="top-tag">${c} kommentar${c===1?'':'er'}</span><span class="top-tag">${p.lat&&p.lng?'På kartan':'Ej kartlagd'}</span></div></button>`}).join('')}
 function renderList(){const arr=filtered();$('#placeList').innerHTML=arr.length?arr.map(p=>`<article class="place ${activeId===p.id?'active':''}" data-id="${p.id}"><div onclick="openPlace(${p.id})"><h3>${esc(p.name)}</h3><div class="city">${esc(p.city||'Östergötland')}</div><div class="mini"><span>⭐ ${p.rating}/10</span><span>💬 ${countComments(p.id)}</span>${p.lat&&p.lng?'<span>📍 karta</span>':'<span>🧭 ej kartlagd</span>'}</div><div class="mini-weather" id="miniWeather-${p.id}">${p.lat&&p.lng?'<span>🌡️ Hämtar temperatur…</span>':'<span>🌡️ Ingen väderdata</span>'}${waterTemps[p.id]?`<span>💧 <b>${esc(waterTemps[p.id].temp)}°C</b></span>`:''}</div></div><button class="heart ${favorites.includes(p.id)?'on':''}" title="Favorit" onclick="toggleFavorite(${p.id})">${favorites.includes(p.id)?'♥':'♡'}</button></article>`).join(''): '<div class="empty">Inga badplatser matchar din sökning.</div>';updateStats();loadCardWeather(arr)}
-async function loadCardWeather(arr){const targets=arr.filter(p=>p.lat&&p.lng);await Promise.all(targets.map(async p=>{const el=document.querySelector(`#miniWeather-${p.id}`);if(!el)return;try{let d=weatherCache[p.id];if(!d){const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code&forecast_days=1&timezone=auto`;const r=await fetch(u);if(!r.ok)throw new Error();d=await r.json();weatherCache[p.id]=d}const c=d.current;el.innerHTML=`<span>🌡️ <b>${Math.round(c.temperature_2m)}°C</b></span><span>${weatherIcon(c.weather_code)} ${weatherText(c.weather_code)}</span>`}catch(e){el.innerHTML='<span>🌡️ Väder ej tillgängligt</span>'}}))}
+async function loadCardWeather(arr){const targets=arr.filter(p=>p.lat&&p.lng);await Promise.all(targets.map(async p=>{const el=document.querySelector(`#miniWeather-${p.id}`);if(!el)return;try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m,wind_gusts_10m&forecast_days=1&timezone=auto&_=${Date.now()}`;const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error();const d=await r.json();weatherCache[p.id]=d;weatherLastUpdated=Date.now();const c=d.current;el.innerHTML=`<span>🌡️ <b>${Math.round(c.temperature_2m)}°C</b></span><span>${weatherIcon(c.weather_code)} ${weatherText(c.weather_code)}</span><span>💨 ${Math.round(c.wind_speed_10m)} km/h</span>`}catch(e){el.innerHTML='<span>🌡️ Väder ej tillgängligt</span>'}}))}
 function render(){renderList();renderTop()}
 function toggleFavorite(id){favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];save();render();toast(favorites.includes(id)?'Sparad bland favoriter ❤️':'Borttagen från favoriter')}
-function commentCooldownRemaining(){return Math.max(0,commentCooldownUntil-Date.now())}
-function commentCooldownLabel(){const left=commentCooldownRemaining();if(!left)return '';const sec=Math.ceil(left/1000),m=Math.floor(sec/60),s=sec%60;return `Du kan kommentera igen om ${m}:${String(s).padStart(2,'0')}.`}
-function photoStoragePath(url){try{const marker='/storage/v1/object/public/badvlogg-images/';const i=url.indexOf(marker);return i>=0?decodeURIComponent(url.slice(i+marker.length)):null}catch{return null}}
-function adminToolsForPhoto(photo){if(!adminMode)return '';return `<div class="admin-tools"><button class="admin-tool danger" onclick="adminDeletePhoto(${Number(photo.id)},${JSON.stringify(photo.url)},${Number(activeId)})">🗑️ Ta bort bild</button></div>`}
-function adminToolsForComment(c,id){if(!adminMode)return '';return `<div class="comment-admin"><button class="admin-tool" onclick="adminEditComment(${Number(c.id)},${Number(id)})">✏️ Redigera</button><button class="admin-tool danger" onclick="adminDeleteComment(${Number(c.id)},${Number(id)})">🗑️ Ta bort</button><button class="admin-tool danger" onclick="adminResetCommentLikes(${Number(c.id)},${Number(id)})">👍 0 likes</button></div>`}
-function openPlace(id, keepOpen=false){const p=places.find(x=>x.id===id);if(!p)return;activeId=id;const cs=comments[id]||[];const imgs=placeImages[id]||[];const wt=waterTemps[id];const likes=placeLikeCounts[id]||0;const cooldown=commentCooldownRemaining()>0;$('#modalContent').innerHTML=`<div class="modal-head"><div class="eyebrow">${esc(p.city||'Östergötland')} · badplats ${p.id}</div><h2>${esc(p.name)}</h2><div class="modal-meta">⭐ <b>${p.rating}/10</b> · ${cs.length} kommentar${cs.length===1?'':'er'} · ❤️ ${likes} likes</div></div><div class="note">${p.note?esc(p.note):'Ingen beskrivning ännu. Var först med att lämna en kommentar.'}</div>${adminMode?`<div class="admin-panel"><strong>🔐 Admin</strong><div class="hint">Här kan du redigera/ta bort kommentarer och bilder samt nollställa likes för den här badplatsen.</div><div class="admin-tools"><button class="admin-tool danger" onclick="adminResetPlaceLikes(${id})">❤️ Nollställ ${likes} likes</button></div></div>`:''}<div class="modal-actions"><button class="btn ${favorites.includes(id)?'btn-lime':'btn-soft'}" onclick="toggleFavorite(${id});openPlace(${id},true)">${favorites.includes(id)?'♥ Sparad':'♡ Spara favorit'}</button><a class="btn btn-soft" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.mapsQuery)}">🗺️ Öppna i Google Maps</a>${p.lat&&p.lng?`<button class="btn btn-soft" onclick="focusPlace(${id})">📍 Visa på karta</button>`:''}</div><div class="modal-actions"><button class="btn ${placeLiked[id]?'btn-lime':'btn-soft'}" onclick="likePlace(${id})">❤️ ${placeLiked[id]?'Gillad':'Gilla'} · ${likes}</button></div><div class="weather-box" id="weatherBox"><div class="weather-head"><div><div class="eyebrow">Aktuellt väder</div><div class="weather-desc">Hämtar väder…</div></div><div class="weather-temp">—</div></div><div class="weather-loading">Live väder/prognos hämtas automatiskt för badplatsens koordinater.</div></div><div class="water-box" id="waterBox"><div class="water-row"><div><div class="eyebrow">Vattentemperatur</div><div class="water-temp">${wt?esc(wt.temp)+' °C':'Söker…'}</div><div class="water-source">${wt?(wt.source==='community'?'Senaste badarrapport':'Din senaste rapport'):'Letar efter närmaste SMHI-mätning'}</div></div><div class="hint">${wt?esc(wt.date):'—'}</div></div><div class="water-distance" id="waterDistance">Officiell mätning visas bara om en relevant station finns i närheten.</div><form class="water-form" onsubmit="addWaterTemp(event,${id})"><input class="field" name="temp" type="number" step="0.1" min="-5" max="45" placeholder="T.ex. 21,4" required><button class="btn btn-soft" type="submit">Spara egen temp</button></form><div class="hint">Din rapport sparas gemensamt i Supabase och kan visas för andra badare.</div></div><div class="gallery"><div class="section-head"><div><h3>Bilder från badare</h3><p class="hint">Lägg till egna bilder från badplatsen.</p></div></div><div class="gallery-grid">${imgs.map(photo=>`<div class="gallery-item"><img src="${esc(photo.url)}" alt="Bild från ${esc(p.name)}">${adminToolsForPhoto(photo)}</div>`).join('')}<label class="upload-label">＋ Lägg till bild<input type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="addImages(event,${id})"></label></div><div class="source-note">Väder: Open-Meteo. Prognosen är modellbaserad och kan skilja sig från lokala förhållanden.</div></div><div class="comments"><h3>Kommentarer</h3>${cs.length?cs.map((c,i)=>`<div class="comment"><div class="comment-head"><span class="comment-name">${esc(c.name||'Anonym badare')}</span><span class="comment-date">${esc(c.date||'')}</span></div><div class="comment-text">${esc(c.text)}</div><button class="likebtn" onclick="likeComment(${id},${i})">👍 ${c.likes||0}</button>${adminToolsForComment(c,id)}</div>`).join(''):'<p class="hint">Inga kommentarer ännu. Skriv den första!</p>'}<form class="comment-form" onsubmit="addComment(event,${id})"><div class="row"><input class="field" name="name" maxlength="30" placeholder="Ditt namn (valfritt)"><button class="btn btn-primary" type="submit" data-comment-submit ${cooldown?'disabled':''}>Publicera</button></div><textarea class="field" name="text" maxlength="500" required placeholder="Hur var badet? Botten, parkering, barnvänligt, vatten…"></textarea><div class="hint" data-comment-cooldown>${cooldown?commentCooldownLabel():'Du kan skriva en kommentar var 5:e minut.'}</div></form></div>`;$('#modal').classList.add('show');renderList();if(p.lat&&p.lng){loadWeather(p);loadWaterTemperature(p)};updateCommentCooldownUI()}
-
+function openPlace(id, keepOpen=false){const p=places.find(x=>x.id===id);if(!p)return;activeId=id;const cs=comments[id]||[];const imgs=placeImages[id]||[];const wt=waterTemps[id];$('#modalContent').innerHTML=`<div class="modal-head"><div class="eyebrow">${esc(p.city||'Östergötland')} · badplats ${p.id}</div><h2>${esc(p.name)}</h2><div class="modal-meta">⭐ <b>${p.rating}/10</b> · ${cs.length} kommentar${cs.length===1?'':'er'}</div></div><div class="note">${p.note?esc(p.note):'Ingen beskrivning ännu. Var först med att lämna en kommentar.'}</div><div class="modal-actions"><button class="btn ${favorites.includes(id)?'btn-lime':'btn-soft'}" onclick="toggleFavorite(${id});openPlace(${id},true)">${favorites.includes(id)?'♥ Sparad':'♡ Spara favorit'}</button><a class="btn btn-soft" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.mapsQuery)}">🗺️ Öppna i Google Maps</a>${p.lat&&p.lng?`<button class="btn btn-soft" onclick="focusPlace(${id})">📍 Visa på karta</button>`:''}</div><div class="weather-box" id="weatherBox"><div class="weather-head"><div><div class="eyebrow">Aktuellt väder</div><div class="weather-desc">Hämtar väder…</div></div><div class="weather-temp">—</div></div><div class="weather-loading">Live väder/prognos hämtas automatiskt för badplatsens koordinater.</div></div><div class="water-box" id="waterBox"><div class="water-row"><div><div class="eyebrow">Vattentemperatur</div><div class="water-temp">${wt?esc(wt.temp)+' °C':'Söker…'}</div><div class="water-source">${wt?(wt.source==='community'?'Senaste badarrapport':'Din senaste rapport'):'Letar efter närmaste SMHI-mätning'}</div></div><div class="hint">${wt?esc(wt.date):'—'}</div></div><div class="water-distance" id="waterDistance">Officiell mätning visas bara om en relevant station finns i närheten.</div><form class="water-form" onsubmit="addWaterTemp(event,${id})"><input class="field" name="temp" type="number" step="0.1" min="-5" max="45" placeholder="T.ex. 21,4" required><button class="btn btn-soft" type="submit">Spara egen temp</button></form><div class="hint">Din rapport sparas gemensamt i Supabase och kan visas för andra badare.</div></div><div class="gallery"><div class="section-head"><div><h3>Bilder från badare</h3><p class="hint">Lägg till egna bilder från badplatsen.</p></div></div><div class="gallery-grid">${imgs.map((src,i)=>`<div class="gallery-item"><img src="${src}" alt="Bild från ${esc(p.name)}"><button class="gallery-remove" onclick="removeImage(${id},${i})" title="Ta bort">×</button></div>`).join('')}<label class="upload-label">＋ Lägg till bild<input type="file" accept="image/*" multiple onchange="addImages(event,${id})"></label></div><div class="source-note">Väder: Open-Meteo. Prognosen är modellbaserad och kan skilja sig från lokala förhållanden.</div></div><div class="comments"><h3>Kommentarer</h3>${cs.length?cs.map((c,i)=>`<div class="comment"><div class="comment-head"><span class="comment-name">${esc(c.name||'Anonym badare')}</span><span class="comment-date">${esc(c.date||'')}</span></div><div class="comment-text">${esc(c.text)}</div><button class="likebtn" onclick="likeComment(${id},${i})">👍 ${c.likes||0}</button></div>`).join(''):'<p class="hint">Inga kommentarer ännu. Skriv den första!</p>'}<form class="comment-form" onsubmit="addComment(event,${id})"><div class="row"><input class="field" name="name" maxlength="30" placeholder="Ditt namn (valfritt)"><button class="btn btn-primary" type="submit">Publicera</button></div><textarea class="field" name="text" maxlength="500" required placeholder="Hur var badet? Botten, parkering, barnvänligt, vatten…"></textarea><div class="hint">Kommentaren sparas gemensamt så att andra badare kan se den.</div></form></div>`;$('#modal').classList.add('show');renderList();if(p.lat&&p.lng){loadWeather(p);loadWaterTemperature(p)}}
 function closeModal(){$('#modal').classList.remove('show')}
-function updateCommentCooldownUI(){const left=commentCooldownRemaining();document.querySelectorAll('[data-comment-submit]').forEach(b=>b.disabled=left>0);document.querySelectorAll('[data-comment-cooldown]').forEach(el=>el.textContent=left?commentCooldownLabel():'Du kan skriva en kommentar var 5:e minut.')}
-async function addComment(e,id){e.preventDefault();const left=commentCooldownRemaining();if(left){toast(commentCooldownLabel());updateCommentCooldownUI();return}const f=e.target,text=f.text.value.trim();if(!text)return;const name=f.name.value.trim()||'Anonym badare';const {error}=await supabase.from('comments').insert({place_id:id,name,text});if(error){toast('Kommentaren kunde inte sparas.');console.error(error);return}commentCooldownUntil=Date.now()+COMMENT_COOLDOWN_MS;localStorage.setItem(KEY.commentCooldown,String(commentCooldownUntil));f.reset();await hydrateSupabase();render();openPlace(id,true);toast('Kommentaren publicerades 💬 Nästa kommentar om 5 minuter.')}
+async function addComment(e,id){e.preventDefault();const f=e.target,text=f.text.value.trim();if(!text)return;const name=f.name.value.trim()||'Anonym badare';const {error}=await supabase.from('comments').insert({place_id:id,name,text});if(error){toast('Kommentaren kunde inte sparas.');console.error(error);return}f.reset();await hydrateSupabase();render();openPlace(id,true);toast('Kommentaren publicerades 💬')}
 async function likeComment(id,i){const c=comments[id]?.[i];if(!c?.id)return;const next=(c.likes||0)+1;const {error}=await supabase.from('comments').update({likes:next}).eq('id',c.id);if(error){toast('Kunde inte gilla kommentaren.');return}await hydrateSupabase();openPlace(id,true);}
-async function adminDeleteComment(commentId,placeId){if(!adminMode)return;const ok=confirm('Ta bort den här kommentaren?');if(!ok)return;const {error}=await supabase.from('comments').delete().eq('id',commentId);if(error){console.error(error);toast('Kommentaren kunde inte tas bort.');return}await hydrateSupabase();openPlace(placeId,true);toast('Kommentaren togs bort.')}
-async function adminEditComment(commentId,placeId){if(!adminMode)return;const c=(comments[placeId]||[]).find(x=>Number(x.id)===Number(commentId));if(!c)return;const text=prompt('Redigera kommentaren:',c.text);if(text===null)return;const clean=text.trim();if(!clean){toast('Kommentaren kan inte vara tom.');return}const name=prompt('Redigera namn:',c.name||'Anonym badare');if(name===null)return;const cleanName=name.trim().slice(0,30)||'Anonym badare';const {error}=await supabase.from('comments').update({text:clean.slice(0,500),name:cleanName}).eq('id',commentId);if(error){console.error(error);toast('Kommentaren kunde inte redigeras.');return}await hydrateSupabase();openPlace(placeId,true);toast('Kommentaren uppdaterades.')}
-async function adminResetCommentLikes(commentId,placeId){if(!adminMode)return;const {error}=await supabase.from('comments').update({likes:0}).eq('id',commentId);if(error){console.error(error);toast('Kommentarens likes kunde inte nollställas.');return}await hydrateSupabase();openPlace(placeId,true);toast('Kommentarens likes är nu 0.')}
-async function adminResetPlaceLikes(placeId){if(!adminMode)return;const ok=confirm('Nollställ alla likes för den här badplatsen?');if(!ok)return;const {error}=await supabase.from('place_likes').delete().eq('place_id',placeId);if(error){console.error(error);toast('Likes kunde inte nollställas.');return}placeLiked[placeId]=false;save();await hydrateSupabase();openPlace(placeId,true);toast('Badplatsens likes nollställdes.')}
-async function adminDeletePhoto(photoId,url,placeId){if(!adminMode)return;const ok=confirm('Ta bort den här bilden?');if(!ok)return;const path=photoStoragePath(url);if(path){const {error:storageError}=await supabase.storage.from('badvlogg-images').remove([path]);if(storageError){console.error('Storage delete:',storageError);toast('Bilden kunde inte tas bort från bildlagret. Kör admin-SQL igen.');return}}const {error:dbError}=await supabase.from('photos').delete().eq('id',photoId);if(dbError){console.error('Photo row delete:',dbError);toast('Bildposten kunde inte tas bort. Kör admin-SQL igen.');return}delete (placeImages[placeId]||[]).find(x=>Number(x.id)===Number(photoId));await hydrateSupabase();openPlace(placeId,true);toast('Bilden togs bort.')}
 function focusPlace(id){const p=places.find(x=>x.id===id);if(!p.lat)return;closeModal();map.flyTo([p.lat,p.lng],14,{duration:.8});setTimeout(()=>markerById[id]?.openPopup(),800)}
 function setTodayPick(p,label){window.todayPick=p.id;$('#todayName').textContent=p.name;$('#todayCity').textContent=p.city||'Östergötland';$('#todayMeta').innerHTML=`<span class="today-chip">⭐ ${p.rating}/10</span><span class="today-chip" id="todayWeather">🌡️ Hämtar väder…</span><span class="today-chip">💬 ${countComments(p.id)}</span>`;if(p.lat&&p.lng){loadSingleTodayWeather(p)}}
-async function loadSingleTodayWeather(p){const el=$('#todayWeather');if(!el)return;try{let d=weatherCache[p.id];if(!d){const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code&forecast_days=1&timezone=auto`;const r=await fetch(u);if(!r.ok)throw new Error();d=await r.json();weatherCache[p.id]=d}el.textContent=`🌡️ ${Math.round(d.current.temperature_2m)}°C · ${weatherText(d.current.weather_code)}`}catch(e){el.textContent='🌡️ Väder ej tillgängligt'}}
+async function loadSingleTodayWeather(p){const el=$('#todayWeather');if(!el)return;try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m&forecast_days=1&timezone=auto&_=${Date.now()}`;const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error();const d=await r.json();weatherCache[p.id]=d;weatherLastUpdated=Date.now();el.textContent=`🌡️ ${Math.round(d.current.temperature_2m)}°C · ${weatherText(d.current.weather_code)} · 💨 ${Math.round(d.current.wind_speed_10m)} km/h`}catch(e){el.textContent='🌡️ Väder ej tillgängligt'}}
 function showBestRated(){const p=[...places].filter(x=>x.lat&&x.lng).sort((a,b)=>b.rating-a.rating||a.name.localeCompare(b.name,'sv'))[0];if(p){setTodayPick(p);document.querySelector('#idag').scrollIntoView({behavior:'smooth'})}}
 function showWarmestWeather(){const mapped=places.filter(p=>p.lat&&p.lng);if(!mapped.length)return;const cached=mapped.filter(p=>weatherCache[p.id]?.current);if(cached.length){const p=cached.sort((a,b)=>weatherCache[b.id].current.temperature_2m-weatherCache[a.id].current.temperature_2m)[0];setTodayPick(p);document.querySelector('#idag').scrollIntoView({behavior:'smooth'});return}const p=mapped.sort((a,b)=>b.rating-a.rating)[0];setTodayPick(p);mapped.slice(0,12).forEach(loadSingleCardWeatherOnly);toast('Jag hämtar temperaturer för flera badplatser…')}
-async function loadSingleCardWeatherOnly(p){try{if(weatherCache[p.id])return;const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code&forecast_days=1&timezone=auto`;const r=await fetch(u);if(r.ok)weatherCache[p.id]=await r.json()}catch(e){}}
+async function loadSingleCardWeatherOnly(p){try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m,wind_gusts_10m&forecast_days=1&timezone=auto&_=${Date.now()}`;const r=await fetch(u,{cache:'no-store'});if(r.ok){weatherCache[p.id]=await r.json();weatherLastUpdated=Date.now()}}catch(e){}}
 function randomPlace(){const arr=places.filter(p=>p.lat&&p.lng);const p=arr[Math.floor(Math.random()*arr.length)];setTodayPick(p);openPlace(p.id,true)}
 const smhiWaterCache={stations:null};
 async function loadWaterTemperature(p){
@@ -405,8 +449,9 @@ async function loadWaterTemperature(p){
   if(!box||!p.lat||!p.lng)return;
   const tempEl=box.querySelector('.water-temp'), sourceEl=box.querySelector('.water-source'), distEl=box.querySelector('#waterDistance');
   try{
+    // Station list can be reused, but the actual measurement is fetched fresh every time.
     if(!smhiWaterCache.stations){
-      const r=await fetch('https://opendata-download-hydroobs.smhi.se/api/version/latest/parameter/4.json');
+      const r=await fetch(`https://opendata-download-hydroobs.smhi.se/api/version/latest/parameter/4.json?_=${Date.now()}`,{cache:'no-store'});
       if(!r.ok)throw new Error('stations');
       const d=await r.json();
       smhiWaterCache.stations=d.station||d.resource||[];
@@ -418,11 +463,11 @@ async function loadWaterTemperature(p){
     stations.sort((a,b)=>distanceKm(p.lat,p.lng,a.lat,a.lng)-distanceKm(p.lat,p.lng,b.lat,b.lng));
     const st=stations[0], dist=distanceKm(p.lat,p.lng,st.lat,st.lng);
     if(distEl)distEl.textContent=`Närmaste SMHI-station: ${st.name} · ${dist.toFixed(1)} km bort`;
-    // The hydrological observation API is a time-series endpoint per station.
+
     const now=new Date(), from=new Date(now.getTime()-35*86400000);
     const iso=x=>x.toISOString().slice(0,16)+'Z';
-    const url=`https://opendata-download-hydroobs.smhi.se/api/version/latest/parameter/4/station/${encodeURIComponent(st.id)}/period/corrected-archive/data.json?from=${encodeURIComponent(iso(from))}&to=${encodeURIComponent(iso(now))}`;
-    const r=await fetch(url); if(!r.ok)throw new Error('series');
+    const url=`https://opendata-download-hydroobs.smhi.se/api/version/latest/parameter/4/station/${encodeURIComponent(st.id)}/period/corrected-archive/data.json?from=${encodeURIComponent(iso(from))}&to=${encodeURIComponent(iso(now))}&_=${Date.now()}`;
+    const r=await fetch(url,{cache:'no-store'}); if(!r.ok)throw new Error('series');
     const d=await r.json(); const vals=d.value||d.results||d;
     if(!Array.isArray(vals)||!vals.length){
       if(!waterTemps[p.id]){tempEl.textContent='Ingen aktuell mätning';sourceEl.textContent='SMHI har ingen aktuell vattenmätning nära denna badplats';}
@@ -436,8 +481,10 @@ async function loadWaterTemperature(p){
       if(!waterTemps[p.id]){tempEl.textContent='Ingen aktuell mätning';sourceEl.textContent='Närmaste SMHI-värde är äldre än 30 dagar';}
       return;
     }
-    tempEl.textContent=`${latest.value.toFixed(1)} °C`;
-    sourceEl.textContent='Officiell mätning · SMHI';
+    const temp=latest.value;
+    tempEl.textContent=`${temp.toFixed(1)} °C`;
+    const comfort=temp>=20?'Bra badtemperatur':temp>=17?'Sval men badbar':'Kallt vatten';
+    sourceEl.textContent=`Officiell mätning · SMHI · ${comfort}`;
     box.classList.add('water-official');
     const when=new Date(latest.time).toLocaleString('sv-SE',{dateStyle:'short',timeStyle:'short'});
     const userHint=waterTemps[p.id]?` · egen rapport: ${waterTemps[p.id].temp} °C`:'';
@@ -449,66 +496,141 @@ async function loadWaterTemperature(p){
 }
 function distanceKm(a,b,c,d){const R=6371,rad=x=>x*Math.PI/180;const dLat=rad(c-a),dLon=rad(d-b);const x=Math.sin(dLat/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(x));}
 async function addWaterTemp(e,id){e.preventDefault();const v=parseFloat(e.target.temp.value.replace(',','.'));if(!Number.isFinite(v))return;const {error}=await supabase.from('water_reports').insert({place_id:id,temperature:v});if(error){toast('Vattenrapporten kunde inte sparas.');console.error(error);return}await hydrateSupabase();openPlace(id,true);toast('Vattentemperaturen publicerades 🌡️')}
-async function addImages(e,id){const files=[...e.target.files].slice(0,6);e.target.value='';if(!files.length)return;const allowed=['image/jpeg','image/png','image/webp'];for(const file of files){if(!allowed.includes(file.type)){toast('Använd JPG, PNG eller WebP.');continue}if(file.size>5*1024*1024){toast('Bilden är för stor. Max 5 MB.');continue}const safe=file.name.toLowerCase().replace(/[^a-z0-9._-]/g,'-');const path=`${id}/${crypto.randomUUID()}-${safe}`;const {error:uploadError}=await supabase.storage.from('badvlogg-images').upload(path,file,{contentType:file.type,upsert:false});if(uploadError){console.error(uploadError);toast('Bilden kunde inte laddas upp.');continue}const {data:urlData}=supabase.storage.from('badvlogg-images').getPublicUrl(path);const image_url=urlData.publicUrl;const {error:photoError}=await supabase.from('photos').insert({place_id:id,image_url,name:'Anonym badare'});if(photoError){console.error(photoError);toast('Bilden laddades upp men kunde inte sparas.');continue}toast('Bild uppladdad 📸')}await hydrateSupabase();openPlace(id,true)}
-async function likePlace(id){if(placeLiked[id]){toast('Du har redan gillat den här badplatsen ❤️');return}const {error}=await supabase.from('place_likes').insert({place_id:id});if(error){console.error(error);toast('Kunde inte gilla badplatsen.');return}placeLiked[id]=true;save();await hydrateSupabase();openPlace(id,true);toast('Gillat ❤️')}
-async function loadWeather(p){const box=document.querySelector('#weatherBox');if(!box||!p.lat||!p.lng)return;if(weatherCache[p.id]){renderWeather(box,weatherCache[p.id]);return}try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&forecast_days=1&timezone=auto`;const r=await fetch(u);if(!r.ok)throw new Error('weather');const d=await r.json();weatherCache[p.id]=d;renderWeather(box,d)}catch(e){box.querySelector('.weather-desc').textContent='Vädret kunde inte hämtas';box.querySelector('.weather-loading').textContent='Försök igen om en stund.'}}
+function addImages(e,id){const files=[...e.target.files].slice(0,6);if(!files.length)return;placeImages[id]=placeImages[id]||[];let done=0;files.forEach(file=>{const reader=new FileReader();reader.onload=ev=>{const img=new Image();img.onload=()=>{const max=1200,scale=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);c.getContext('2d').drawImage(img,0,0,c.width,c.height);placeImages[id].push(c.toDataURL('image/jpeg',.78));done++;if(done===files.length){save();openPlace(id,true);toast('Bilderna sparades 📸')}};img.src=ev.target.result};reader.readAsDataURL(file)});e.target.value=''}
+function removeImage(id,i){if(!placeImages[id])return;placeImages[id].splice(i,1);save();openPlace(id,true);toast('Bilden togs bort')}
+async function loadWeather(p){
+  const box=document.querySelector('#weatherBox');
+  if(!box||!p.lat||!p.lng)return;
+  try{
+    const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,wind_speed_10m,wind_gusts_10m,wind_direction_10m,weather_code&forecast_days=1&timezone=auto&_=${Date.now()}`;
+    const r=await fetch(u,{cache:'no-store'});
+    if(!r.ok)throw new Error('weather');
+    const d=await r.json();
+    weatherCache[p.id]=d;
+    weatherLastUpdated=Date.now();
+    renderWeather(box,d);
+  }catch(e){
+    box.querySelector('.weather-desc').textContent='Vädret kunde inte hämtas';
+    box.querySelector('.weather-loading').textContent='Försök igen om en stund.';
+  }
+}
 function weatherText(code){const m={0:'Klart',1:'Mest klart',2:'Delvis molnigt',3:'Mulet',45:'Dimma',48:'Dimma',51:'Lätt duggregn',53:'Duggregn',55:'Kraftigt duggregn',61:'Lätt regn',63:'Regn',65:'Kraftigt regn',71:'Lätt snö',73:'Snö',75:'Kraftigt snöfall',80:'Regnskurar',81:'Regnskurar',82:'Kraftiga regnskurar',95:'Åska',96:'Åska + hagel',99:'Åska + hagel'};return m[code]||'Varierande väder'}
 function weatherIcon(code){if(code===0)return '☀️';if(code<=3)return '🌤️';if(code>=95)return '⛈️';if(code>=80)return '🌦️';if(code>=70)return '❄️';if(code>=45)return '🌫️';return '🌧️'}
-function renderWeather(box,d){const c=d.current;box.querySelector('.weather-temp').textContent=`${Math.round(c.temperature_2m)}°`;box.querySelector('.weather-desc').textContent=`${weatherIcon(c.weather_code)} ${weatherText(c.weather_code)}`;box.querySelector('.weather-loading').textContent=`Uppdaterad ${new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})}`;const old=box.querySelector('.weather-grid');if(old)old.remove();const grid=document.createElement('div');grid.className='weather-grid';grid.innerHTML=`<div class="weather-stat"><b>🌡️ ${Math.round(c.apparent_temperature)}°</b><span>Känns som</span></div><div class="weather-stat"><b>💨 ${Math.round(c.wind_speed_10m)} km/h</b><span>Vind</span></div><div class="weather-stat"><b>💧 ${Math.round(c.relative_humidity_2m)}%</b><span>Luftfuktighet</span></div><div class="weather-stat"><b>☔ ${Number(c.precipitation||0).toFixed(1)} mm</b><span>Nederbörd</span></div>`;box.appendChild(grid)}
-$('#randomBtn').onclick=randomPlace;$('#favoritesBtn').onclick=()=>{showOnlyFavorites=!showOnlyFavorites;$('#favoritesBtn').textContent=showOnlyFavorites?'❤️ Visa alla':'❤️ Mina favoriter';renderList();document.querySelector('#karta').scrollIntoView({behavior:'smooth'})};$('#search').oninput=renderList;$('#sort').onchange=renderList;$('#ratingFilter').onchange=renderList;$('#clearBtn').onclick=()=>{$('#search').value='';$('#sort').value='rating';$('#ratingFilter').value='0';showOnlyFavorites=false;$('#favoritesBtn').textContent='❤️ Mina favoriter';render()};$('#closeModal').onclick=closeModal;$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-$('#locateBtn').onclick=()=>{if(!navigator.geolocation){toast('Din webbläsare stödjer inte platsåtkomst.');return}toast('Hämtar din position…');navigator.geolocation.getCurrentPosition(pos=>{const lat=pos.coords.latitude,lng=pos.coords.longitude;if(userLayer)map.removeLayer(userLayer);userLayer=L.circleMarker([lat,lng],{radius:8,color:'#17201d',weight:3,fillColor:'#c9ef59',fillOpacity:1}).addTo(map).bindPopup('Du är ungefär här').openPopup();map.flyTo([lat,lng],11,{duration:.8});const nearest=places.filter(p=>p.lat&&p.lng).map(p=>({...p,d:Math.hypot((p.lat-lat)*111,(p.lng-lng)*111*Math.cos(lat*Math.PI/180))})).sort((a,b)=>a.d-b.d)[0];if(nearest){toast(`Närmaste i listan: ${nearest.name}`);setTimeout(()=>openPlace(nearest.id),900)}},()=>toast('Kunde inte läsa din position. Kontrollera webbläsarens platsbehörighet.'))};
+function windDirection(deg){if(!Number.isFinite(Number(deg)))return '—';const dirs=['N','NO','O','SO','S','SV','V','NV'];return dirs[Math.round(Number(deg)/45)%8]}
+function renderWeather(box,d){
+  const c=d.current;
+  box.querySelector('.weather-temp').textContent=`${Math.round(c.temperature_2m)}°`;
+  box.querySelector('.weather-desc').textContent=`${weatherIcon(c.weather_code)} ${weatherText(c.weather_code)}`;
+  const updated=c.time?new Date(c.time).toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'}):new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+  box.querySelector('.weather-loading').textContent=`Uppdaterat ${updated} · hämtat ${new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})}`;
+  const old=box.querySelector('.weather-grid');if(old)old.remove();
+  const grid=document.createElement('div');grid.className='weather-grid';
+  grid.innerHTML=`<div class="weather-stat"><b>🌡️ ${Math.round(c.apparent_temperature)}°</b><span>Känns som</span></div><div class="weather-stat"><b>💨 ${Math.round(c.wind_speed_10m)} km/h</b><span>Vind ${windDirection(c.wind_direction_10m)}</span></div><div class="weather-stat"><b>💨 ${Math.round(c.wind_gusts_10m||c.wind_speed_10m)} km/h</b><span>Vindbyar</span></div><div class="weather-stat"><b>💧 ${Math.round(c.relative_humidity_2m)}%</b><span>Luftfuktighet</span></div><div class="weather-stat"><b>☔ ${Number(c.precipitation||0).toFixed(1)} mm</b><span>Nederbörd</span></div>`;
+  box.appendChild(grid);
+}
+$('#randomBtn').onclick=randomPlace;$('#favoritesBtn').onclick=()=>{showOnlyFavorites=!showOnlyFavorites;$('#favoritesBtn').textContent=showOnlyFavorites?'❤️ Visa alla':'Mina favoriter';renderList();document.querySelector('#karta').scrollIntoView({behavior:'smooth'})};$('#search').oninput=renderList;$('#sort').onchange=renderList;$('#ratingFilter').onchange=renderList;$('#clearBtn').onclick=()=>{$('#search').value='';$('#sort').value='rating';$('#ratingFilter').value='0';showOnlyFavorites=false;$('#favoritesBtn').textContent='Mina favoriter';render()};$('#closeModal').onclick=closeModal;$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+$('#locateBtn').onclick=()=>{if(!navigator.geolocation){toast('Din webbläsare stödjer inte platsåtkomst.');return}toast('Hämtar din position…');navigator.geolocation.getCurrentPosition(pos=>{const lat=pos.coords.latitude,lng=pos.coords.longitude;if(userLayer)map.removeLayer(userLayer);userLayer=L.circleMarker([lat,lng],{radius:8,color:'#17201d',weight:3,fillColor:'#56d9df',fillOpacity:1}).addTo(map).bindPopup('Du är ungefär här').openPopup();map.flyTo([lat,lng],11,{duration:.8});const nearest=places.filter(p=>p.lat&&p.lng).map(p=>({...p,d:Math.hypot((p.lat-lat)*111,(p.lng-lng)*111*Math.cos(lat*Math.PI/180))})).sort((a,b)=>a.d-b.d)[0];if(nearest){toast(`Närmaste i listan: ${nearest.name}`);setTimeout(()=>openPlace(nearest.id),900)}},()=>toast('Kunde inte läsa din position. Kontrollera webbläsarens platsbehörighet.'))};
 updateStats();render();showBestRated();setTimeout(()=>map.invalidateSize(),300);
 if (!placesError && remotePlaces && remotePlaces.length) toast(`☁️ ${places.length} badplatser hämtade från Supabase`);
 
-// Inline HTML handlers behöver dessa funktioner på window även i en ES-modul.
-Object.assign(window,{openPlace,toggleFavorite,focusPlace,addComment,likeComment,addWaterTemp,addImages,likePlace,randomPlace,adminDeleteComment,adminEditComment,adminResetCommentLikes,adminResetPlaceLikes,adminDeletePhoto});
-
-updateCommentCooldownUI();
-setInterval(updateCommentCooldownUI,1000);
-
-let adminTapTimes=[];
-let adminMode=localStorage.getItem('badvlogg-admin-mode')==='1';
-function updateAdminMode(showToast=false){
-  document.body.classList.toggle('admin-mode',adminMode);
-  const badge=document.querySelector('#adminBadge');
-  if(badge){
-    badge.classList.toggle('show',adminMode);
-    badge.textContent=adminMode?'🔐 ADMINLÄGE':'🔓 ADMINLÄGE AV';
+// Hämta färska värden när sidan öppnas och uppdatera automatiskt utan gammal cache.
+setInterval(async ()=>{
+  weatherCache={};
+  weatherLastUpdated=0;
+  const visible=filtered();
+  await loadCardWeather(visible);
+  const p=places.find(x=>x.id===activeId);
+  if(p&&document.querySelector('#modal.show')&&p.lat&&p.lng){
+    await loadWeather(p);
+    await loadWaterTemperature(p);
   }
-  if(showToast) toast(adminMode?'🔐 Adminläge aktiverat!':'🔓 Adminläge avstängt.');
+},10*60*1000);
+
+// Inline HTML handlers behöver dessa funktioner på window även i en ES-modul.
+Object.assign(window,{openPlace,toggleFavorite,focusPlace,addComment,likeComment,addWaterTemp,addImages,removeImage,randomPlace});
+
+
+// Admin: klicka 10 gånger snabbt på loggan.
+const logoEl=document.querySelector('.logo');
+const adminPanel=document.querySelector('#adminPanel');
+const adminBadge=document.querySelector('#adminBadge');
+const adminRefresh=document.querySelector('#adminRefresh');
+const adminClose=document.querySelector('#adminClose');
+let logoClicks=0,logoClickTimer=null;
+function setAdmin(on){
+  if(adminPanel) adminPanel.classList.toggle('show',on);
+  if(adminBadge) adminBadge.classList.toggle('show',on);
+  localStorage.setItem('badvlogg-admin',on?'1':'0');
 }
-function toggleAdminMode(){
-  adminMode=!adminMode;
-  localStorage.setItem('badvlogg-admin-mode',adminMode?'1':'0');
-  updateAdminMode(true);
-}
-const adminLogo=document.querySelector('#adminLogo');
-if(adminLogo){
-  adminLogo.addEventListener('click',()=>{
-    const now=Date.now();
-    adminTapTimes=adminTapTimes.filter(t=>now-t<2200);
-    adminTapTimes.push(now);
-    if(adminTapTimes.length>=10){
-      adminTapTimes=[];
-      toggleAdminMode();
+if(logoEl){
+  logoEl.style.cursor='pointer';
+  logoEl.addEventListener('click',()=>{
+    logoClicks++;
+    clearTimeout(logoClickTimer);
+    logoClickTimer=setTimeout(()=>logoClicks=0,2200);
+    if(logoClicks>=10){
+      logoClicks=0;
+      const on=localStorage.getItem('badvlogg-admin')!=='1';
+      setAdmin(on);
+      if(on) loadAdminStats();
+      toast(on?'Adminläge aktiverat':'Adminläge avstängt');
     }
   });
 }
-updateAdminMode(false);
+if(adminClose) adminClose.onclick=()=>setAdmin(false);
+if(localStorage.getItem('badvlogg-admin')==='1') setAdmin(true);
 
-function updateEveningMode(){
-  const hour=new Date().getHours();
-  const evening=hour>=19 || hour<7;
-  document.body.classList.toggle('evening-mode',evening);
-  document.documentElement.style.colorScheme=evening?'dark':'light';
-  const badge=document.querySelector('#eveningBadge');
-  if(badge) badge.classList.toggle('show',evening);
-  const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.setAttribute('content',evening?'#101815':'#f7f2e8');
-  if(typeof map!=='undefined' && map) setTimeout(()=>map.invalidateSize(),100);
+function getVisitorId(){
+  const key='badvlogg-visitor-id';
+  let id=localStorage.getItem(key);
+  if(!id){
+    id=crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2);
+    localStorage.setItem(key,id);
+  }
+  return id;
 }
-updateEveningMode();
-setInterval(updateEveningMode,60000);
+async function recordVisit(){
+  try{
+    const {error}=await supabase.rpc('record_site_visit',{p_visitor_id:getVisitorId()});
+    if(error) console.warn('Besöksräkning:',error.message);
+  }catch(err){console.warn('Besöksräkning:',err)}
+}
+async function loadAdminStats(){
+  const [{count:unique,error:e1},{data:rows,error:e2}]=await Promise.all([
+    supabase.from('site_visitors').select('*',{count:'exact',head:true}),
+    supabase.from('site_visitors').select('visits')
+  ]);
+  if(e1||e2){
+    console.warn('Adminstatistik:',e1?.message||e2?.message);
+    $('#adminUnique').textContent='–';
+    $('#adminVisits').textContent='–';
+    return;
+  }
+  const total=(rows||[]).reduce((sum,r)=>sum+Number(r.visits||0),0);
+  $('#adminUnique').textContent=Number(unique||0).toLocaleString('sv-SE');
+  $('#adminVisits').textContent=total.toLocaleString('sv-SE');
+}
+if(adminRefresh) adminRefresh.onclick=loadAdminStats;
+recordVisit();
+
+const themeBtn=document.querySelector('#themeBtn');
+const THEME_KEY='badvlogg-theme-v7';
+let themePref=localStorage.getItem(THEME_KEY)||'dark';
+function applyTheme(){
+  const dark=themePref!=='light';
+  document.body.classList.toggle('dark-mode',dark);
+  document.body.classList.toggle('light-mode',!dark);
+  document.documentElement.style.colorScheme=dark?'dark':'light';
+  if(themeBtn)themeBtn.textContent=themePref==='dark'?'Mörkt':themePref==='light'?'Ljust':'Tema';
+}
+if(themeBtn){themeBtn.addEventListener('click',()=>{
+  themePref=themePref==='dark'?'light':themePref==='light'?'auto':'dark';
+  if(themePref==='auto') themePref='dark';
+  localStorage.setItem(THEME_KEY,themePref);applyTheme()
+});}
+applyTheme();
 </script>
+
+<div style="position:fixed;right:12px;bottom:12px;z-index:10000;background:#18221f;color:#fff;padding:7px 10px;border-radius:9px;font:600 11px/1 DM Sans,sans-serif;opacity:.82">DESIGN V7</div>
 </body>
 </html>
