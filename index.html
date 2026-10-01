@@ -1024,53 +1024,35 @@ places.filter(p=>p.lat&&p.lng).forEach(p=>{const m=L.marker([p.lat,p.lng],{icon:
 function filtered(){const q=$('#search').value.trim().toLowerCase(), min=+$('#ratingFilter').value, sort=$('#sort').value;let arr=places.filter(p=>(!q||`${p.name} ${p.city} ${p.note}`.toLowerCase().includes(q))&&p.rating>=min&&(showOnlyFavorites?favorites.includes(p.id):true));if(sort==='name')arr.sort((a,b)=>a.name.localeCompare(b.name,'sv'));if(sort==='comments')arr.sort((a,b)=>countComments(b.id)-countComments(a.id)||b.rating-a.rating);if(sort==='rating')arr.sort((a,b)=>b.rating-a.rating||a.name.localeCompare(b.name,'sv'));return arr}
 function renderTop(){const arr=[...places].sort((a,b)=>b.rating-a.rating||a.name.localeCompare(b.name,'sv')).slice(0,4);$('#topGrid').innerHTML=arr.map((p,i)=>{const c=countComments(p.id);return `<button class="top-card" onclick="openPlace(${p.id})"><div class="rank">0${i+1} · ${esc(p.city||'Östergötland')}</div><h3>${esc(p.name)}</h3><div class="top-tags"><span class="top-tag accent">${p.rating}/10</span><span class="top-tag">${c} kommentar${c===1?'':'er'}</span><span class="top-tag">${p.lat&&p.lng?'På kartan':'Ej kartlagd'}</span></div></button>`}).join('')}
 function renderList(){const arr=filtered();$('#placeList').innerHTML=arr.length?arr.map(p=>`<article class="place ${activeId===p.id?'active':''}" data-id="${p.id}"><div onclick="openPlace(${p.id})"><h3>${esc(p.name)}</h3><div class="city">${esc(p.city||'Östergötland')}</div><div class="mini"><span>⭐ ${p.rating}/10</span><span>💬 ${countComments(p.id)}</span>${p.lat&&p.lng?'<span>📍 karta</span>':'<span>🧭 ej kartlagd</span>'}</div><div class="mini-weather" id="miniWeather-${p.id}">${p.lat&&p.lng?'<span>🌡️ Hämtar temperatur…</span>':'<span>🌡️ Ingen väderdata</span>'}${waterTemps[p.id]?`<span>💧 <b>${esc(waterTemps[p.id].temp)}°C</b></span>`:''}</div></div><button class="heart ${favorites.includes(p.id)?'on':''}" title="Favorit" onclick="toggleFavorite(${p.id})">${favorites.includes(p.id)?'♥':'♡'}</button></article>`).join(''): '<div class="empty">Inga badplatser matchar din sökning.</div>';updateStats();loadCardWeather(arr)}
-async function loadCardWeather(arr){
-  const targets=arr.filter(p=>p.lat&&p.lng);
-  // Hämta väder i små grupper så Open-Meteo inte får 49 samtidiga anrop.
-  for(let i=0;i<targets.length;i+=6){
-    const batch=targets.slice(i,i+6);
-    await Promise.all(batch.map(async p=>{
-      const el=document.querySelector(`#miniWeather-${p.id}`); if(!el)return;
-      try{
-        const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m,wind_gusts_10m&forecast_days=1&timezone=auto&_=${Date.now()}`;
-        const r=await fetch(u,{cache:'no-store'}); if(!r.ok)throw new Error('weather');
-        const d=await r.json(); weatherCache[p.id]=d; weatherLastUpdated=Date.now();
-        const c=d.current;
-        el.innerHTML=`<span>🌡️ <b>${Math.round(c.temperature_2m)}°C</b></span><span>${weatherIcon(c.weather_code)} ${weatherText(c.weather_code)}</span><span>💨 ${Math.round(c.wind_speed_10m)} km/h</span>`;
-      }catch(e){el.innerHTML='<span>🌡️ Väder ej tillgängligt just nu</span>';}
-    }));
-  }
-}
+async function loadCardWeather(arr){const targets=arr.filter(p=>Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng)));await Promise.all(targets.map(async p=>{const el=document.querySelector(`#miniWeather-${p.id}`);if(!el)return;try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m,wind_gusts_10m&forecast_days=1&timezone=auto&_=${Date.now()}`;const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error();const d=await r.json();weatherCache[p.id]=d;weatherLastUpdated=Date.now();const c=d.current;el.innerHTML=`<span>🌡️ <b>${Math.round(c.temperature_2m)}°C</b></span><span>${weatherIcon(c.weather_code)} ${weatherText(c.weather_code)}</span><span>💨 ${Math.round(c.wind_speed_10m)} km/h</span>`}catch(e){el.innerHTML='<span>🌡️ Väder ej tillgängligt</span>'}}))}
 function render(){renderList();renderTop()}
 function toggleFavorite(id){favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];save();render();toast(favorites.includes(id)?'Sparad bland favoriter ❤️':'Borttagen från favoriter')}
 function openPlace(id, keepOpen=false){const p=places.find(x=>x.id===id);if(!p)return;activeId=id;const cs=comments[id]||[];const imgs=placeImages[id]||[];const wt=waterTemps[id];$('#modalContent').innerHTML=`<div class="modal-head"><div class="eyebrow">${esc(p.city||'Östergötland')} · badplats ${p.id}</div><h2>${esc(p.name)}</h2><div class="modal-meta">⭐ <b>${p.rating}/10</b> · ${cs.length} kommentar${cs.length===1?'':'er'}</div></div><div class="note">${p.note?esc(p.note):'Ingen beskrivning ännu. Var först med att lämna en kommentar.'}</div><div class="modal-actions"><button class="btn ${favorites.includes(id)?'btn-lime':'btn-soft'}" onclick="toggleFavorite(${id});openPlace(${id},true)">${favorites.includes(id)?'♥ Sparad':'♡ Spara favorit'}</button><a class="btn btn-soft" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.mapsQuery)}">🗺️ Öppna i Google Maps</a>${p.lat&&p.lng?`<button class="btn btn-soft" onclick="focusPlace(${id})">📍 Visa på karta</button>`:''}</div><div class="weather-box" id="weatherBox"><div class="weather-head"><div><div class="eyebrow">Aktuellt väder</div><div class="weather-desc">Hämtar väder…</div></div><div class="weather-temp">—</div></div><div class="weather-loading">Live väder/prognos hämtas automatiskt för badplatsens koordinater.</div></div><div class="water-box" id="waterBox"><div class="water-row"><div><div class="eyebrow">Vattentemperatur</div><div class="water-temp">${wt?esc(wt.temp)+' °C':'Söker…'}</div><div class="water-source">${wt?(wt.source==='community'?'Senaste badarrapport':'Din senaste rapport'):'Letar efter närmaste SMHI-mätning'}</div></div><div class="hint">${wt?esc(wt.date):'—'}</div></div><div class="water-distance" id="waterDistance">Officiell mätning visas bara om en relevant station finns i närheten.</div><form class="water-form" onsubmit="addWaterTemp(event,${id})"><input class="field" name="temp" type="number" step="0.1" min="-5" max="45" placeholder="T.ex. 21,4" required><button class="btn btn-soft" type="submit">Spara egen temp</button></form><div class="hint">Din rapport sparas gemensamt i Supabase och kan visas för andra badare.</div></div><div class="gallery"><div class="section-head"><div><h3>Bilder från badare</h3><p class="hint">Lägg till egna bilder från badplatsen.</p></div></div><div class="gallery-grid">${imgs.map((src,i)=>`<div class="gallery-item"><img src="${src}" alt="Bild från ${esc(p.name)}"><button class="gallery-remove" onclick="removeImage(${id},${i})" title="Ta bort">×</button></div>`).join('')}<label class="upload-label">＋ Lägg till bild<input type="file" accept="image/*" multiple onchange="addImages(event,${id})"></label></div><div class="source-note">Väder: Open-Meteo. Prognosen är modellbaserad och kan skilja sig från lokala förhållanden.</div></div><div class="comments"><h3>Kommentarer</h3>${cs.length?cs.map((c,i)=>`<div class="comment"><div class="comment-head"><span class="comment-name">${esc(c.name||'Anonym badare')}</span><span class="comment-date">${esc(c.date||'')}</span></div><div class="comment-text">${esc(c.text)}</div><button class="likebtn" onclick="likeComment(${id},${i})">👍 ${c.likes||0}</button></div>`).join(''):'<p class="hint">Inga kommentarer ännu. Skriv den första!</p>'}<form class="comment-form" onsubmit="addComment(event,${id})"><div class="row"><input class="field" name="name" maxlength="30" placeholder="Ditt namn (valfritt)"><button class="btn btn-primary" type="submit">Publicera</button></div><textarea class="field" name="text" maxlength="500" required placeholder="Hur var badet? Botten, parkering, barnvänligt, vatten…"></textarea><div class="hint">Kommentaren sparas gemensamt så att andra badare kan se den.</div></form></div>`;$('#modal').classList.add('show');renderList();if(p.lat&&p.lng){loadWeather(p);loadWaterTemperature(p)}}
 function closeModal(){$('#modal').classList.remove('show')}
 async function addComment(e,id){
-  e.preventDefault();
-  const f=e.target,text=f.text.value.trim(); if(!text)return;
+  e.preventDefault(); e.stopPropagation();
+  const f=e.currentTarget || e.target;
+  const text=String(f.elements?.text?.value || '').trim();
+  const name=String(f.elements?.name?.value || '').trim() || 'Anonym badare';
+  if(!text){toast('Skriv en kommentar först.');return;}
   const last=Number(localStorage.getItem(KEY.commentCooldown)||0);
   const left=5*60*1000-(Date.now()-last);
   if(left>0){toast(`Du kan kommentera igen om ${Math.ceil(left/60000)} min.`);return;}
-  const name=f.name.value.trim()||'Anonym badare';
-  if(!supabase){
-    const row={id:'local-'+Date.now(),name,text,date:new Date().toLocaleDateString('sv-SE'),likes:0};
-    (comments[id] ||= []).unshift(row);
-    localStorage.setItem('badvlogg-local-comments',JSON.stringify(comments));
-  }else{
-    const {error}=await supabase.from('comments').insert({place_id:id,name,text});
-    if(error){
-      console.error('Kommentar Supabase:',error);
-      // Om databasen tillfälligt nekar skrivning sparas kommentaren lokalt så knappen fungerar ändå.
-      const row={id:'local-'+Date.now(),name,text,date:new Date().toLocaleDateString('sv-SE'),likes:0};
-      (comments[id] ||= []).unshift(row);
-      localStorage.setItem('badvlogg-local-comments',JSON.stringify(comments));
-      localStorage.setItem(KEY.commentCooldown,String(Date.now()));
-      f.reset(); render(); openPlace(id,true); toast('Kommentaren sparades på den här enheten.'); return;
-    }
-    await hydrateSupabase();
-  }
+  const localId='pending-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+  const row={id:localId,name,text,date:new Date().toLocaleDateString('sv-SE'),likes:0,pending:true};
+  (comments[id] ||= []).unshift(row);
+  localStorage.setItem('badvlogg-local-comments',JSON.stringify(comments));
   localStorage.setItem(KEY.commentCooldown,String(Date.now()));
-  f.reset(); render(); openPlace(id,true); toast('Kommentaren publicerades 💬');
+  f.reset(); render(); openPlace(id,true);
+  if(!supabase){toast('Kommentaren sparades på den här enheten.');return;}
+  try{
+    const {data,error}=await supabase.from('comments').insert({place_id:Number(id),name,text}).select('id,name,text,created_at,likes').single();
+    if(error) throw error;
+    comments[id]=(comments[id]||[]).filter(c=>c.id!==localId);
+    comments[id].unshift({id:data.id,name:data.name||name,text:data.text||text,date:data.created_at?new Date(data.created_at).toLocaleDateString('sv-SE'):new Date().toLocaleDateString('sv-SE'),likes:Number(data.likes||0)});
+    localStorage.setItem('badvlogg-local-comments',JSON.stringify(Object.fromEntries(Object.entries(comments).map(([k,v])=>[k,v.filter(c=>String(c.id).startsWith('pending-')||String(c.id).startsWith('local-'))]))));
+    render(); openPlace(id,true); toast('Kommentaren publicerades.');
+  }catch(err){console.error('Kommentar kunde inte sparas i Supabase:',err);toast('Kommentaren visas, men servern kunde inte nås.');}
 }
 async function likeComment(id,i){const c=comments[id]?.[i];if(!c?.id)return;const next=(c.likes||0)+1;if(!supabase||String(c.id).startsWith('local-')){c.likes=next;try{localStorage.setItem('badvlogg-local-comments',JSON.stringify(comments))}catch{};openPlace(id,true);return}const {error}=await supabase.from('comments').update({likes:next}).eq('id',c.id);if(error){toast('Kunde inte gilla kommentaren.');return}await hydrateSupabase();openPlace(id,true);}
 function focusPlace(id){const p=places.find(x=>x.id===id);if(!p.lat)return;closeModal();map.flyTo([p.lat,p.lng],14,{duration:.8});setTimeout(()=>markerById[id]?.openPopup(),800)}
@@ -1167,11 +1149,7 @@ function renderWeather(box,d){
 }
 $('#randomBtn').onclick=randomPlace;$('#favoritesBtn').onclick=()=>{showOnlyFavorites=!showOnlyFavorites;$('#favoritesBtn').textContent=showOnlyFavorites?'❤️ Visa alla':'Mina favoriter';renderList();document.querySelector('#karta').scrollIntoView({behavior:'smooth'})};$('#search').oninput=renderList;$('#sort').onchange=renderList;$('#ratingFilter').onchange=renderList;$('#clearBtn').onclick=()=>{$('#search').value='';$('#sort').value='rating';$('#ratingFilter').value='0';showOnlyFavorites=false;$('#favoritesBtn').textContent='Mina favoriter';render()};$('#closeModal').onclick=closeModal;$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 $('#locateBtn').onclick=()=>{if(!navigator.geolocation){toast('Din webbläsare stödjer inte platsåtkomst.');return}toast('Hämtar din position…');navigator.geolocation.getCurrentPosition(pos=>{const lat=pos.coords.latitude,lng=pos.coords.longitude;if(userLayer)map.removeLayer(userLayer);userLayer=L.circleMarker([lat,lng],{radius:8,color:'#17201d',weight:3,fillColor:'#56d9df',fillOpacity:1}).addTo(map).bindPopup('Du är ungefär här').openPopup();map.flyTo([lat,lng],11,{duration:.8});const nearest=places.filter(p=>p.lat&&p.lng).map(p=>({...p,d:Math.hypot((p.lat-lat)*111,(p.lng-lng)*111*Math.cos(lat*Math.PI/180))})).sort((a,b)=>a.d-b.d)[0];if(nearest){toast(`Närmaste i listan: ${nearest.name}`);setTimeout(()=>openPlace(nearest.id),900)}},()=>toast('Kunde inte läsa din position. Kontrollera webbläsarens platsbehörighet.'))};
-updateStats();render();showBestRated();setTimeout(()=>{
-  map.invalidateSize();
-  const mapped=places.filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng));
-  if(mapped.length){ map.fitBounds(L.latLngBounds(mapped.map(p=>[p.lat,p.lng])),{padding:[30,30],maxZoom:10}); }
-},350);
+updateStats();render();showBestRated();setTimeout(()=>map.invalidateSize(),300);
 if (!placesError && remotePlaces && remotePlaces.length) toast(`☁️ ${places.length} badplatser hämtade från Supabase`);
 
 // Hämta färska värden när sidan öppnas och uppdatera automatiskt utan gammal cache.
