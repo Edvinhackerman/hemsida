@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Sitemap: https://badvloggen.se/sitemap.xml
+
+# AI crawlers – tillåt indexering av allt innehåll
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /

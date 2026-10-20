@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:geo="http://www.google.com/geo/schemas/sitemap/1.0">
+
+  <url>
+    <loc>https://badvloggen.se/</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Badplatser – länkade via hash fragments -->
+  <url><loc>https://badvloggen.se/#bad-1</loc><priority>0.9</priority><geo:geo><geo:format>kml</geo:format></geo:geo></url>
+  <url><loc>https://badvloggen.se/#bad-2</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-3</loc><priority>0.9</priority></url>
+  <url><loc>https://badvloggen.se/#bad-4</loc><priority>1.0</priority></url>
+  <url><loc>https://badvloggen.se/#bad-5</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-6</loc><priority>1.0</priority></url>
+  <url><loc>https://badvloggen.se/#bad-7</loc><priority>0.7</priority></url>
+  <url><loc>https://badvloggen.se/#bad-8</loc><priority>0.5</priority></url>
+  <url><loc>https://badvloggen.se/#bad-9</loc><priority>1.0</priority></url>
+  <url><loc>https://badvloggen.se/#bad-10</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-11</loc><priority>1.0</priority></url>
+  <url><loc>https://badvloggen.se/#bad-12</loc><priority>0.1</priority></url>
+  <url><loc>https://badvloggen.se/#bad-13</loc><priority>0.7</priority></url>
+  <url><loc>https://badvloggen.se/#bad-14</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-15</loc><priority>0.6</priority></url>
+  <url><loc>https://badvloggen.se/#bad-16</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-17</loc><priority>0.5</priority></url>
+  <url><loc>https://badvloggen.se/#bad-18</loc><priority>0.6</priority></url>
+  <url><loc>https://badvloggen.se/#bad-19</loc><priority>0.7</priority></url>
+  <url><loc>https://badvloggen.se/#bad-20</loc><priority>0.4</priority></url>
+  <url><loc>https://badvloggen.se/#bad-21</loc><priority>0.3</priority></url>
+  <url><loc>https://badvloggen.se/#bad-22</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-23</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-24</loc><priority>0.9</priority></url>
+  <url><loc>https://badvloggen.se/#bad-25</loc><priority>0.2</priority></url>
+  <url><loc>https://badvloggen.se/#bad-26</loc><priority>0.9</priority></url>
+  <url><loc>https://badvloggen.se/#bad-27</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-28</loc><priority>1.0</priority></url>
+  <url><loc>https://badvloggen.se/#bad-29</loc><priority>0.5</priority></url>
+  <url><loc>https://badvloggen.se/#bad-30</loc><priority>0.4</priority></url>
+  <url><loc>https://badvloggen.se/#bad-31</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-32</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-33</loc><priority>0.6</priority></url>
+  <url><loc>https://badvloggen.se/#bad-34</loc><priority>0.6</priority></url>
+  <url><loc>https://badvloggen.se/#bad-35</loc><priority>0.9</priority></url>
+  <url><loc>https://badvloggen.se/#bad-36</loc><priority>0.9</priority></url>
+  <url><loc>https://badvloggen.se/#bad-37</loc><priority>0.4</priority></url>
+  <url><loc>https://badvloggen.se/#bad-38</loc><priority>0.5</priority></url>
+  <url><loc>https://badvloggen.se/#bad-39</loc><priority>0.7</priority></url>
+  <url><loc>https://badvloggen.se/#bad-40</loc><priority>0.8</priority></url>
+  <url><loc>https://badvloggen.se/#bad-41</loc><priority>0.5</priority></url>
+  <url><loc>https://badvloggen.se/#bad-42</loc><priority>0.4</priority></url>
+  <url><loc>https://badvloggen.se/#bad-43</loc><priority>0.5</priority></url>
+  <url><loc>https://badvloggen.se/#bad-44</loc><priority>0.3</priority></url>
+  <url><loc>https://badvloggen.se/#bad-45</loc><priority>0.5</priority></url>
+  <url><loc>https://badvloggen.se/#bad-46</loc><priority>0.6</priority></url>
+  <url><loc>https://badvloggen.se/#bad-47</loc><priority>0.5</priority></url>
+  <url><loc>https://badvloggen.se/#bad-48</loc><priority>0.6</priority></url>
+  <url><loc>https://badvloggen.se/#bad-49</loc><priority>0.6</priority></url>
+
+</urlset>
