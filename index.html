@@ -1130,6 +1130,33 @@ select.field option {
 .profile-list { display: grid; gap: 7px; max-height: 240px; overflow: auto; }
 .profile-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--line); color: var(--ink); font-size: 13px; }
 .profile-item button { background: transparent; color: var(--teal-accent); font-size: 12px; font-weight: 700; }
+.profile-privacy { display: flex; align-items: flex-start; gap: 9px; color: var(--muted); font-size: 13px; }
+.profile-privacy input { margin-top: 3px; accent-color: var(--teal-accent); }
+.profile-achievements { display: flex; flex-wrap: wrap; gap: 8px; }
+.profile-achievement { flex: 1 1 145px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); font-size: 12px; }
+.profile-achievement strong { display: block; color: var(--ink); font-size: 13px; }
+.profile-achievement.unlocked { border-color: var(--line-strong); color: var(--teal-accent); }
+.profile-achievement.unlocked strong { color: var(--teal-accent); }
+.idea-board { display: grid; grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.6fr); gap: 18px; align-items: start; }
+.idea-form { display: grid; gap: 9px; }
+.idea-form textarea { min-height: 120px; resize: vertical; }
+.idea-list { display: grid; gap: 12px; }
+.idea-card { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+.idea-card h3 { margin: 0; font: 700 18px "Space Grotesk", sans-serif; }
+.idea-card p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.idea-card-head, .idea-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.idea-meta, .idea-status { color: var(--muted); font-size: 12px; }
+.idea-status { border: 1px solid var(--line); border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
+.idea-actions { justify-content: flex-start; flex-wrap: wrap; }
+.idea-actions button { background: transparent; border: 1px solid var(--line); border-radius: 9px; color: var(--teal-accent); padding: 7px 10px; font-weight: 700; }
+.idea-comments { display: grid; gap: 8px; margin-top: 12px; }
+.idea-comment { padding: 9px 11px; border-left: 2px solid var(--line-strong); background: rgba(0,0,0,.12); font-size: 13px; }
+.idea-comment-form { display: grid; gap: 7px; }
+.idea-comment-form textarea { min-height: 70px; resize: vertical; }
+.municipal-contact { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; margin: 14px 0; padding: 12px; border: 1px solid var(--line-strong); border-radius: 12px; }
+.municipal-contact a { color: var(--teal-accent); font-weight: 700; }
+.admin-idea { padding: 12px; border-bottom: 1px solid var(--line); }
+.admin-idea select { margin-top: 8px; max-width: 240px; }
 
 .modal.show .modal-card {
   animation: modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -1414,6 +1441,7 @@ footer {
   .top-grid { grid-template-columns: repeat(2, 1fr); }
   .map-wrapper { height: 520px; }
   .about { grid-template-columns: 1fr; }
+  .idea-board { grid-template-columns: 1fr; }
   .controls { grid-template-columns: 1fr 1fr; }
   .controls .search-wrap { grid-column: 1 / -1; }
 }
@@ -1423,6 +1451,8 @@ footer {
   .topbar { height: 62px; }
   .brand { font-size: 17px; }
   .live-pill { display: none; }
+  nav { max-width: 62%; overflow-x: auto; }
+  nav a, .navbtn { padding: 8px 6px; white-space: nowrap; }
   .hero { padding-top: 32px; }
   .hero h1 { font-size: 48px; }
   .stats { grid-template-columns: 1fr; }
@@ -1591,6 +1621,7 @@ footer {
       <a href="#idag">Idag</a>
       <a href="#topplista">Topplista</a>
       <a href="#karta">Kartan</a>
+      <a href="#ideer">Idéer</a>
       <a href="#om">Om</a>
       <button class="navbtn" id="profileOpenBtn" type="button">Profil</button>
     </nav>
@@ -1601,7 +1632,7 @@ footer {
   <div>
     <p class="gutter-label">Östergötland<br>58° 23′ N</p>
     <div class="gutter-map" aria-hidden="true"><span class="gutter-coordinate">15° 37′ E<br>Vatten nära</span></div>
-    <div class="gutter-stat"><strong id="railPlaceCount">49</strong><span>badplatser att upptäcka</span></div>
+    <div class="gutter-stat"><strong id="railPlaceCount">120</strong><span>badplatser att upptäcka</span></div>
   </div>
   <button class="gutter-link" type="button" onclick="randomPlace()">Överraska mig <span aria-hidden="true">↗</span></button>
 </aside>
@@ -1619,7 +1650,7 @@ footer {
 <main class="wrap">
 <section class="hero">
   <div>
-    <div class="eyebrow">Östergötland · 49 platser</div>
+    <div class="eyebrow">Östergötland · 120 platser</div>
     <h1>Hitta ditt <em>bad.</em></h1>
     <p>En modern badkarta för dig som vill hitta nästa brygga, strand, sjö eller hemliga doppställe. Utforska liveväder, spara favoriter och dela smultronställen.</p>
     <div class="hero-actions">
@@ -1636,7 +1667,7 @@ footer {
 </section>
 
 <section class="stats">
-  <div class="stat"><div class="stat-icon">🏖️</div><div><b id="statPlaces">49</b><span>badplatser</span></div></div>
+  <div class="stat"><div class="stat-icon">🏖️</div><div><b id="statPlaces">120</b><span>badplatser</span></div></div>
   <div class="stat"><div class="stat-icon">📍</div><div><b id="statMapped">0</b><span>på kartan</span></div></div>
   <div class="stat"><div class="stat-icon">💬</div><div><b id="statComments">0</b><span>kommentarer</span></div></div>
 </section>
@@ -1743,6 +1774,29 @@ footer {
     <p>Badplatser, kommentarer, likes och vattenrapporter kopplas till <b>Supabase</b>. Favoriter och personliga inställningar sparas tryggt i din webbläsare.</p>
   </div>
 </section>
+
+<section id="ideer">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Bygg Badvloggen tillsammans</div>
+      <h2>Idéer &amp; förbättringar.</h2>
+      <p>Föreslå funktioner, rösta på idéer och diskutera vad vi borde bygga härnäst.</p>
+    </div>
+  </div>
+  <div class="idea-board">
+    <div class="panel">
+      <h3>Har du en idé?</h3>
+      <p class="hint">Alla kan läsa och rösta. Logga in för att lägga till idéer och diskutera.</p>
+      <form class="idea-form" id="featureIdeaForm">
+        <input class="field" name="title" maxlength="100" minlength="5" placeholder="Kort rubrik" required>
+        <textarea class="field" name="details" maxlength="2000" minlength="10" placeholder="Beskriv idén och hur den skulle hjälpa besökare" required></textarea>
+        <button class="btn btn-primary" type="submit">Skicka idé</button>
+        <div class="profile-message" id="featureIdeaMessage" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+    <div class="idea-list" id="featureIdeaList" aria-live="polite">Laddar idéer…</div>
+  </div>
+</section>
 </main>
 
 <footer>EDVINS BADVLOGG · byggd för dopp, upptäckter och soliga dagar vid vattnet.</footer>
@@ -1778,14 +1832,30 @@ footer {
       <form class="profile-form" id="profileDetailsForm">
         <label for="profileDisplayName">Visningsnamn</label>
         <input class="field" id="profileDisplayName" maxlength="60" placeholder="Ditt namn">
+        <label class="profile-privacy"><input id="profilePublicToggle" type="checkbox"> <span>Gör min profil offentlig. Då kan andra se mitt visningsnamn, besökta badplatser och achievements via min profillänk.</span></label>
         <button class="btn btn-soft" type="submit">Spara profil</button>
       </form>
       <p class="profile-message" id="profileDetailsMessage" role="status" aria-live="polite"></p>
+      <div class="profile-actions" id="profileShareActions" hidden>
+        <button class="btn btn-soft" id="profileShareBtn" type="button">🔗 Kopiera offentlig profillänk</button>
+      </div>
       <div class="profile-columns">
+        <section><h3>Mina besök</h3><p class="hint" id="profileVisitCount">0 besökta badplatser</p><div id="profileVisits"></div></section>
+        <section><h3>Achievements</h3><div id="profileAchievements" class="profile-achievements"></div></section>
         <section><h3>Mina favoriter</h3><div id="profileFavorites"></div></section>
         <section><h3>Mina kommentarer</h3><div id="profileComments"></div></section>
       </div>
       <button class="btn btn-soft" id="profileSignOut" type="button">Logga ut</button>
+    </div>
+    <div id="profilePublicView" hidden>
+      <div class="eyebrow">Offentlig badprofil</div>
+      <h2 id="publicProfileHeading">Badprofil</h2>
+      <p class="hint" id="publicProfileVisitCount"></p>
+      <div class="profile-columns">
+        <section><h3>Achievements</h3><div id="publicProfileAchievements" class="profile-achievements"></div></section>
+        <section><h3>Besökta badplatser</h3><div id="publicProfileVisits"></div></section>
+      </div>
+      <p class="profile-message" id="publicProfileMessage" role="status" aria-live="polite"></p>
     </div>
   </div>
 </div>
@@ -1812,6 +1882,7 @@ footer {
     <button class="admin-tab" onclick="adminTab('comments')">💬 Kommentarer</button>
     <button class="admin-tab" onclick="adminTab('places')">Platser</button>
     <button class="admin-tab" onclick="adminTab('suggestions')">Förslag</button>
+    <button class="admin-tab" onclick="adminTab('ideas')">Idéforum</button>
   </div>
 
   <!-- Stats View -->
@@ -1846,6 +1917,11 @@ footer {
     <div class="admin-comment-list" id="adminSuggestionList">Laddar…</div>
   </div>
 
+  <div class="admin-view" id="adminView-ideas">
+    <div class="admin-note">Hantera förslag på nya funktioner och deras status.</div>
+    <div class="admin-comment-list" id="adminIdeaList">Laddar…</div>
+  </div>
+
   <div class="admin-view" id="adminView-places">
     <div class="admin-note">Redigera informationen för en badplats.</div>
     <div class="admin-note" id="adminPlaceCompleteness"></div>
@@ -1869,6 +1945,24 @@ footer {
       <div class="admin-place-field">
         <label for="adminPlaceLastVerified">Senast kontrollerad</label>
         <input class="field" id="adminPlaceLastVerified" type="date">
+      </div>
+      <div class="admin-place-row">
+        <div class="admin-place-field">
+          <label for="adminMunicipality">Kommun (endast verifierat officiellt bad)</label>
+          <input class="field" id="adminMunicipality" maxlength="120" placeholder="Exempel: Linköpings kommun">
+        </div>
+        <div class="admin-place-field">
+          <label for="adminMunicipalVerifiedAt">Länk verifierad</label>
+          <input class="field" id="adminMunicipalVerifiedAt" type="date">
+        </div>
+      </div>
+      <div class="admin-place-field">
+        <label for="adminMunicipalReportUrl">Kommunens felanmälan</label>
+        <input class="field" id="adminMunicipalReportUrl" type="url" maxlength="1000" placeholder="https://...">
+      </div>
+      <div class="admin-place-field">
+        <label for="adminMunicipalSourceUrl">Officiell källa som bekräftar badplatsen</label>
+        <input class="field" id="adminMunicipalSourceUrl" type="url" maxlength="1000" placeholder="https://kommunens-webbplats/...">
       </div>
       <fieldset class="admin-amenities">
         <legend>Faciliteter och egenskaper</legend>
@@ -1951,6 +2045,16 @@ const VISITOR_KEY = 'badvlogg-visitor-id';
 let isSiteAdmin = false;
 let currentUser = null;
 let currentProfile = null;
+let municipalContacts = {};
+let visitedPlaceIds = [];
+const PROFILE_ACHIEVEMENTS = [
+  { count: 1, emoji: '💦', title: 'Första doppet' },
+  { count: 5, emoji: '🧭', title: 'Badutforskare' },
+  { count: 10, emoji: '🌊', title: 'Vattenvän' },
+  { count: 25, emoji: '🏅', title: 'Badentusiast' },
+  { count: 50, emoji: '🏆', title: 'Badmästare' },
+  { count: 100, emoji: '👑', title: 'Östergötlands legend' }
+];
 const PLACE_AMENITIES = [
   { key: 'parking', label: 'Parkering' },
   { key: 'toilet', label: 'Toalett' },
@@ -1970,6 +2074,237 @@ function getVisitorId() {
   return id;
 }
 
+function renderAchievements(container, visitCount) {
+  container.innerHTML = PROFILE_ACHIEVEMENTS.map(achievement => {
+    const unlocked = visitCount >= achievement.count;
+    return `<div class="profile-achievement ${unlocked ? 'unlocked' : ''}">
+      <strong>${achievement.emoji} ${achievement.title}</strong>
+      ${unlocked ? 'Upplåst' : `${achievement.count} besök behövs`}
+    </div>`;
+  }).join('');
+}
+
+function isMissingPublicProfileColumn(error) {
+  return error?.code === '42703' || error?.code === 'PGRST204' || error?.message?.includes('is_public');
+}
+
+const FEATURE_IDEA_STATUSES = {
+  open: 'Nytt förslag',
+  planned: 'Planerad',
+  in_progress: 'Under arbete',
+  done: 'Genomförd',
+  declined: 'Avvisad'
+};
+
+async function renderFeatureIdeas() {
+  const list = $('#featureIdeaList');
+  if (!list) return;
+  const { data, error } = await supabase.rpc('get_feature_ideas');
+  if (error) {
+    console.error('Idéforumet kunde inte hämtas:', error.message);
+    list.textContent = 'Idéforumet är inte tillgängligt just nu. Kontrollera att supabase/feature_ideas_and_contacts.sql har körts.';
+    return;
+  }
+  if (!data?.length) {
+    list.innerHTML = '<div class="panel"><p>Inga idéer ännu. Lägg upp det första förslaget!</p></div>';
+    return;
+  }
+  const sorted = [...data].sort((a, b) =>
+    Number(b.vote_count) - Number(a.vote_count) || new Date(b.created_at) - new Date(a.created_at)
+  );
+  list.innerHTML = sorted.map(idea => `
+    <article class="idea-card">
+      <div class="idea-card-head">
+        <h3>${esc(idea.title)}</h3>
+        <span class="idea-status">${esc(FEATURE_IDEA_STATUSES[idea.status] || idea.status)}</span>
+      </div>
+      <div class="idea-meta">${esc(idea.author_name)} · ${esc(new Date(idea.created_at).toLocaleDateString('sv-SE'))}</div>
+      <p>${esc(idea.details)}</p>
+      <div class="idea-actions">
+        <button type="button" data-idea-vote="${esc(idea.idea_id)}">${idea.has_voted ? '▲ Röstat' : '△ Rösta'} · ${Number(idea.vote_count)}</button>
+        <button type="button" data-idea-comments="${esc(idea.idea_id)}">💬 Diskussion · ${Number(idea.comment_count)}</button>
+      </div>
+      <div class="idea-comments" id="ideaComments-${esc(idea.idea_id)}" hidden></div>
+    </article>
+  `).join('');
+}
+
+async function toggleFeatureIdeaVote(ideaId) {
+  if (!currentUser) {
+    toast('Logga in för att rösta på idéer.');
+    $('#profileModal').classList.add('show');
+    return;
+  }
+  const { data, error } = await supabase.rpc('get_feature_ideas');
+  if (error) {
+    console.error('Idéer kunde inte hämtas för röstning:', error.message);
+    toast('Idén kunde inte hämtas. Försök igen.');
+    return;
+  }
+  const idea = data?.find(row => row.idea_id === ideaId);
+  if (!idea) {
+    toast('Idén kunde inte hittas. Uppdatera sidan och försök igen.');
+    return;
+  }
+  const { error: voteError } = await supabase.rpc('set_feature_idea_vote', {
+    p_idea_id: ideaId,
+    p_is_voted: !idea.has_voted
+  });
+  if (voteError) {
+    console.error('Röstningen kunde inte sparas:', voteError.message);
+    toast('Rösten kunde inte sparas. Försök igen.');
+    return;
+  }
+  await renderFeatureIdeas();
+}
+
+async function showFeatureIdeaComments(ideaId) {
+  const container = $(`#ideaComments-${CSS.escape(ideaId)}`);
+  if (!container) return;
+  if (!container.hidden) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+  container.textContent = 'Laddar diskussion…';
+  const { data, error } = await supabase.rpc('get_feature_idea_comments', { p_idea_id: ideaId });
+  if (error) {
+    console.error('Idédiskussionen kunde inte hämtas:', error.message);
+    container.textContent = 'Diskussionen kunde inte hämtas.';
+    return;
+  }
+  container.innerHTML = (data || []).map(comment => `
+    <div class="idea-comment"><strong>${esc(comment.author_name)}</strong><br>${esc(comment.body)}</div>
+  `).join('') || '<p class="hint">Ingen diskussion ännu.</p>';
+  if (currentUser) {
+    container.insertAdjacentHTML('beforeend', `
+      <form class="idea-comment-form" data-idea-comment-form="${esc(ideaId)}">
+        <textarea class="field" name="body" minlength="2" maxlength="1000" placeholder="Skriv en kommentar" required></textarea>
+        <button class="btn btn-soft" type="submit">Kommentera</button>
+      </form>
+    `);
+  } else {
+    container.insertAdjacentHTML('beforeend', '<p class="hint">Logga in för att delta i diskussionen.</p>');
+  }
+}
+
+async function renderAdminIdeas() {
+  const list = $('#adminIdeaList');
+  if (!list || !isSiteAdmin) return;
+  const { data, error } = await supabase.rpc('get_feature_ideas');
+  if (error) {
+    console.error('Idéer kunde inte hämtas för admin:', error.message);
+    list.textContent = 'Idéer kunde inte hämtas. Kontrollera att forum-migreringen är körd.';
+    return;
+  }
+  if (!data?.length) {
+    list.textContent = 'Inga idéer ännu.';
+    return;
+  }
+  list.innerHTML = data.map(idea => `
+    <article class="admin-idea">
+      <strong>${esc(idea.title)}</strong> · ${esc(idea.author_name)}
+      <p class="admin-suggestion-text">${esc(idea.details)}</p>
+      <button type="button" class="admin-tab" data-admin-idea-comments="${esc(idea.idea_id)}">Visa diskussion (${Number(idea.comment_count)})</button>
+      <div id="adminIdeaComments-${esc(idea.idea_id)}"></div>
+      <label>Status
+        <select class="field" data-admin-idea-status="${esc(idea.idea_id)}">
+          ${Object.entries(FEATURE_IDEA_STATUSES).map(([value, label]) => `<option value="${value}" ${idea.status === value ? 'selected' : ''}>${label}</option>`).join('')}
+        </select>
+      </label>
+    </article>
+  `).join('');
+}
+
+async function showAdminFeatureIdeaComments(ideaId) {
+  if (!isSiteAdmin) return;
+  const container = $(`#adminIdeaComments-${CSS.escape(ideaId)}`);
+  if (!container) return;
+  const { data, error } = await supabase.rpc('get_feature_idea_comments', { p_idea_id: ideaId });
+  if (error) {
+    console.error('Idédiskussionen kunde inte hämtas i admin:', error.message);
+    container.textContent = 'Diskussionen kunde inte hämtas.';
+    return;
+  }
+  container.className = 'idea-comments';
+  container.innerHTML = (data || []).map(comment => `
+    <div class="idea-comment">
+      <strong>${esc(comment.author_name)}</strong> · ${esc(new Date(comment.created_at).toLocaleDateString('sv-SE'))}
+      <p>${esc(comment.body)}</p>
+      <button type="button" data-admin-idea-comment-delete="${comment.comment_id}">Radera kommentar</button>
+    </div>
+  `).join('') || '<p class="hint">Ingen diskussion ännu.</p>';
+}
+
+async function saveAdminFeatureIdeaStatus(ideaId, status) {
+  if (!isSiteAdmin || !Object.hasOwn(FEATURE_IDEA_STATUSES, status)) return;
+  const { error } = await supabase.rpc('admin_set_feature_idea_status', {
+    p_idea_id: ideaId,
+    p_status: status
+  });
+  if (error) {
+    console.error('Idéns status kunde inte sparas:', error.message);
+    toast('Idéns status kunde inte sparas.');
+    await renderAdminIdeas();
+    return;
+  }
+  await renderFeatureIdeas();
+  await renderAdminIdeas();
+}
+
+async function deleteAdminFeatureIdeaComment(commentId) {
+  if (!isSiteAdmin) return;
+  const { error } = await supabase.rpc('admin_delete_feature_idea_comment', { p_comment_id: Number(commentId) });
+  if (error) {
+    console.error('Idékommentaren kunde inte tas bort:', error.message);
+    toast('Kommentaren kunde inte tas bort.');
+    return;
+  }
+  await renderAdminIdeas();
+}
+
+async function submitFeatureIdea(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const message = $('#featureIdeaMessage');
+  if (!currentUser) {
+    message.textContent = 'Logga in för att lägga upp idéer.';
+    $('#profileModal').classList.add('show');
+    return;
+  }
+  const { error } = await supabase.rpc('create_feature_idea', {
+    p_title: form.elements.namedItem('title').value.trim(),
+    p_details: form.elements.namedItem('details').value.trim()
+  });
+  if (error) {
+    console.error('Idén kunde inte skickas:', error.message);
+    message.textContent = 'Idén kunde inte skickas. Försök igen senare.';
+    return;
+  }
+  form.reset();
+  message.textContent = 'Tack! Idén är publicerad.';
+  await renderFeatureIdeas();
+}
+
+async function submitFeatureIdeaComment(event) {
+  event.preventDefault();
+  if (!currentUser) return;
+  const form = event.currentTarget;
+  const ideaId = form.dataset.ideaCommentForm;
+  const { error } = await supabase.rpc('add_feature_idea_comment', {
+    p_idea_id: ideaId,
+    p_body: form.elements.namedItem('body').value.trim()
+  });
+  if (error) {
+    console.error('Kommentaren kunde inte skickas:', error.message);
+    toast('Kommentaren kunde inte skickas. Försök igen.');
+    return;
+  }
+  await renderFeatureIdeas();
+  await showFeatureIdeaComments(ideaId);
+  toast('Kommentaren publicerades.');
+}
+
 async function loadAccountProfile() {
   const message = $('#profileAuthMessage');
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
@@ -1983,7 +2318,9 @@ async function loadAccountProfile() {
   currentUser = nextUser;
   $('#profileSignedOut').hidden = Boolean(currentUser);
   $('#profileSignedIn').hidden = !currentUser;
+  $('#profilePublicView').hidden = true;
   $('#profileOpenBtn').textContent = currentUser ? 'Min profil' : 'Profil';
+  visitedPlaceIds = [];
   if (!currentUser) {
     currentProfile = null;
     return;
@@ -1992,24 +2329,43 @@ async function loadAccountProfile() {
   const fallbackName = currentUser.user_metadata?.display_name || currentUser.email?.split('@')[0] || '';
   const { data: profileRow, error: profileError } = await supabase
     .from('profiles')
-    .select('display_name')
+    .select('display_name,is_public')
     .eq('user_id', currentUser.id)
     .maybeSingle();
   if (profileError) {
-    $('#profileDetailsMessage').textContent = 'Kör den uppdaterade Supabase-migreringen för att aktivera profiler.';
-    currentProfile = { display_name: fallbackName };
+    if (isMissingPublicProfileColumn(profileError)) {
+      const { data: legacyProfile, error: legacyProfileError } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+      if (!legacyProfileError) {
+        currentProfile = { display_name: legacyProfile?.display_name || fallbackName, is_public: false };
+        $('#profileDetailsMessage').textContent = 'Kör supabase/profile_visits.sql för att aktivera besök och offentlig profil.';
+      } else {
+        console.error('Befintlig profil kunde inte hämtas:', legacyProfileError.message);
+        $('#profileDetailsMessage').textContent = 'Profilen kunde inte hämtas.';
+        currentProfile = { display_name: fallbackName, is_public: false };
+      }
+    } else {
+      console.error('Profilen kunde inte hämtas:', profileError.message);
+      $('#profileDetailsMessage').textContent = 'Kör Supabase-migreringarna för att aktivera profiler.';
+      currentProfile = { display_name: fallbackName, is_public: false };
+    }
   } else if (profileRow) {
     currentProfile = profileRow;
   } else {
     const { data: createdProfile, error: createError } = await supabase
       .from('profiles')
       .upsert({ user_id: currentUser.id, display_name: fallbackName }, { onConflict: 'user_id' })
-      .select('display_name')
+      .select('display_name,is_public')
       .single();
-    currentProfile = createError ? { display_name: fallbackName } : createdProfile;
+    currentProfile = createError ? { display_name: fallbackName, is_public: false } : createdProfile;
   }
 
   $('#profileDisplayName').value = currentProfile?.display_name || '';
+  $('#profilePublicToggle').checked = Boolean(currentProfile?.is_public);
+  $('#profileShareActions').hidden = !currentProfile?.is_public;
   $('#profileHeading').textContent = currentProfile?.display_name || 'Din profil.';
   await renderProfileActivity();
 }
@@ -2018,7 +2374,26 @@ async function renderProfileActivity() {
   if (!currentUser) return;
   const favoriteList = $('#profileFavorites');
   const commentList = $('#profileComments');
+  const visitList = $('#profileVisits');
   const savedPlaces = favorites.map(id => places.find(place => place.id === id)).filter(Boolean);
+  const { data: visitRows, error: visitError } = await supabase
+    .from('profile_visits')
+    .select('place_id')
+    .eq('user_id', currentUser.id)
+    .order('visited_at', { ascending: false });
+  if (visitError) {
+    visitList.textContent = 'Besöken kunde inte hämtas. Kontrollera att supabase/profile_visits.sql har körts.';
+    console.error('Besökta badplatser kunde inte hämtas:', visitError.message);
+  } else {
+    visitedPlaceIds = (visitRows || []).map(row => Number(row.place_id));
+    const visitedPlaces = visitedPlaceIds.map(id => places.find(place => place.id === id)).filter(Boolean);
+    $('#profileVisitCount').textContent = `${visitedPlaces.length} av ${places.length} badplatser besökta`;
+    visitList.className = 'profile-list';
+    visitList.innerHTML = visitedPlaces.length
+      ? visitedPlaces.map(place => `<div class="profile-item"><span>${esc(place.name)}</span><button type="button" onclick="openPlace(${place.id})">Visa</button></div>`).join('')
+      : '<p class="hint">Markera badplatser du har besökt för att samla achievements.</p>';
+    renderAchievements($('#profileAchievements'), visitedPlaces.length);
+  }
   favoriteList.className = 'profile-list';
   favoriteList.innerHTML = savedPlaces.length
     ? savedPlaces.map(place => `<div class="profile-item"><span>${esc(place.name)}</span><button type="button" onclick="openPlace(${place.id})">Visa</button></div>`).join('')
@@ -2036,6 +2411,62 @@ async function renderProfileActivity() {
       return `<div class="profile-item"><span>${esc(place?.name || 'Badplats')} · ${esc(row.text)}</span></div>`;
     }).join('')
     : '<p class="hint">Du har inte publicerat några kommentarer ännu.</p>';
+}
+
+async function togglePlaceVisited(placeId) {
+  if (!currentUser) {
+    toast('Logga in för att spara dina besök på kontot.');
+    $('#profileModal').classList.add('show');
+    return;
+  }
+  const alreadyVisited = visitedPlaceIds.includes(placeId);
+  const result = alreadyVisited
+    ? await supabase.from('profile_visits').delete().eq('user_id', currentUser.id).eq('place_id', placeId)
+    : await supabase.from('profile_visits').insert({ user_id: currentUser.id, place_id: placeId });
+  if (result.error) {
+    toast('Besöket kunde inte sparas. Kontrollera att supabase/profile_visits.sql har körts.');
+    console.error('Besöksmarkering kunde inte sparas:', result.error.message);
+    return;
+  }
+  visitedPlaceIds = alreadyVisited
+    ? visitedPlaceIds.filter(id => id !== placeId)
+    : [...visitedPlaceIds, placeId];
+  await renderProfileActivity();
+  openPlace(placeId, true);
+  toast(alreadyVisited ? 'Besöket har tagits bort.' : 'Badplatsen markerad som besökt! 🏅');
+}
+
+async function showPublicProfile(userId) {
+  const message = $('#publicProfileMessage');
+  const { data, error } = await supabase.rpc('get_public_profile', { p_user_id: userId });
+  $('#profileSignedOut').hidden = true;
+  $('#profileSignedIn').hidden = true;
+  $('#profilePublicView').hidden = false;
+  $('#profileModal').classList.add('show');
+  if (error) {
+    message.textContent = 'Den offentliga profilen kunde inte hämtas. Kontrollera att Supabase-migreringen är installerad.';
+    console.error('Offentlig profil kunde inte hämtas:', error.message);
+    return;
+  }
+  const profile = data?.[0];
+  if (!profile) {
+    $('#publicProfileHeading').textContent = 'Profilen är privat eller finns inte';
+    $('#publicProfileVisitCount').textContent = '';
+    $('#publicProfileVisits').innerHTML = '';
+    $('#publicProfileAchievements').innerHTML = '';
+    message.textContent = 'Be profilägaren kontrollera att profilen är offentlig.';
+    return;
+  }
+  const visitedIds = (profile.visited_place_ids || []).map(Number);
+  const visitedPlaces = visitedIds.map(id => places.find(place => place.id === id)).filter(Boolean);
+  $('#publicProfileHeading').textContent = profile.display_name || 'Badprofil';
+  $('#publicProfileVisitCount').textContent = `${visitedPlaces.length} av ${places.length} badplatser besökta`;
+  $('#publicProfileVisits').className = 'profile-list';
+  $('#publicProfileVisits').innerHTML = visitedPlaces.length
+    ? visitedPlaces.map(place => `<div class="profile-item"><span>${esc(place.name)} · ${esc(place.city || 'Östergötland')}</span><button type="button" onclick="openPlace(${place.id})">Visa</button></div>`).join('')
+    : '<p class="hint">Inga besökta badplatser ännu.</p>';
+  renderAchievements($('#publicProfileAchievements'), visitedPlaces.length);
+  message.textContent = '';
 }
 
 async function recordSiteVisit() {
@@ -2116,6 +2547,7 @@ function adminTab(name) {
   if (name === 'comments') renderAdminComments();
   if (name === 'places') renderAdminPlaces();
   if (name === 'suggestions') renderAdminSuggestions();
+  if (name === 'ideas') renderAdminIdeas();
 }
 
 function setAdminAccess(enabled) {
@@ -2145,6 +2577,7 @@ async function verifyAdminSession() {
   renderAdminComments();
   renderAdminPlaces();
   renderAdminSuggestions();
+  renderAdminIdeas();
   return true;
 }
 
@@ -2186,6 +2619,11 @@ function loadAdminPlaceForm() {
   $('#adminPlaceLatitude').value = place.lat ?? '';
   $('#adminPlaceLongitude').value = place.lng ?? '';
   $('#adminPlaceLastVerified').value = place.lastVerifiedAt || '';
+  const contact = municipalContacts[place.id];
+  $('#adminMunicipality').value = contact?.municipality || '';
+  $('#adminMunicipalReportUrl').value = contact?.report_url || '';
+  $('#adminMunicipalSourceUrl').value = contact?.source_url || '';
+  $('#adminMunicipalVerifiedAt').value = contact?.verified_at || '';
   document.querySelectorAll('[data-amenity]').forEach(input => {
     input.checked = Boolean(place.amenities?.[input.dataset.amenity]);
   });
@@ -2209,6 +2647,13 @@ async function saveAdminPlace(event) {
       .map(input => [input.dataset.amenity, input.checked])),
     p_last_verified_at: $('#adminPlaceLastVerified').value || null
   };
+  const contactValues = {
+    place_id: placeId,
+    municipality: $('#adminMunicipality').value.trim(),
+    report_url: $('#adminMunicipalReportUrl').value.trim(),
+    source_url: $('#adminMunicipalSourceUrl').value.trim(),
+    verified_at: $('#adminMunicipalVerifiedAt').value || null
+  };
   const original = places.find(place => place.id === placeId);
   const changed = [];
   if (original?.name !== values.p_name) changed.push(`Namn: ${original?.name || ''} → ${values.p_name}`);
@@ -2218,6 +2663,12 @@ async function saveAdminPlace(event) {
   if (Number(original?.lat) !== values.p_latitude || Number(original?.lng) !== values.p_longitude) changed.push('Koordinater ändras');
   if ((original?.lastVerifiedAt || '') !== (values.p_last_verified_at || '')) changed.push(`Kontrollerad: ${values.p_last_verified_at || 'datum tas bort'}`);
   if (JSON.stringify(original?.amenities || {}) !== JSON.stringify(values.p_amenities)) changed.push('Faciliteter ändras');
+  const oldContact = municipalContacts[placeId];
+  const contactIsEmpty = !contactValues.municipality && !contactValues.report_url && !contactValues.source_url && !contactValues.verified_at;
+  const contactChanged = contactIsEmpty
+    ? Boolean(oldContact)
+    : !oldContact || ['municipality', 'report_url', 'source_url', 'verified_at'].some(key => (oldContact[key] || '') !== (contactValues[key] || ''));
+  if (contactChanged) changed.push('Kontakt/felanmälanslänk till kommunen ändras');
   if (!changed.length) {
     $('#adminPlaceMessage').textContent = 'Inga ändringar att spara.';
     return;
@@ -2234,6 +2685,24 @@ async function saveAdminPlace(event) {
     console.error('Badplatsen kunde inte uppdateras:', error);
     message.textContent = 'Kunde inte spara. Kontrollera att den uppdaterade admin-SQL:en har körts.';
     return;
+  }
+
+  if (contactChanged) {
+    let contactError = null;
+    if (contactIsEmpty) {
+      const result = await supabase.from('municipal_bathplace_contacts').delete().eq('place_id', placeId);
+      contactError = result.error;
+    } else {
+      const result = await supabase.from('municipal_bathplace_contacts').upsert(contactValues, { onConflict: 'place_id' });
+      contactError = result.error;
+    }
+    if (contactError) {
+      console.error('Kommunens felanmälanslänk kunde inte sparas:', contactError);
+      message.textContent = 'Badplatsen sparades, men kommunlänken kunde inte sparas. Kontrollera att feature_ideas_and_contacts.sql har körts och försök igen.';
+      await hydrateSupabase();
+      renderAdminPlaces(placeId);
+      return;
+    }
   }
 
   await hydrateSupabase();
@@ -2538,6 +3007,15 @@ async function hydrateSupabase() {
     supabase.from('water_reports').select('*').order('created_at', { ascending: false }),
     supabase.rpc('get_place_favorite_counts')
   ]);
+  const { data: contactRows, error: contactError } = await supabase
+    .from('municipal_bathplace_contacts')
+    .select('place_id,municipality,report_url,source_url,verified_at');
+  if (contactError) {
+    municipalContacts = {};
+    console.warn('Kommunlänkar kunde inte hämtas:', contactError.message);
+  } else {
+    municipalContacts = Object.fromEntries((contactRows || []).map(row => [Number(row.place_id), row]));
+  }
 
   if (placeError) {
     console.warn('Supabase places:', placeError.message);
@@ -2962,6 +3440,7 @@ function openPlace(id, keepOpen = false) {
   const cs = comments[id] || [];
   const imgs = placeImages[id] || [];
   const wt = waterTemps[id];
+  const municipalContact = municipalContacts[id];
   const amenities = PLACE_AMENITIES.filter(item => p.amenities?.[item.key]);
   const verifiedDate = p.lastVerifiedAt
     ? new Date(`${p.lastVerifiedAt}T00:00:00`).toLocaleDateString('sv-SE')
@@ -2983,6 +3462,13 @@ function openPlace(id, keepOpen = false) {
     </div>
     <div class="note">${p.note ? esc(p.note) : 'Ingen beskrivning ännu. Var först med att lämna en kommentar.'}</div>
     <div class="hint verification-date">Senast kontrollerad: ${esc(verifiedDate)}</div>
+    ${municipalContact?.verified_at && municipalContact.report_url ? `
+      <div class="municipal-contact">
+        <span>🏛️ Officiell badplats · ${esc(municipalContact.municipality)}</span>
+        <a href="${esc(municipalContact.report_url)}" target="_blank" rel="noopener noreferrer">Fel vid badet? Anmäl till kommunen ↗</a>
+        <a href="${esc(municipalContact.source_url)}" target="_blank" rel="noopener noreferrer">Källa ↗</a>
+      </div>
+    ` : ''}
     ${amenities.length ? `
       <div class="amenities-box">
         <div class="eyebrow">På plats</div>
@@ -3001,6 +3487,9 @@ function openPlace(id, keepOpen = false) {
     <div class="modal-actions">
       <button class="btn ${favorites.includes(id) ? 'btn-lime' : 'btn-soft'}" onclick="toggleFavorite(${id});openPlace(${id},true)">
         ${favorites.includes(id) ? '♥ Sparad i favoriter' : '♡ Spara favorit'}
+      </button>
+      <button class="btn ${visitedPlaceIds.includes(id) ? 'btn-lime' : 'btn-soft'}" onclick="togglePlaceVisited(${id})">
+        ${visitedPlaceIds.includes(id) ? '✓ Besökt' : '📍 Dessa har jag besökt'}
       </button>
       <button class="btn btn-soft" onclick="sharePlace(${id})">🔗 Dela</button>
       <a class="btn btn-soft" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.mapsQuery)}">
@@ -3493,6 +3982,7 @@ Object.assign(window, {
   openPlace,
   closeModal,
   toggleFavorite,
+  togglePlaceVisited,
   sharePlace,
   focusPlace,
   addComment,
@@ -3606,8 +4096,24 @@ function renderLeaderboard() {
 }
 
 renderLeaderboard();
+renderFeatureIdeas();
 loadAccountProfile()
-  .then(syncLocalFavorites)
+  .then(async () => {
+    await syncLocalFavorites();
+    const publicProfileId = new URLSearchParams(window.location.search).get('profile');
+    if (publicProfileId) {
+      if (/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(publicProfileId)) {
+        await showPublicProfile(publicProfileId);
+      } else {
+        $('#profileModal').classList.add('show');
+        $('#profileSignedOut').hidden = true;
+        $('#profileSignedIn').hidden = true;
+        $('#profilePublicView').hidden = false;
+        $('#publicProfileHeading').textContent = 'Ogiltig profillänk';
+        $('#publicProfileMessage').textContent = 'Länken verkar inte vara giltig.';
+      }
+    }
+  })
   .catch(error => console.error('Profilen kunde inte laddas:', error));
 
 $('#profileOpenBtn').addEventListener('click', () => {
@@ -3637,6 +4143,7 @@ $('#profileAuthForm').addEventListener('submit', async event => {
   await hydrateSupabase();
   render();
   renderLeaderboard();
+  await renderFeatureIdeas();
   await verifyAdminSession();
 });
 
@@ -3662,6 +4169,7 @@ $('#profileSignUp').addEventListener('click', async () => {
   await hydrateSupabase();
   render();
   renderLeaderboard();
+  await renderFeatureIdeas();
 });
 
 $('#profileDetailsForm').addEventListener('submit', async event => {
@@ -3671,16 +4179,45 @@ $('#profileDetailsForm').addEventListener('submit', async event => {
   const { error } = await supabase.from('profiles').upsert({
     user_id: currentUser.id,
     display_name: displayName,
+    is_public: $('#profilePublicToggle').checked,
     updated_at: new Date().toISOString()
   }, { onConflict: 'user_id' });
   if (error) {
-    $('#profileDetailsMessage').textContent = 'Profilen kunde inte sparas. Kontrollera att Supabase-migreringen är körd.';
+    if (isMissingPublicProfileColumn(error) && !$('#profilePublicToggle').checked) {
+      const { error: legacySaveError } = await supabase.from('profiles').upsert({
+        user_id: currentUser.id,
+        display_name: displayName,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id' });
+      if (!legacySaveError) {
+        currentProfile = { display_name: displayName, is_public: false };
+        $('#profileHeading').textContent = displayName || 'Din profil.';
+        $('#profileDetailsMessage').textContent = 'Namnet sparades. Kör supabase/profile_visits.sql för att aktivera besök och offentlig profil.';
+        return;
+      }
+    }
+    $('#profileDetailsMessage').textContent = 'Profilen kunde inte sparas. Kontrollera att supabase/profile_visits.sql har körts.';
+    console.error('Profilen kunde inte sparas:', error.message);
     return;
   }
-  currentProfile = { display_name: displayName };
+  currentProfile = { display_name: displayName, is_public: $('#profilePublicToggle').checked };
   $('#profileHeading').textContent = displayName || 'Din profil.';
+  $('#profileShareActions').hidden = !currentProfile.is_public;
   $('#profileDetailsMessage').textContent = 'Profilen är sparad.';
   toast('Profilen har uppdaterats.');
+});
+
+$('#profileShareBtn').addEventListener('click', async () => {
+  if (!currentUser || !currentProfile?.is_public) return;
+  const profileUrl = new URL(window.location.href);
+  profileUrl.searchParams.set('profile', currentUser.id);
+  profileUrl.hash = '';
+  try {
+    await navigator.clipboard.writeText(profileUrl.href);
+    $('#profileDetailsMessage').textContent = 'Offentlig profillänk kopierad.';
+  } catch (error) {
+    prompt('Kopiera din offentliga profillänk:', profileUrl.href);
+  }
 });
 
 $('#profileSignOut').addEventListener('click', async () => {
@@ -3692,6 +4229,7 @@ $('#profileSignOut').addEventListener('click', async () => {
   $('#profileSignedIn').hidden = true;
   $('#profileSignedOut').hidden = false;
   $('#profileOpenBtn').textContent = 'Profil';
+  visitedPlaceIds = [];
   $('#profileModal').classList.remove('show');
   favorites = [...guestFavorites];
   save();
@@ -3736,11 +4274,39 @@ $('#adminSuggestionList').addEventListener('click', event => {
   if (button) reviewPlaceSuggestion(button.dataset.suggestionId, button.dataset.suggestionStatus);
 });
 
+$('#featureIdeaForm').addEventListener('submit', submitFeatureIdea);
+$('#featureIdeaList').addEventListener('click', event => {
+  const voteButton = event.target.closest('[data-idea-vote]');
+  if (voteButton) {
+    toggleFeatureIdeaVote(voteButton.dataset.ideaVote);
+    return;
+  }
+  const commentsButton = event.target.closest('[data-idea-comments]');
+  if (commentsButton) showFeatureIdeaComments(commentsButton.dataset.ideaComments);
+});
+$('#featureIdeaList').addEventListener('submit', event => {
+  if (event.target.matches('[data-idea-comment-form]')) submitFeatureIdeaComment(event);
+});
+$('#adminIdeaList').addEventListener('change', event => {
+  const select = event.target.closest('[data-admin-idea-status]');
+  if (select) saveAdminFeatureIdeaStatus(select.dataset.adminIdeaStatus, select.value);
+});
+$('#adminIdeaList').addEventListener('click', event => {
+  const commentsButton = event.target.closest('[data-admin-idea-comments]');
+  if (commentsButton) {
+    showAdminFeatureIdeaComments(commentsButton.dataset.adminIdeaComments);
+    return;
+  }
+  const deleteButton = event.target.closest('[data-admin-idea-comment-delete]');
+  if (deleteButton) deleteAdminFeatureIdeaComment(deleteButton.dataset.adminIdeaCommentDelete);
+});
+
 supabase.auth.onAuthStateChange(event => {
   if (event === 'SIGNED_OUT') {
     setAdminAccess(false);
     currentUser = null;
     currentProfile = null;
+    visitedPlaceIds = [];
     $('#profileOpenBtn').textContent = 'Profil';
     $('#profileSignedOut').hidden = false;
     $('#profileSignedIn').hidden = true;
@@ -3748,6 +4314,7 @@ supabase.auth.onAuthStateChange(event => {
     favorites = [...guestFavorites];
     save();
     render();
+    renderFeatureIdeas();
   }
 });
 
