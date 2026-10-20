@@ -36,7 +36,15 @@ on conflict do nothing;
 
 Replace the example email with the admin account's email. The hidden admin panel still requires this authenticated account, and deletion is checked again by the database.
 
-The admin migration also contains the place-editing function. Run the updated `supabase/admin_comments.sql` again after updating the project files to enable it; running the script again is safe.
+The admin migration also contains the place-editing function and the structured amenities field (parking, toilet, pier, child-friendly, grill, changing room, and kiosk). Run the updated `supabase/admin_comments.sql` again after updating the project files to enable these fields; running the script again is safe.
+
+## Profiles and place suggestions
+
+Run `supabase/place_favorites.sql` first, then run the latest `supabase/admin_comments.sql` in the Supabase SQL Editor. Both scripts are safe to rerun. The admin script adds account profiles, account-owned comments, place verification dates, and a moderated place-suggestion queue.
+
+Enable email sign-ups in Supabase Authentication settings. Set the Site URL to the published site and add the local Vite URL to the allowed redirect URLs when testing locally. If email confirmation is enabled, new users must confirm their address before signing in.
+
+Visitors can submit place suggestions from a place's detail view. Suggestions do not change published data; an admin reviews them in the Admin → Förslag tab. Admins can edit place information and mark its last-verified date in Admin → Platser.
 
 ## GitHub Pages
 
