@@ -18,6 +18,24 @@ Create:
 
 Use the same values as your local `.env` file. Do not upload `.env` to GitHub.
 
+## Shared favorites
+
+Before deploying the shared favorites leaderboard, open the Supabase SQL Editor and run `supabase/place_favorites.sql`.
+
+The migration stores one favorite per browser and bathing spot. The public site can read aggregate counts but cannot read visitor IDs directly. Existing browser favorites are synced the next time that browser visits after the migration is installed.
+
+## Admin comment moderation
+
+To enable comment deletion, run `supabase/admin_comments.sql` in the Supabase SQL Editor. Create an email/password user under Authentication → Users, then grant that user admin access in the SQL Editor:
+
+```sql
+insert into public.site_admins (user_id)
+select id from auth.users where email = 'admin@example.com'
+on conflict do nothing;
+```
+
+Replace the example email with the admin account's email. The hidden admin panel still requires this authenticated account, and deletion is checked again by the database.
+
 ## GitHub Pages
 
 Settings → Pages → Source: GitHub Actions

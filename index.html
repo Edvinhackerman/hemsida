@@ -1267,6 +1267,13 @@ footer {
 
 .admin-panel.show { display: block; }
 .admin-panel h3 { font-family: "Space Grotesk", sans-serif; margin: 0 0 12px; color: var(--teal-accent); }
+.admin-login-form { display: grid; gap: 8px; }
+.admin-login-form .field { width: 100%; }
+.admin-auth-message { min-height: 18px; }
+.admin-panel[hidden], .admin-panel [hidden] { display: none !important; }
+.admin-actions { display: flex; justify-content: flex-end; margin: 0 0 10px; }
+.admin-logout { background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: 8px; padding: 5px 9px; font-size: 12px; }
+.admin-logout:hover { color: #fff; background: var(--btn-soft-bg); }
 .admin-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .admin-stat { background: #134248; border: 1px solid #245960; border-radius: 14px; padding: 12px; }
 .admin-stat b { display: block; font-size: 25px; font-family: "Space Grotesk", sans-serif; color: #f4ffff; }
@@ -1402,6 +1409,9 @@ footer {
 .admin-comment-place { color: var(--teal-accent); font-weight: 700; margin-bottom: 3px; }
 .admin-comment-text { color: #eaffff; line-height: 1.4; }
 .admin-comment-meta { color: #91b5b9; margin-top: 4px; font-size: 11px; }
+.admin-comment-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.admin-delete-comment { flex: 0 0 auto; background: transparent; border: 1px solid rgba(255, 91, 121, 0.4); color: #ff91a8; border-radius: 8px; padding: 4px 8px; font-size: 11px; }
+.admin-delete-comment:hover { background: rgba(255, 91, 121, 0.14); }
 
 .admin-error { color: #ff7b9c; font-size: 12px; background: rgba(255,91,121,0.1); border: 1px solid rgba(255,91,121,0.3); border-radius: 10px; padding: 8px 12px; margin-top: 8px; }
 
@@ -1604,6 +1614,18 @@ footer {
   <button class="admin-close" id="adminClose" aria-label="Stäng">×</button>
   <h3>🛠️ Admin</h3>
 
+  <div id="adminLoginView">
+    <p class="admin-note">Logga in med ett administratörskonto för att hantera kommentarer.</p>
+    <form class="admin-login-form" id="adminLoginForm">
+      <input class="field" id="adminEmail" type="email" autocomplete="username" placeholder="E-post" required>
+      <input class="field" id="adminPassword" type="password" autocomplete="current-password" placeholder="Lösenord" required>
+      <button class="btn btn-primary" type="submit">Logga in</button>
+    </form>
+    <div class="admin-note admin-auth-message" id="adminAuthMessage" role="status" aria-live="polite"></div>
+  </div>
+
+  <div id="adminContent" hidden>
+  <div class="admin-actions"><button class="admin-logout" id="adminLogout" type="button">Logga ut</button></div>
   <div class="admin-tabs">
     <button class="admin-tab active" onclick="adminTab('stats')">📊 Stats</button>
     <button class="admin-tab" onclick="adminTab('likes')">❤️ Likes</button>
@@ -1627,7 +1649,7 @@ footer {
 
   <!-- Likes View -->
   <div class="admin-view" id="adminView-likes">
-    <div class="admin-note">Platser sorterade efter antal favoriter (sparade i webbläsaren).</div>
+    <div class="admin-note">Platser sorterade efter antal sparningar från alla besökare.</div>
     <div class="admin-likes-list" id="adminLikesList">Laddar…</div>
   </div>
 
@@ -1635,6 +1657,7 @@ footer {
   <div class="admin-view" id="adminView-comments">
     <div class="admin-note">Senaste kommentarerna från Supabase.</div>
     <div class="admin-comment-list" id="adminCommentList">Laddar…</div>
+  </div>
   </div>
 </div>
 <div class="admin-badge" id="adminBadge">ADMIN</div>
@@ -1685,6 +1708,7 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const VISITOR_KEY = 'badvlogg-visitor-id';
+let isSiteAdmin = false;
 
 function getVisitorId() {
   let id = localStorage.getItem(VISITOR_KEY);
@@ -1703,7 +1727,7 @@ async function recordSiteVisit() {
 }
 
 async function loadAdminStats() {
-  if (!supabase) return;
+  if (!isSiteAdmin) return;
   const ids = ['adminVisits', 'adminUnique', 'adminToday', 'adminActive'];
   ids.forEach(id => { const el = document.getElementById(id); if (el) el.textContent = '…'; });
   const errEl = document.getElementById('adminStatsError');
@@ -1773,53 +1797,121 @@ function adminTab(name) {
   if (name === 'comments') renderAdminComments();
 }
 
+function setAdminAccess(enabled) {
+  isSiteAdmin = enabled;
+  $('#adminLoginView').hidden = enabled;
+  $('#adminContent').hidden = !enabled;
+}
+
+async function verifyAdminSession() {
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError || !sessionData.session) {
+    setAdminAccess(false);
+    return false;
+  }
+
+  const { data: isAdmin, error } = await supabase.rpc('is_site_admin');
+  if (error || isAdmin !== true) {
+    setAdminAccess(false);
+    await supabase.auth.signOut();
+    $('#adminAuthMessage').textContent = error
+      ? 'Adminbehörighet kunde inte verifieras. Kontrollera att admin-SQL har körts.'
+      : 'Kontot saknar administratörsbehörighet.';
+    return false;
+  }
+
+  setAdminAccess(true);
+  $('#adminAuthMessage').textContent = '';
+  loadAdminStats();
+  renderAdminLikes();
+  renderAdminComments();
+  return true;
+}
+
+async function deleteAdminComment(commentId) {
+  if (!isSiteAdmin || !window.confirm('Radera kommentaren permanent?')) return;
+
+  const { error } = await supabase.rpc('admin_delete_comment', {
+    p_comment_id: String(commentId)
+  });
+  if (error) {
+    console.error('Kommentar kunde inte raderas:', error);
+    toast('Kommentaren kunde inte raderas.');
+    return;
+  }
+
+  const modalWasOpen = $('#modal').classList.contains('show');
+  const openPlaceId = activeId;
+  await hydrateSupabase();
+  render();
+  renderLeaderboard();
+  renderAdminComments();
+  if (modalWasOpen && openPlaceId != null) openPlace(openPlaceId, true);
+  toast('Kommentaren har raderats.');
+}
+
 function renderAdminLikes() {
   const el = document.getElementById('adminLikesList');
   if (!el) return;
-  // favorites is a global array of place IDs saved by this browser
-  // For a global leaderboard we use the in-memory placeLikeCounts built from Supabase comments likes
   const ranked = [...places]
-    .map(p => ({
-      p,
-      hearts: (comments[p.id] || []).reduce((s, c) => s + (c.likes || 0), 0),
-      localFav: favorites.includes(p.id) ? 1 : 0
-    }))
-    .sort((a, b) => b.hearts - a.hearts || b.localFav - a.localFav || b.p.rating - a.p.rating)
+    .map(p => ({ p, favoriteCount: favoriteCounts[p.id] || 0 }))
+    .sort((a, b) => b.favoriteCount - a.favoriteCount || b.p.rating - a.p.rating)
     .slice(0, 15);
 
-  if (!ranked.length || ranked[0].hearts === 0) {
-    el.innerHTML = '<div style="color:#91b5b9;font-size:12px;padding:8px">Inga likes registrerade ännu. Likes på kommentarer visas här.</div>';
+  if (!ranked.length || ranked[0].favoriteCount === 0) {
+    el.innerHTML = '<div style="color:#91b5b9;font-size:12px;padding:8px">Inga favoriter har sparats ännu.</div>';
     return;
   }
 
   const medalClass = i => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
-  el.innerHTML = ranked.map(({ p, hearts }, i) => `
+  el.innerHTML = ranked.map(({ p, favoriteCount }, i) => `
     <div class="admin-like-row" onclick="openPlace(${p.id})" style="cursor:pointer">
       <span class="admin-like-rank ${medalClass(i)}">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}</span>
       <span class="admin-like-name">${esc(p.name)}</span>
-      <span class="admin-like-count">👍 ${hearts}</span>
+      <span class="admin-like-count">${favoriteCount} favoriter</span>
     </div>
   `).join('');
 }
 
-function renderAdminComments() {
+async function renderAdminComments() {
   const el = document.getElementById('adminCommentList');
-  if (!el) return;
-  const allComments = [];
-  Object.entries(comments).forEach(([placeId, cs]) => {
-    const p = places.find(x => x.id === Number(placeId));
-    cs.forEach(c => allComments.push({ ...c, placeName: p?.name || `Plats ${placeId}` }));
-  });
-  allComments.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  if (!el || !isSiteAdmin) return;
+  el.textContent = 'Laddar…';
+  const { data: rows, error } = await supabase
+    .from('comments')
+    .select('*')
+    .order('created_at', { ascending: false });
 
-  if (!allComments.length) {
-    el.innerHTML = '<div style="color:#91b5b9;font-size:12px;padding:8px">Inga kommentarer i databasen ännu.</div>';
+  if (error) {
+    console.error('Admin kommentarer kunde inte hämtas:', error);
+    el.textContent = 'Kommentarerna kunde inte hämtas. Kontrollera adminens läsbehörighet i Supabase.';
     return;
   }
 
-  el.innerHTML = allComments.slice(0, 20).map(c => `
+  const allComments = (rows || []).map(row => {
+    const placeId = Number(row.place_id);
+    const place = places.find(item => item.id === placeId);
+    return {
+      id: row.id,
+      placeName: place?.name || `Plats ${row.place_id}`,
+      text: row.text,
+      name: row.name || 'Anonym',
+      date: row.created_at ? new Date(row.created_at).toLocaleDateString('sv-SE') : '',
+      likes: row.likes || 0
+    };
+  });
+
+  if (!allComments.length) {
+    el.textContent = 'Inga kommentarer i databasen ännu.';
+    return;
+  }
+
+  el.innerHTML = allComments.map(c => `
     <div class="admin-comment-row">
-      <div class="admin-comment-place">📍 ${esc(c.placeName)}</div>
+      <div class="admin-comment-head">
+        <div class="admin-comment-place">📍 ${esc(c.placeName)}</div>
+        ${c.id != null ? `<button class="admin-delete-comment" type="button" data-comment-id="${esc(c.id)}">Radera</button>` : ''}
+      </div>
       <div class="admin-comment-text">${esc(c.text?.slice(0, 120))}${(c.text?.length || 0) > 120 ? '…' : ''}</div>
       <div class="admin-comment-meta">${esc(c.name || 'Anonym')} · ${esc(c.date || '')} · 👍 ${c.likes || 0}</div>
     </div>
@@ -1886,14 +1978,15 @@ let places = [
 const KEY = { favorites: 'badvlogg-favorites-v2', liked: 'badvlogg-liked-v2', images: 'badvlogg-images-v1' };
 const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
 
-let comments = {}, favorites = read(KEY.favorites, []), liked = read(KEY.liked, {}), placeImages = read(KEY.images, {}), waterTemps = {}, weatherCache = {};
+let comments = {}, favorites = read(KEY.favorites, []), favoriteCounts = {}, liked = read(KEY.liked, {}), placeImages = read(KEY.images, {}), waterTemps = {}, weatherCache = {};
 let activeId = null, showOnlyFavorites = false, userLayer = null, userCoords = null, activeTagFilter = null;
 
 async function hydrateSupabase() {
-  const [{ data: placeRows, error: placeError }, { data: commentRows, error: commentError }, { data: waterRows, error: waterError }] = await Promise.all([
+  const [{ data: placeRows, error: placeError }, { data: commentRows, error: commentError }, { data: waterRows, error: waterError }, { data: favoriteRows, error: favoriteError }] = await Promise.all([
     supabase.from('places').select('*').order('id', { ascending: true }),
     supabase.from('comments').select('*').order('created_at', { ascending: false }),
-    supabase.from('water_reports').select('*').order('created_at', { ascending: false })
+    supabase.from('water_reports').select('*').order('created_at', { ascending: false }),
+    supabase.rpc('get_place_favorite_counts')
   ]);
 
   if (placeError) {
@@ -1914,6 +2007,8 @@ async function hydrateSupabase() {
 
   if (commentError) console.warn('Supabase comments:', commentError.message);
   if (waterError) console.warn('Supabase water reports:', waterError.message);
+  if (favoriteError) console.warn('Supabase favorite counts:', favoriteError.message);
+  else favoriteCounts = Object.fromEntries((favoriteRows || []).map(row => [Number(row.place_id), Number(row.favorite_count)]));
 
   comments = {};
   (commentRows || []).forEach(row => {
@@ -2195,11 +2290,51 @@ function render() {
   renderFilterChips();
 }
 
-function toggleFavorite(id) {
-  favorites = favorites.includes(id) ? favorites.filter(x => x !== id) : [...favorites, id];
+async function refreshFavoriteCounts() {
+  const { data, error } = await supabase.rpc('get_place_favorite_counts');
+  if (error) {
+    console.warn('Favoriter kunde inte hämtas:', error.message);
+    return false;
+  }
+  favoriteCounts = Object.fromEntries((data || []).map(row => [Number(row.place_id), Number(row.favorite_count)]));
+  renderLeaderboard();
+  if ($('#adminPanel').classList.contains('show')) renderAdminLikes();
+  return true;
+}
+
+async function toggleFavorite(id) {
+  const isFavorite = !favorites.includes(id);
+  favorites = isFavorite ? [...favorites, id] : favorites.filter(x => x !== id);
   save();
   render();
+  const { error } = await supabase.rpc('set_place_favorite', {
+    p_place_id: id,
+    p_visitor_id: getVisitorId(),
+    p_is_favorite: isFavorite
+  });
+  if (error) {
+    console.warn('Favorit kunde inte synkas:', error.message);
+    toast('Favoriten sparas bara på den här enheten tills databasen har uppdaterats.');
+    return;
+  }
+  await refreshFavoriteCounts();
   toast(favorites.includes(id) ? 'Sparad bland favoriter ❤️' : 'Borttagen från favoriter');
+}
+
+async function syncLocalFavorites() {
+  if (!favorites.length) return;
+  const visitorId = getVisitorId();
+  const results = await Promise.all(favorites.map(placeId => supabase.rpc('set_place_favorite', {
+    p_place_id: placeId,
+    p_visitor_id: visitorId,
+    p_is_favorite: true
+  })));
+  const failed = results.find(result => result.error);
+  if (failed) {
+    console.warn('Befintliga favoriter kunde inte synkas:', failed.error.message);
+    return;
+  }
+  await refreshFavoriteCounts();
 }
 
 async function sharePlace(id) {
@@ -2785,7 +2920,7 @@ function getNearbyAttractions(lat, lng, maxKm, maxCount) {
 
 function renderNearbyAttractions(p) {
   if (!p.lat || !p.lng) return '';
-  const nearby = getNearbyAttractions(p.lat, p.lng, 30, 4);
+  const nearby = getNearbyAttractions(p.lat, p.lng, 20, 4);
   if (!nearby.length) return '';
   const typeLabel = t => ({ historia: 'Historia', natur: 'Natur', mat: 'Mat & glass', aktivitet: 'Aktivitet' }[t] || t);
   return `
@@ -2829,25 +2964,57 @@ window.openPlace = function openPlaceEnhanced(id, keepOpen) {
 function renderLeaderboard() {
   const el = document.getElementById('leaderboardGrid');
   if (!el) return;
-  const totalLikes = p => (comments[p.id] || []).reduce((s, c) => s + (c.likes || 0), 0);
   const ranked = [...places]
-    .map(p => ({ p, score: totalLikes(p) * 2 + p.rating * 0.5 + countComments(p.id) * 0.3 }))
-    .sort((a, b) => b.score - a.score)
+    .map(p => ({ p, favoriteCount: favoriteCounts[p.id] || 0 }))
+    .sort((a, b) => b.favoriteCount - a.favoriteCount || b.p.rating - a.p.rating)
     .slice(0, 8);
   const medalEmoji = i => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`;
   const medalClass = i => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
-  el.innerHTML = ranked.map(({ p }, i) => `
+  el.innerHTML = ranked.map(({ p, favoriteCount }, i) => `
     <button class="lb-card" onclick="openPlace(${p.id})">
       <div class="lb-rank-num ${medalClass(i)}">${medalEmoji(i)}</div>
       <div class="lb-info">
         <div class="lb-name">${esc(p.name)}</div>
         <div class="lb-city">${esc(p.city || 'Östergötland')} · ⭐ ${p.rating}/10</div>
-        <div class="lb-hearts">❤️ ${totalLikes(p)} likes · 💬 ${countComments(p.id)}</div>
+        <div class="lb-hearts">${favoriteCount} favoriter</div>
       </div>
     </button>`).join('');
 }
 
 renderLeaderboard();
+syncLocalFavorites();
+
+$('#adminLoginForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const message = $('#adminAuthMessage');
+  message.textContent = 'Loggar in…';
+  const { error } = await supabase.auth.signInWithPassword({
+    email: $('#adminEmail').value.trim(),
+    password: $('#adminPassword').value
+  });
+  if (error) {
+    message.textContent = 'Inloggningen misslyckades. Kontrollera e-post och lösenord.';
+    return;
+  }
+  if (await verifyAdminSession()) $('#adminPassword').value = '';
+});
+
+$('#adminLogout').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  setAdminAccess(false);
+  $('#adminAuthMessage').textContent = 'Du är utloggad.';
+});
+
+$('#adminCommentList').addEventListener('click', event => {
+  const button = event.target.closest('[data-comment-id]');
+  if (button) deleteAdminComment(button.dataset.commentId);
+});
+
+supabase.auth.onAuthStateChange(event => {
+  if (event === 'SIGNED_OUT') setAdminAccess(false);
+});
+
+verifyAdminSession();
 </script>
 </body>
 </html>
