@@ -143,6 +143,93 @@ a { color: inherit; text-decoration: none; }
   margin: auto;
 }
 
+.gutter-rail {
+  position: fixed;
+  top: 18vh;
+  bottom: 12vh;
+  width: 132px;
+  max-height: 520px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: var(--muted);
+  pointer-events: none;
+}
+.gutter-rail--left { left: calc(50% - 760px); }
+.gutter-rail--right { right: calc(50% - 760px); }
+.gutter-label {
+  margin: 0;
+  color: var(--teal-accent);
+  font-size: 10px;
+  line-height: 1.5;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.gutter-map {
+  position: relative;
+  height: 190px;
+  margin: 16px 0;
+  overflow: hidden;
+  border-block: 1px solid var(--line-strong);
+  background:
+    linear-gradient(135deg, transparent 49.5%, rgba(67, 219, 224, 0.18) 50%, transparent 50.8%),
+    repeating-radial-gradient(ellipse at 45% 52%, transparent 0 12px, rgba(67, 219, 224, 0.12) 13px 14px, transparent 15px 24px);
+}
+.gutter-map::before,
+.gutter-map::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(67, 219, 224, 0.34);
+  border-radius: 50%;
+  transform: rotate(-24deg);
+}
+.gutter-map::before { width: 94px; height: 42px; top: 36px; left: 12px; }
+.gutter-map::after { width: 64px; height: 118px; right: -8px; bottom: 12px; }
+.gutter-coordinate {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  color: var(--ink);
+  font: 600 10px/1.5 "Space Grotesk", sans-serif;
+}
+.gutter-stat {
+  display: grid;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.gutter-stat strong {
+  color: var(--ink);
+  font: 700 30px/1 "Space Grotesk", sans-serif;
+}
+.gutter-stat span { font-size: 11px; }
+.gutter-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 0;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  border-bottom: 1px solid var(--line-strong);
+  background: transparent;
+  pointer-events: auto;
+  text-align: left;
+}
+.gutter-link:hover { color: var(--teal-accent); }
+.gutter-vertical {
+  writing-mode: vertical-rl;
+  color: var(--muted-dark);
+  font: 600 10px/1 "Space Grotesk", sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+@media (max-width: 1599px) {
+  .gutter-rail { display: none; }
+}
+
 /* Header & Topbar */
 header.topbar {
   position: sticky;
@@ -1479,6 +1566,25 @@ footer {
   </div>
 </header>
 
+<aside class="gutter-rail gutter-rail--left" aria-label="Badplatsinspiration">
+  <div>
+    <p class="gutter-label">Östergötland<br>58° 23′ N</p>
+    <div class="gutter-map" aria-hidden="true"><span class="gutter-coordinate">15° 37′ E<br>Vatten nära</span></div>
+    <div class="gutter-stat"><strong id="railPlaceCount">49</strong><span>badplatser att upptäcka</span></div>
+  </div>
+  <button class="gutter-link" type="button" onclick="randomPlace()">Överraska mig <span aria-hidden="true">↗</span></button>
+</aside>
+
+<aside class="gutter-rail gutter-rail--right" aria-label="Snabblänkar">
+  <div class="gutter-vertical">Välj en strand · hitta ditt dopp</div>
+  <div>
+    <p class="gutter-label">Nästa stopp</p>
+    <div class="gutter-stat"><strong>01</strong><span>Sök bland baden</span></div>
+    <a class="gutter-link" href="#karta">Öppna kartan <span aria-hidden="true">↘</span></a>
+    <a class="gutter-link" href="#idag">Dagens förslag <span aria-hidden="true">↗</span></a>
+  </div>
+</aside>
+
 <main class="wrap">
 <section class="hero">
   <div>
@@ -2181,6 +2287,8 @@ function toast(msg) {
 
 function updateStats() {
   $('#statPlaces').textContent = places.length;
+  const railCount = document.getElementById('railPlaceCount');
+  if (railCount) railCount.textContent = places.length;
   $('#statMapped').textContent = places.filter(p => p.lat && p.lng).length;
   $('#statComments').textContent = Object.values(comments).reduce((a, x) => a + x.length, 0);
   $('#heroFavoriteCount').textContent = favorites.length;
