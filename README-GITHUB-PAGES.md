@@ -36,6 +36,8 @@ on conflict do nothing;
 
 Replace the example email with the admin account's email. The hidden admin panel still requires this authenticated account, and deletion is checked again by the database.
 
+The admin migration also contains the place-editing function. Run the updated `supabase/admin_comments.sql` again after updating the project files to enable it; running the script again is safe.
+
 ## GitHub Pages
 
 Settings → Pages → Source: GitHub Actions

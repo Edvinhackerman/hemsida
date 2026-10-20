@@ -1258,6 +1258,8 @@ footer {
   bottom: 18px;
   z-index: 10001;
   width: min(390px, calc(100% - 36px));
+  max-height: calc(100vh - 36px);
+  overflow: auto;
   background: #0d2c31;
   border: 1px solid var(--line-strong);
   border-radius: 22px;
@@ -1272,6 +1274,12 @@ footer {
 .admin-auth-message { min-height: 18px; }
 .admin-panel[hidden], .admin-panel [hidden] { display: none !important; }
 .admin-actions { display: flex; justify-content: flex-end; margin: 0 0 10px; }
+.admin-place-form { display: grid; gap: 8px; margin-top: 10px; }
+.admin-place-form label { color: var(--muted); font-size: 11px; font-weight: 700; }
+.admin-place-field { display: grid; gap: 4px; }
+.admin-place-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.admin-place-form textarea { min-height: 96px; resize: vertical; }
+.admin-place-message { min-height: 18px; }
 .admin-logout { background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: 8px; padding: 5px 9px; font-size: 12px; }
 .admin-logout:hover { color: #fff; background: var(--btn-soft-bg); }
 .admin-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -1630,6 +1638,7 @@ footer {
     <button class="admin-tab active" onclick="adminTab('stats')">📊 Stats</button>
     <button class="admin-tab" onclick="adminTab('likes')">❤️ Likes</button>
     <button class="admin-tab" onclick="adminTab('comments')">💬 Kommentarer</button>
+    <button class="admin-tab" onclick="adminTab('places')">Platser</button>
   </div>
 
   <!-- Stats View -->
@@ -1657,6 +1666,44 @@ footer {
   <div class="admin-view" id="adminView-comments">
     <div class="admin-note">Senaste kommentarerna från Supabase.</div>
     <div class="admin-comment-list" id="adminCommentList">Laddar…</div>
+  </div>
+
+  <div class="admin-view" id="adminView-places">
+    <div class="admin-note">Redigera informationen för en badplats.</div>
+    <form class="admin-place-form" id="adminPlaceForm">
+      <div class="admin-place-field">
+        <label for="adminPlaceSelect">Badplats</label>
+        <select class="field" id="adminPlaceSelect" required></select>
+      </div>
+      <div class="admin-place-field">
+        <label for="adminPlaceName">Namn</label>
+        <input class="field" id="adminPlaceName" maxlength="120" required>
+      </div>
+      <div class="admin-place-field">
+        <label for="adminPlaceCity">Ort</label>
+        <input class="field" id="adminPlaceCity" maxlength="120">
+      </div>
+      <div class="admin-place-field">
+        <label for="adminPlaceDescription">Beskrivning</label>
+        <textarea class="field" id="adminPlaceDescription" maxlength="3000"></textarea>
+      </div>
+      <div class="admin-place-row">
+        <div class="admin-place-field">
+          <label for="adminPlaceRating">Betyg (0–10)</label>
+          <input class="field" id="adminPlaceRating" type="number" min="0" max="10" step="0.1" required>
+        </div>
+        <div class="admin-place-field">
+          <label for="adminPlaceLatitude">Latitud</label>
+          <input class="field" id="adminPlaceLatitude" type="number" min="-90" max="90" step="any" required>
+        </div>
+      </div>
+      <div class="admin-place-field">
+        <label for="adminPlaceLongitude">Longitud</label>
+        <input class="field" id="adminPlaceLongitude" type="number" min="-180" max="180" step="any" required>
+      </div>
+      <button class="btn btn-primary" id="adminPlaceSave" type="submit">Spara ändringar</button>
+      <div class="admin-note admin-place-message" id="adminPlaceMessage" role="status" aria-live="polite"></div>
+    </form>
   </div>
   </div>
 </div>
@@ -1795,6 +1842,7 @@ function adminTab(name) {
 
   if (name === 'likes') renderAdminLikes();
   if (name === 'comments') renderAdminComments();
+  if (name === 'places') renderAdminPlaces();
 }
 
 function setAdminAccess(enabled) {
@@ -1825,7 +1873,84 @@ async function verifyAdminSession() {
   loadAdminStats();
   renderAdminLikes();
   renderAdminComments();
+  renderAdminPlaces();
   return true;
+}
+
+function renderAdminPlaces(selectedPlaceId) {
+  if (!isSiteAdmin) return;
+  const select = $('#adminPlaceSelect');
+  if (!select) return;
+  const selectedId = selectedPlaceId ?? (Number(select.value) || places[0]?.id);
+  select.innerHTML = places
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name, 'sv'))
+    .map(place => `<option value="${place.id}">${esc(place.name)} · ${esc(place.city || 'Östergötland')}</option>`)
+    .join('');
+  if (selectedId != null) select.value = String(selectedId);
+  loadAdminPlaceForm();
+}
+
+function loadAdminPlaceForm() {
+  const place = places.find(item => item.id === Number($('#adminPlaceSelect').value));
+  if (!place) return;
+  $('#adminPlaceName').value = place.name || '';
+  $('#adminPlaceCity').value = place.city || '';
+  $('#adminPlaceDescription').value = place.note || '';
+  $('#adminPlaceRating').value = place.rating ?? 0;
+  $('#adminPlaceLatitude').value = place.lat ?? '';
+  $('#adminPlaceLongitude').value = place.lng ?? '';
+  $('#adminPlaceMessage').textContent = '';
+}
+
+async function saveAdminPlace(event) {
+  event.preventDefault();
+  if (!isSiteAdmin) return;
+
+  const placeId = Number($('#adminPlaceSelect').value);
+  const values = {
+    p_place_id: placeId,
+    p_name: $('#adminPlaceName').value.trim(),
+    p_city: $('#adminPlaceCity').value.trim(),
+    p_description: $('#adminPlaceDescription').value,
+    p_rating: Number($('#adminPlaceRating').value),
+    p_latitude: Number($('#adminPlaceLatitude').value),
+    p_longitude: Number($('#adminPlaceLongitude').value)
+  };
+  const saveButton = $('#adminPlaceSave');
+  const message = $('#adminPlaceMessage');
+  saveButton.disabled = true;
+  message.textContent = 'Sparar…';
+
+  const { error } = await supabase.rpc('admin_update_place', values);
+  saveButton.disabled = false;
+  if (error) {
+    console.error('Badplatsen kunde inte uppdateras:', error);
+    message.textContent = 'Kunde inte spara. Kontrollera att den uppdaterade admin-SQL:en har körts.';
+    return;
+  }
+
+  await hydrateSupabase();
+  render();
+  renderLeaderboard();
+  renderAdminPlaces(placeId);
+  const place = places.find(item => item.id === placeId);
+  const marker = markerById[placeId];
+  if (place && marker) {
+    marker.setLatLng([place.lat, place.lng]);
+    marker.setIcon(icon(place));
+    marker.setPopupContent(`
+      <div class="popup">
+        <h4>${esc(place.name)}</h4>
+        <p>${esc(place.city || 'Östergötland')} · ⭐ ${place.rating}/10</p>
+        <div class="popup-actions">
+          <button onclick="openPlace(${place.id})">Öppna badplats</button>
+          <button class="secondary" onclick="sharePlace(${place.id})">🔗 Dela</button>
+        </div>
+      </div>
+    `);
+  }
+  message.textContent = 'Ändringarna har sparats.';
 }
 
 async function deleteAdminComment(commentId) {
@@ -2998,6 +3123,9 @@ $('#adminLoginForm').addEventListener('submit', async event => {
   }
   if (await verifyAdminSession()) $('#adminPassword').value = '';
 });
+
+$('#adminPlaceSelect').addEventListener('change', loadAdminPlaceForm);
+$('#adminPlaceForm').addEventListener('submit', saveAdminPlace);
 
 $('#adminLogout').addEventListener('click', async () => {
   await supabase.auth.signOut();
