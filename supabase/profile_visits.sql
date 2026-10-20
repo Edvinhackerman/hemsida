@@ -430,3 +430,36 @@ $$;
 
 revoke all on function public.remove_friend(uuid) from public;
 grant execute on function public.remove_friend(uuid) to authenticated;
+
+create or replace function public.admin_list_recent_accounts()
+returns table (
+  display_name text,
+  created_at timestamptz
+)
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  if (select auth.uid()) is null or not public.is_site_admin() then
+    raise exception 'Admin access required.';
+  end if;
+
+  return query
+  select
+    coalesce(
+      nullif(profile.display_name, ''),
+      nullif(account.raw_user_meta_data ->> 'display_name', ''),
+      'Namn saknas'
+    ),
+    account.created_at
+  from auth.users as account
+  left join public.profiles as profile on profile.user_id = account.id
+  order by account.created_at desc
+  limit 100;
+end;
+$$;
+
+revoke all on function public.admin_list_recent_accounts() from public, anon;
+grant execute on function public.admin_list_recent_accounts() to authenticated;

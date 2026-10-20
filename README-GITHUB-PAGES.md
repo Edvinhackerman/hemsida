@@ -56,6 +56,8 @@ After running `supabase/admin_comments.sql`, run the latest `supabase/profile_vi
 
 Signed-in users can edit the date and a note for each visited bathing place. New profiles are public by default; existing profiles keep their current privacy setting. A public profile shows only its display name and optional age. Email addresses, visits, visit notes, favorites, comments, achievements, and statistics remain private. Users can search public profiles and send friend requests; the recipient must accept before the two accounts become friends. Only public profiles can be added as friends.
 
+Admins can view the 100 newest account creation dates in Admin → Konton. The list shows display names but never email addresses. Run the latest `supabase/profile_visits.sql` migration to enable this admin-only list.
+
 ## Feature ideas and municipal contacts
 
 After `supabase/admin_comments.sql` and `supabase/profile_visits.sql`, run `supabase/feature_ideas_and_contacts.sql` in the Supabase SQL Editor. Anyone can read the ideas board; signed-in users can submit ideas, vote, and discuss them. Admins can change idea statuses and moderate comments in the hidden Admin → Idéforum panel.

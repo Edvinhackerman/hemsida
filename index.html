@@ -1904,6 +1904,7 @@ footer {
     <button class="admin-tab" onclick="adminTab('places')">Platser</button>
     <button class="admin-tab" onclick="adminTab('suggestions')">Förslag</button>
     <button class="admin-tab" onclick="adminTab('ideas')">Idéforum</button>
+    <button class="admin-tab" onclick="adminTab('accounts')">Konton</button>
   </div>
 
   <!-- Stats View -->
@@ -1941,6 +1942,11 @@ footer {
   <div class="admin-view" id="adminView-ideas">
     <div class="admin-note">Hantera förslag på nya funktioner och deras status.</div>
     <div class="admin-comment-list" id="adminIdeaList">Laddar…</div>
+  </div>
+
+  <div class="admin-view" id="adminView-accounts">
+    <div class="admin-note">De 100 senast skapade kontona. E-postadresser visas inte.</div>
+    <div class="admin-comment-list" id="adminAccountList">Laddar…</div>
   </div>
 
   <div class="admin-view" id="adminView-places">
@@ -2725,6 +2731,7 @@ function adminTab(name) {
   if (name === 'places') renderAdminPlaces();
   if (name === 'suggestions') renderAdminSuggestions();
   if (name === 'ideas') renderAdminIdeas();
+  if (name === 'accounts') renderAdminAccounts();
 }
 
 function setAdminAccess(enabled) {
@@ -2755,7 +2762,34 @@ async function verifyAdminSession() {
   renderAdminPlaces();
   renderAdminSuggestions();
   renderAdminIdeas();
+  renderAdminAccounts();
   return true;
+}
+
+async function renderAdminAccounts() {
+  const list = document.getElementById('adminAccountList');
+  if (!list || !isSiteAdmin) return;
+  list.textContent = 'Laddar konton…';
+  const { data, error } = await supabase.rpc('admin_list_recent_accounts');
+  if (error) {
+    console.error('Konton kunde inte hämtas:', error.message);
+    list.textContent = 'Kontolistan kunde inte hämtas. Kör den senaste profilmigreringen i Supabase.';
+    return;
+  }
+  if (!data?.length) {
+    list.textContent = 'Inga konton hittades.';
+    return;
+  }
+  list.innerHTML = data.map(account => {
+    const createdAt = new Date(account.created_at);
+    const date = Number.isNaN(createdAt.getTime())
+      ? 'Okänt datum'
+      : createdAt.toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' });
+    return `<article class="admin-suggestion">
+      <div class="admin-suggestion-place">${esc(account.display_name || 'Namn saknas')}</div>
+      <p class="admin-suggestion-text">Konto skapat ${esc(date)}</p>
+    </article>`;
+  }).join('');
 }
 
 function missingPlaceFields(place) {
