@@ -1124,12 +1124,21 @@ select.field option {
 .profile-form label { color: var(--muted); font-size: 12px; font-weight: 700; }
 .profile-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .profile-message { min-height: 20px; color: var(--muted); font-size: 13px; }
+.profile-stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+.profile-stat { flex: 1 1 120px; padding: 12px; border: 1px solid var(--line); border-radius: 14px; color: var(--muted); font-size: 12px; }
+.profile-stat strong { display: block; color: var(--teal-accent); font: 700 20px "Space Grotesk", sans-serif; }
 .profile-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 22px 0; }
 .profile-columns section { min-width: 0; border-top: 1px solid var(--line); padding-top: 12px; }
 .profile-columns h3 { margin: 0 0 9px; font: 700 17px "Space Grotesk", sans-serif; }
 .profile-list { display: grid; gap: 7px; max-height: 240px; overflow: auto; }
 .profile-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--line); color: var(--ink); font-size: 13px; }
 .profile-item button { background: transparent; color: var(--teal-accent); font-size: 12px; font-weight: 700; }
+.profile-visit-edit { display: grid; grid-template-columns: minmax(130px, 1fr) minmax(150px, 2fr) auto; align-items: end; gap: 7px; margin-top: 8px; }
+.profile-visit-edit label { display: grid; gap: 4px; color: var(--muted); font-size: 11px; }
+.profile-visit-edit input { min-width: 0; padding: 7px; font-size: 12px; }
+.profile-follow-link { color: var(--teal-accent); text-decoration: none; }
+.profile-follow-link:hover { text-decoration: underline; }
+.profile-discovery-form { max-width: 360px; margin: 10px 0; }
 .profile-privacy { display: flex; align-items: flex-start; gap: 9px; color: var(--muted); font-size: 13px; }
 .profile-privacy input { margin-top: 3px; accent-color: var(--teal-accent); }
 .profile-achievements { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -1832,16 +1841,27 @@ footer {
       <form class="profile-form" id="profileDetailsForm">
         <label for="profileDisplayName">Visningsnamn</label>
         <input class="field" id="profileDisplayName" maxlength="60" placeholder="Ditt namn">
-        <label class="profile-privacy"><input id="profilePublicToggle" type="checkbox"> <span>Gör min profil offentlig. Då kan andra se mitt visningsnamn, besökta badplatser och achievements via min profillänk.</span></label>
+        <label class="profile-privacy"><input id="profilePublicToggle" type="checkbox"> <span>Gör min profil offentlig. Andra kan då se mitt namn, besök med datum och anteckningar, statistik, achievements och vilka offentliga profiler jag följer.</span></label>
         <button class="btn btn-soft" type="submit">Spara profil</button>
       </form>
       <p class="profile-message" id="profileDetailsMessage" role="status" aria-live="polite"></p>
       <div class="profile-actions" id="profileShareActions" hidden>
         <button class="btn btn-soft" id="profileShareBtn" type="button">🔗 Kopiera offentlig profillänk</button>
       </div>
+      <div class="profile-stats" id="profileStats"></div>
       <div class="profile-columns">
         <section><h3>Mina besök</h3><p class="hint" id="profileVisitCount">0 besökta badplatser</p><div id="profileVisits"></div></section>
         <section><h3>Achievements</h3><div id="profileAchievements" class="profile-achievements"></div></section>
+        <section><h3>Jag följer</h3><div id="profileFollowing"></div></section>
+        <section>
+          <h3>Upptäck profiler</h3>
+          <form class="profile-form profile-discovery-form" id="profileDiscoveryForm">
+            <label for="profileDiscoveryQuery">Sök bland offentliga profiler</label>
+            <input id="profileDiscoveryQuery" type="search" maxlength="80" placeholder="Sök på profilnamn">
+            <button class="btn btn-soft" type="submit">Sök profiler</button>
+          </form>
+          <div id="profileDiscovery"></div>
+        </section>
         <section><h3>Mina favoriter</h3><div id="profileFavorites"></div></section>
         <section><h3>Mina kommentarer</h3><div id="profileComments"></div></section>
       </div>
@@ -1851,9 +1871,12 @@ footer {
       <div class="eyebrow">Offentlig badprofil</div>
       <h2 id="publicProfileHeading">Badprofil</h2>
       <p class="hint" id="publicProfileVisitCount"></p>
+      <div class="profile-stats" id="publicProfileStats"></div>
+      <button class="btn btn-soft" id="publicProfileFollowBtn" type="button" hidden></button>
       <div class="profile-columns">
         <section><h3>Achievements</h3><div id="publicProfileAchievements" class="profile-achievements"></div></section>
         <section><h3>Besökta badplatser</h3><div id="publicProfileVisits"></div></section>
+        <section><h3>Följer</h3><div id="publicProfileFollowing"></div></section>
       </div>
       <p class="profile-message" id="publicProfileMessage" role="status" aria-live="polite"></p>
     </div>
@@ -2045,15 +2068,20 @@ const VISITOR_KEY = 'badvlogg-visitor-id';
 let isSiteAdmin = false;
 let currentUser = null;
 let currentProfile = null;
+let displayedPublicProfileId = null;
+let displayedPublicProfileFollowed = false;
 let municipalContacts = {};
 let visitedPlaceIds = [];
 const PROFILE_ACHIEVEMENTS = [
-  { count: 1, emoji: '💦', title: 'Första doppet' },
-  { count: 5, emoji: '🧭', title: 'Badutforskare' },
-  { count: 10, emoji: '🌊', title: 'Vattenvän' },
-  { count: 25, emoji: '🏅', title: 'Badentusiast' },
-  { count: 50, emoji: '🏆', title: 'Badmästare' },
-  { count: 100, emoji: '👑', title: 'Östergötlands legend' }
+  { metric: 'places', count: 1, emoji: '💦', title: 'Första doppet' },
+  { metric: 'places', count: 5, emoji: '🧭', title: 'Badutforskare' },
+  { metric: 'places', count: 10, emoji: '🌊', title: 'Vattenvän' },
+  { metric: 'places', count: 25, emoji: '🏅', title: 'Badentusiast' },
+  { metric: 'places', count: 50, emoji: '🏆', title: 'Badmästare' },
+  { metric: 'places', count: 100, emoji: '👑', title: 'Östergötlands legend' },
+  { metric: 'cities', count: 3, emoji: '🗺️', title: 'Länsresenär' },
+  { metric: 'cities', count: 5, emoji: '🚗', title: 'Kommunjägare' },
+  { metric: 'cities', count: 10, emoji: '📍', title: 'Överallt i Östergötland' }
 ];
 const PLACE_AMENITIES = [
   { key: 'parking', label: 'Parkering' },
@@ -2074,12 +2102,13 @@ function getVisitorId() {
   return id;
 }
 
-function renderAchievements(container, visitCount) {
+function renderAchievements(container, visitCount, cityCount) {
   container.innerHTML = PROFILE_ACHIEVEMENTS.map(achievement => {
-    const unlocked = visitCount >= achievement.count;
+    const count = achievement.metric === 'cities' ? cityCount : visitCount;
+    const unlocked = count >= achievement.count;
     return `<div class="profile-achievement ${unlocked ? 'unlocked' : ''}">
       <strong>${achievement.emoji} ${achievement.title}</strong>
-      ${unlocked ? 'Upplåst' : `${achievement.count} besök behövs`}
+      ${unlocked ? 'Upplåst' : `${achievement.count} ${achievement.metric === 'cities' ? 'orter' : 'besök'} behövs`}
     </div>`;
   }).join('');
 }
@@ -2378,21 +2407,41 @@ async function renderProfileActivity() {
   const savedPlaces = favorites.map(id => places.find(place => place.id === id)).filter(Boolean);
   const { data: visitRows, error: visitError } = await supabase
     .from('profile_visits')
-    .select('place_id')
+    .select('place_id,visited_at,note')
     .eq('user_id', currentUser.id)
     .order('visited_at', { ascending: false });
   if (visitError) {
     visitList.textContent = 'Besöken kunde inte hämtas. Kontrollera att supabase/profile_visits.sql har körts.';
     console.error('Besökta badplatser kunde inte hämtas:', visitError.message);
   } else {
-    visitedPlaceIds = (visitRows || []).map(row => Number(row.place_id));
+    const rows = visitRows || [];
+    visitedPlaceIds = rows.map(row => Number(row.place_id));
     const visitedPlaces = visitedPlaceIds.map(id => places.find(place => place.id === id)).filter(Boolean);
+    const visitedCities = new Set(visitedPlaces.map(place => place.city).filter(Boolean));
     $('#profileVisitCount').textContent = `${visitedPlaces.length} av ${places.length} badplatser besökta`;
+    $('#profileStats').innerHTML = `
+      <div class="profile-stat"><strong>${visitedPlaces.length}</strong>badplatser besökta</div>
+      <div class="profile-stat"><strong>${visitedCities.size}</strong>orter utforskade</div>
+      <div class="profile-stat"><strong>${places.length ? Math.round(visitedPlaces.length / places.length * 100) : 0}%</strong>av badplatserna</div>`;
     visitList.className = 'profile-list';
-    visitList.innerHTML = visitedPlaces.length
-      ? visitedPlaces.map(place => `<div class="profile-item"><span>${esc(place.name)}</span><button type="button" onclick="openPlace(${place.id})">Visa</button></div>`).join('')
+    visitList.innerHTML = rows.length
+      ? rows.map(row => {
+        const place = places.find(item => item.id === Number(row.place_id));
+        if (!place) return '';
+        const date = String(row.visited_at || '').slice(0, 10);
+        return `<div class="profile-item profile-visit-item"><div>
+          <span>${esc(place.name)}</span>
+          <div class="hint">${date ? `Besökt ${esc(date)}` : ''}${row.note ? ` · ${esc(row.note)}` : ''}</div>
+          <details><summary>Ändra datum eller anteckning</summary>
+            <form class="profile-visit-edit" data-visit-edit="${place.id}">
+              <label>Datum<input type="date" name="visited_at" value="${esc(date)}" required></label>
+              <label>Anteckning<input type="text" name="note" maxlength="500" value="${esc(row.note || '')}" placeholder="T.ex. fint kvällsdopp"></label>
+              <button type="submit">Spara</button>
+            </form>
+          </details></div><button type="button" onclick="openPlace(${place.id})">Visa</button></div>`;
+      }).join('')
       : '<p class="hint">Markera badplatser du har besökt för att samla achievements.</p>';
-    renderAchievements($('#profileAchievements'), visitedPlaces.length);
+    renderAchievements($('#profileAchievements'), visitedPlaces.length, visitedCities.size);
   }
   favoriteList.className = 'profile-list';
   favoriteList.innerHTML = savedPlaces.length
@@ -2402,15 +2451,77 @@ async function renderProfileActivity() {
   const { data: rows, error } = await supabase.rpc('get_my_comments');
   if (error) {
     commentList.textContent = 'Kommentarerna kunde inte hämtas.';
+    console.error('Profilkommentarer kunde inte hämtas:', error.message);
+  } else {
+    commentList.className = 'profile-list';
+    commentList.innerHTML = rows?.length
+      ? rows.map(row => {
+        const place = places.find(item => item.id === Number(row.place_id));
+        return `<div class="profile-item"><span>${esc(place?.name || 'Badplats')} · ${esc(row.text)}</span></div>`;
+      }).join('')
+      : '<p class="hint">Du har inte publicerat några kommentarer ännu.</p>';
+  }
+
+  const { data: followingRows, error: followingError } = await supabase.rpc('get_my_following');
+  const followingList = $('#profileFollowing');
+  if (followingError) {
+    followingList.textContent = 'Följda profiler kunde inte hämtas. Kontrollera att den senaste profil-migreringen har körts.';
+    console.error('Följda profiler kunde inte hämtas:', followingError.message);
+  } else {
+    followingList.className = 'profile-list';
+    followingList.innerHTML = followingRows?.length
+      ? followingRows.map(profile => `<div class="profile-item">
+          <a class="profile-follow-link" href="?profile=${encodeURIComponent(profile.user_id)}">${esc(profile.display_name || 'Badprofil')}</a>
+          <span>${Number(profile.visited_place_count) || 0} besök</span>
+          <button type="button" data-unfollow-profile="${esc(profile.user_id)}">Sluta följa</button>
+        </div>`).join('')
+      : '<p class="hint">Du följer inga profiler ännu. Besök en offentlig profil och välj Följ.</p>';
+  }
+  await loadPublicProfiles($('#profileDiscoveryQuery').value.trim());
+}
+
+async function loadPublicProfiles(query = '') {
+  const list = $('#profileDiscovery');
+  const { data, error } = await supabase.rpc('search_public_profiles', { p_query: query });
+  if (error) {
+    list.textContent = 'Offentliga profiler kunde inte hämtas. Kontrollera att den senaste profil-migreringen har körts.';
+    console.error('Offentliga profiler kunde inte hämtas:', error.message);
     return;
   }
-  commentList.className = 'profile-list';
-  commentList.innerHTML = rows?.length
-    ? rows.map(row => {
-      const place = places.find(item => item.id === Number(row.place_id));
-      return `<div class="profile-item"><span>${esc(place?.name || 'Badplats')} · ${esc(row.text)}</span></div>`;
-    }).join('')
-    : '<p class="hint">Du har inte publicerat några kommentarer ännu.</p>';
+  list.className = 'profile-list';
+  list.innerHTML = data?.length
+    ? data.map(profile => `<div class="profile-item">
+        <a class="profile-follow-link" href="?profile=${encodeURIComponent(profile.user_id)}">${esc(profile.display_name || 'Badprofil')}</a>
+        <span>${Number(profile.visited_place_count) || 0} besök · ${Number(profile.follower_count) || 0} följare</span>
+        <button type="button" data-follow-profile="${esc(profile.user_id)}" data-is-following="${profile.is_following ? 'true' : 'false'}">${profile.is_following ? 'Följer' : '＋ Följ'}</button>
+      </div>`).join('')
+    : '<p class="hint">Inga offentliga profiler matchade sökningen.</p>';
+}
+
+async function saveVisitDetails(event) {
+  event.preventDefault();
+  if (!currentUser) return;
+  const form = event.currentTarget;
+  const placeId = Number(form.dataset.visitEdit);
+  const date = form.elements.visited_at.value;
+  if (!Number.isInteger(placeId) || !date || Number.isNaN(Date.parse(`${date}T12:00:00`)) || !places.some(place => place.id === placeId)) {
+    toast('Kontrollera datumet och försök igen.');
+    return;
+  }
+  const visitedAt = new Date(`${date}T12:00:00`).toISOString();
+  const { data, error } = await supabase.from('profile_visits')
+    .update({ visited_at: visitedAt, note: form.elements.note.value.trim() })
+    .eq('user_id', currentUser.id)
+    .eq('place_id', placeId)
+    .select('place_id')
+    .maybeSingle();
+  if (error || !data) {
+    console.error('Besöksuppgifterna kunde inte sparas:', error?.message || 'Ingen besöksrad uppdaterades.');
+    toast('Datumet eller anteckningen kunde inte sparas. Kontrollera att den senaste profil-migreringen har körts.');
+    return;
+  }
+  await renderProfileActivity();
+  toast('Besöket har uppdaterats.');
 }
 
 async function togglePlaceVisited(placeId) {
@@ -2438,7 +2549,9 @@ async function togglePlaceVisited(placeId) {
 
 async function showPublicProfile(userId) {
   const message = $('#publicProfileMessage');
-  const { data, error } = await supabase.rpc('get_public_profile', { p_user_id: userId });
+  displayedPublicProfileId = null;
+  $('#publicProfileFollowBtn').hidden = true;
+  const { data, error } = await supabase.rpc('get_public_profile_details', { p_user_id: userId });
   $('#profileSignedOut').hidden = true;
   $('#profileSignedIn').hidden = true;
   $('#profilePublicView').hidden = false;
@@ -2450,23 +2563,75 @@ async function showPublicProfile(userId) {
   }
   const profile = data?.[0];
   if (!profile) {
+    displayedPublicProfileId = null;
+    $('#publicProfileFollowBtn').hidden = true;
     $('#publicProfileHeading').textContent = 'Profilen är privat eller finns inte';
     $('#publicProfileVisitCount').textContent = '';
     $('#publicProfileVisits').innerHTML = '';
     $('#publicProfileAchievements').innerHTML = '';
+    $('#publicProfileStats').innerHTML = '';
+    $('#publicProfileFollowing').innerHTML = '';
     message.textContent = 'Be profilägaren kontrollera att profilen är offentlig.';
     return;
   }
-  const visitedIds = (profile.visited_place_ids || []).map(Number);
+  displayedPublicProfileId = userId;
+  displayedPublicProfileFollowed = Boolean(profile.is_following);
+  const visitRows = profile.visits || [];
+  const visitedIds = visitRows.map(row => Number(row.place_id));
   const visitedPlaces = visitedIds.map(id => places.find(place => place.id === id)).filter(Boolean);
+  const visitedCities = new Set(visitedPlaces.map(place => place.city).filter(Boolean));
   $('#publicProfileHeading').textContent = profile.display_name || 'Badprofil';
   $('#publicProfileVisitCount').textContent = `${visitedPlaces.length} av ${places.length} badplatser besökta`;
+  $('#publicProfileStats').innerHTML = `
+    <div class="profile-stat"><strong>${Number(profile.visited_count) || visitedPlaces.length}</strong>badplatser besökta</div>
+    <div class="profile-stat"><strong>${Number(profile.city_count) || visitedCities.size}</strong>orter utforskade</div>
+    <div class="profile-stat"><strong>${Number(profile.follower_count) || 0}</strong>följare</div>
+    <div class="profile-stat"><strong>${Number(profile.following_count) || 0}</strong>följer</div>`;
   $('#publicProfileVisits').className = 'profile-list';
-  $('#publicProfileVisits').innerHTML = visitedPlaces.length
-    ? visitedPlaces.map(place => `<div class="profile-item"><span>${esc(place.name)} · ${esc(place.city || 'Östergötland')}</span><button type="button" onclick="openPlace(${place.id})">Visa</button></div>`).join('')
+  $('#publicProfileVisits').innerHTML = visitRows.length
+    ? visitRows.map(row => {
+      const place = places.find(item => item.id === Number(row.place_id));
+      if (!place) return '';
+      const date = String(row.visited_at || '').slice(0, 10);
+      return `<div class="profile-item"><span>${esc(place.name)} · ${esc(place.city || 'Östergötland')}
+        <span class="hint">${date ? ` · ${esc(date)}` : ''}${row.note ? ` · ${esc(row.note)}` : ''}</span></span>
+        <button type="button" onclick="openPlace(${place.id})">Visa</button></div>`;
+    }).join('')
     : '<p class="hint">Inga besökta badplatser ännu.</p>';
-  renderAchievements($('#publicProfileAchievements'), visitedPlaces.length);
+  renderAchievements($('#publicProfileAchievements'), visitedPlaces.length, visitedCities.size);
+  $('#publicProfileFollowing').className = 'profile-list';
+  $('#publicProfileFollowing').innerHTML = profile.public_following?.length
+    ? profile.public_following.map(followed => `<div class="profile-item">
+        <a class="profile-follow-link" href="?profile=${encodeURIComponent(followed.user_id)}">${esc(followed.display_name || 'Badprofil')}</a>
+        <span>${Number(followed.visited_place_count) || 0} besök</span>
+      </div>`).join('')
+    : '<p class="hint">Följer inga offentliga profiler.</p>';
+  const followButton = $('#publicProfileFollowBtn');
+  followButton.hidden = !currentUser || currentUser.id === userId;
+  followButton.textContent = displayedPublicProfileFollowed ? 'Sluta följa' : '＋ Följ profil';
   message.textContent = '';
+}
+
+async function toggleProfileFollow(userId, shouldFollow) {
+  if (!currentUser) {
+    toast('Logga in för att följa offentliga profiler.');
+    return;
+  }
+  const { error } = await supabase.rpc('set_profile_follow', {
+    p_followed_user_id: userId,
+    p_should_follow: shouldFollow
+  });
+  if (error) {
+    console.error('Profilen kunde inte följas:', error.message);
+    toast('Följningen kunde inte sparas. Kontrollera att den senaste profil-migreringen har körts.');
+    return;
+  }
+  if ($('#profilePublicView').hidden) {
+    await renderProfileActivity();
+  } else {
+    await showPublicProfile(userId);
+  }
+  toast(shouldFollow ? 'Du följer nu profilen.' : 'Du följer inte längre profilen.');
 }
 
 async function recordSiteVisit() {
@@ -4124,6 +4289,24 @@ $('#profileOpenBtn').addEventListener('click', () => {
 $('#profileClose').addEventListener('click', () => $('#profileModal').classList.remove('show'));
 $('#profileModal').addEventListener('click', event => {
   if (event.target.id === 'profileModal') $('#profileModal').classList.remove('show');
+});
+
+$('#profileVisits').addEventListener('submit', saveVisitDetails);
+$('#profileFollowing').addEventListener('click', event => {
+  const button = event.target.closest('[data-unfollow-profile]');
+  if (button) toggleProfileFollow(button.dataset.unfollowProfile, false);
+});
+$('#profileDiscoveryForm').addEventListener('submit', event => {
+  event.preventDefault();
+  loadPublicProfiles($('#profileDiscoveryQuery').value.trim());
+});
+$('#profileDiscovery').addEventListener('click', event => {
+  const button = event.target.closest('[data-follow-profile]');
+  if (button) toggleProfileFollow(button.dataset.followProfile, button.dataset.isFollowing !== 'true');
+});
+$('#publicProfileFollowBtn').addEventListener('click', () => {
+  if (!displayedPublicProfileId) return;
+  toggleProfileFollow(displayedPublicProfileId, !displayedPublicProfileFollowed);
 });
 
 $('#profileAuthForm').addEventListener('submit', async event => {
