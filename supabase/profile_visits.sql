@@ -1,7 +1,7 @@
 -- Run supabase/admin_comments.sql first to create public.profiles.
 
 alter table public.profiles
-  add column if not exists is_public boolean not null default false;
+  add column if not exists is_public boolean not null default true;
 
 create table if not exists public.profile_visits (
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -29,35 +29,11 @@ drop policy if exists "users remove own place visits" on public.profile_visits;
 create policy "users remove own place visits" on public.profile_visits
   for delete to authenticated using (user_id = (select auth.uid()));
 
-create or replace function public.get_public_profile(p_user_id uuid)
-returns table (
-  display_name text,
-  visited_place_ids bigint[],
-  created_at timestamptz
-)
-language sql
-stable
-security definer
-set search_path = ''
-as $$
-  select
-    profile.display_name,
-    coalesce(
-      array_agg(visit.place_id order by visit.visited_at desc)
-        filter (where visit.place_id is not null),
-      array[]::bigint[]
-    ),
-    profile.created_at
-  from public.profiles as profile
-  left join public.profile_visits as visit
-    on visit.user_id = profile.user_id
-  where profile.user_id = p_user_id
-    and profile.is_public
-  group by profile.user_id, profile.display_name, profile.created_at;
-$$;
-
-revoke all on function public.get_public_profile(uuid) from public;
-grant execute on function public.get_public_profile(uuid) to anon, authenticated;
+drop function if exists public.get_public_profile(uuid);
+drop function if exists public.get_public_profile_details(uuid);
+drop function if exists public.search_public_profiles(text);
+drop function if exists public.get_my_following();
+drop function if exists public.set_profile_follow(uuid, boolean);
 
 alter table public.profile_visits
   add column if not exists note text not null default '';
@@ -98,16 +74,49 @@ create index if not exists profile_follows_followed_user_id_idx
 alter table public.profile_follows enable row level security;
 revoke all on table public.profile_follows from public, anon, authenticated;
 
+alter table public.profiles
+  alter column is_public set default true,
+  add column if not exists public_age smallint;
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint
+    where conname = 'profiles_public_age_range_check'
+      and conrelid = 'public.profiles'::regclass
+  ) then
+    alter table public.profiles
+      add constraint profiles_public_age_range_check
+      check (public_age is null or public_age between 13 and 120);
+  end if;
+end;
+$$;
+
+create table if not exists public.profile_friendships (
+  user_low uuid not null references auth.users(id) on delete cascade,
+  user_high uuid not null references auth.users(id) on delete cascade,
+  requested_by uuid not null references auth.users(id) on delete cascade,
+  status text not null default 'pending',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  primary key (user_low, user_high),
+  constraint profile_friendships_ordered_pair check (user_low < user_high),
+  constraint profile_friendships_requester_in_pair check (requested_by in (user_low, user_high)),
+  constraint profile_friendships_status_check check (status in ('pending', 'accepted', 'rejected'))
+);
+
+create index if not exists profile_friendships_recipient_pending_idx
+  on public.profile_friendships (user_low, user_high)
+  where status = 'pending';
+
+alter table public.profile_friendships enable row level security;
+revoke all on table public.profile_friendships from public, anon, authenticated;
+
 create or replace function public.get_public_profile_details(p_user_id uuid)
 returns table (
   display_name text,
-  visits jsonb,
-  visited_count bigint,
-  city_count bigint,
-  follower_count bigint,
-  following_count bigint,
-  is_following boolean,
-  public_following jsonb
+  public_age smallint,
+  friendship_status text
 )
 language sql
 stable
@@ -116,63 +125,31 @@ set search_path = ''
 as $$
   select
     profile.display_name,
-    coalesce((
-      select jsonb_agg(
-        jsonb_build_object(
-          'place_id', visit.place_id,
-          'visited_at', visit.visited_at,
-          'note', visit.note
-        ) order by visit.visited_at desc
-      )
-      from public.profile_visits as visit
-      where visit.user_id = profile.user_id
-    ), '[]'::jsonb),
-    (
-      select count(*)
-      from public.profile_visits as visit
-      where visit.user_id = profile.user_id
-    ),
-    (
-      select count(distinct nullif(btrim(place.city), ''))
-      from public.profile_visits as visit
-      join public.places as place on place.id = visit.place_id
-      where visit.user_id = profile.user_id
-    ),
-    (
-      select count(*)
-      from public.profile_follows as follow
-      where follow.followed_user_id = profile.user_id
-    ),
-    (
-      select count(*)
-      from public.profile_follows as follow
-      join public.profiles as followed_profile on followed_profile.user_id = follow.followed_user_id
-      where follow.follower_id = profile.user_id
-        and followed_profile.is_public
-    ),
-    exists (
-      select 1
-      from public.profile_follows as follow
-      where follow.follower_id = (select auth.uid())
-        and follow.followed_user_id = profile.user_id
-    ),
-    coalesce((
-      select jsonb_agg(
-        jsonb_build_object(
-          'user_id', followed_profile.user_id,
-          'display_name', followed_profile.display_name,
-          'visited_place_count', (
-            select count(*)
-            from public.profile_visits as visit
-            where visit.user_id = followed_profile.user_id
-          )
-        ) order by followed_profile.display_name
-      )
-      from public.profile_follows as follow
-      join public.profiles as followed_profile on followed_profile.user_id = follow.followed_user_id
-      where follow.follower_id = profile.user_id
-        and followed_profile.is_public
-    ), '[]'::jsonb)
+    profile.public_age,
+    case
+      when profile.user_id = (select auth.uid()) then 'self'
+      when exists (
+        select 1 from public.profile_friendships as friendship
+        where friendship.user_low = least(profile.user_id, (select auth.uid()))
+          and friendship.user_high = greatest(profile.user_id, (select auth.uid()))
+          and friendship.status = 'accepted'
+      ) then 'friends'
+      when exists (
+        select 1 from public.profile_friendships as friendship
+        where friendship.user_low = least(profile.user_id, (select auth.uid()))
+          and friendship.user_high = greatest(profile.user_id, (select auth.uid()))
+          and friendship.status = 'pending'
+          and friendship.requested_by = (select auth.uid())
+      ) then 'request_sent'
+      when exists (
+        select 1 from public.profile_friendships as friendship
+        where friendship.user_low = least(profile.user_id, (select auth.uid()))
+          and friendship.user_high = greatest(profile.user_id, (select auth.uid()))
+          and friendship.status = 'pending'
+          and friendship.requested_by = profile.user_id
+      ) then 'request_received'
+      else 'none'
+    end
   from public.profiles as profile
   where profile.user_id = p_user_id
     and profile.is_public;
@@ -185,9 +162,8 @@ create or replace function public.search_public_profiles(p_query text default ''
 returns table (
   user_id uuid,
   display_name text,
-  visited_place_count bigint,
-  follower_count bigint,
-  is_following boolean
+  public_age smallint,
+  friendship_status text
 )
 language sql
 stable
@@ -197,22 +173,30 @@ as $$
   select
     profile.user_id,
     profile.display_name,
-    (
-      select count(*)
-      from public.profile_visits as visit
-      where visit.user_id = profile.user_id
-    ),
-    (
-      select count(*)
-      from public.profile_follows as follow
-      where follow.followed_user_id = profile.user_id
-    ),
-    exists (
-      select 1
-      from public.profile_follows as follow
-      where follow.follower_id = (select auth.uid())
-        and follow.followed_user_id = profile.user_id
-    )
+    profile.public_age,
+    case
+      when exists (
+        select 1 from public.profile_friendships as friendship
+        where friendship.user_low = least(profile.user_id, (select auth.uid()))
+          and friendship.user_high = greatest(profile.user_id, (select auth.uid()))
+          and friendship.status = 'accepted'
+      ) then 'friends'
+      when exists (
+        select 1 from public.profile_friendships as friendship
+        where friendship.user_low = least(profile.user_id, (select auth.uid()))
+          and friendship.user_high = greatest(profile.user_id, (select auth.uid()))
+          and friendship.status = 'pending'
+          and friendship.requested_by = (select auth.uid())
+      ) then 'request_sent'
+      when exists (
+        select 1 from public.profile_friendships as friendship
+        where friendship.user_low = least(profile.user_id, (select auth.uid()))
+          and friendship.user_high = greatest(profile.user_id, (select auth.uid()))
+          and friendship.status = 'pending'
+          and friendship.requested_by = profile.user_id
+      ) then 'request_received'
+      else 'none'
+    end
   from public.profiles as profile
   where profile.is_public
     and (
@@ -230,12 +214,12 @@ $$;
 revoke all on function public.search_public_profiles(text) from public;
 grant execute on function public.search_public_profiles(text) to anon, authenticated;
 
-create or replace function public.get_my_following()
+create or replace function public.get_my_friends()
 returns table (
   user_id uuid,
   display_name text,
-  visited_place_count bigint,
-  followed_at timestamptz
+  public_age smallint,
+  friends_since timestamptz
 )
 language sql
 stable
@@ -243,68 +227,206 @@ security definer
 set search_path = ''
 as $$
   select
-    followed_profile.user_id,
-    followed_profile.display_name,
-    (
-      select count(*)
-      from public.profile_visits as visit
-      where visit.user_id = followed_profile.user_id
-    ),
-    follow.followed_at
-  from public.profile_follows as follow
-  join public.profiles as followed_profile on followed_profile.user_id = follow.followed_user_id
-  where follow.follower_id = (select auth.uid())
-    and followed_profile.is_public
-  order by follow.followed_at desc;
+    profile.user_id,
+    profile.display_name,
+    profile.public_age,
+    friendship.updated_at
+  from public.profile_friendships as friendship
+  join public.profiles as profile
+    on profile.user_id = case
+      when friendship.user_low = (select auth.uid()) then friendship.user_high
+      else friendship.user_low
+    end
+  where (friendship.user_low = (select auth.uid()) or friendship.user_high = (select auth.uid()))
+    and friendship.status = 'accepted'
+    and profile.is_public
+  order by profile.display_name;
 $$;
 
-revoke all on function public.get_my_following() from public;
-grant execute on function public.get_my_following() to authenticated;
+revoke all on function public.get_my_friends() from public;
+grant execute on function public.get_my_friends() to authenticated;
 
-create or replace function public.set_profile_follow(
-  p_followed_user_id uuid,
-  p_should_follow boolean
+create or replace function public.get_my_friend_requests()
+returns table (
+  user_id uuid,
+  display_name text,
+  public_age smallint,
+  direction text,
+  requested_at timestamptz
 )
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select
+    profile.user_id,
+    profile.display_name,
+    profile.public_age,
+    case when friendship.requested_by = (select auth.uid()) then 'outgoing' else 'incoming' end,
+    friendship.created_at
+  from public.profile_friendships as friendship
+  join public.profiles as profile
+    on profile.user_id = case
+      when friendship.user_low = (select auth.uid()) then friendship.user_high
+      else friendship.user_low
+    end
+  where (friendship.user_low = (select auth.uid()) or friendship.user_high = (select auth.uid()))
+    and friendship.status = 'pending'
+    and profile.is_public
+  order by friendship.created_at desc;
+$$;
+
+revoke all on function public.get_my_friend_requests() from public;
+grant execute on function public.get_my_friend_requests() to authenticated;
+
+create or replace function public.send_friend_request(p_recipient_id uuid)
 returns void
 language plpgsql
 security definer
 set search_path = ''
 as $$
 declare
-  v_follower_id uuid := (select auth.uid());
+  v_user_id uuid := (select auth.uid());
+  v_low uuid;
+  v_high uuid;
+  v_status text;
+  v_requested_by uuid;
 begin
-  if v_follower_id is null then
-    raise exception 'Sign in is required to follow profiles.';
+  if v_user_id is null then
+    raise exception 'Sign in to add friends.';
+  end if;
+  if p_recipient_id is null or p_recipient_id = v_user_id then
+    raise exception 'You cannot add yourself as a friend.';
+  end if;
+  if not exists (
+    select 1 from public.profiles as profile
+    where profile.user_id = v_user_id and profile.is_public
+  ) or not exists (
+    select 1 from public.profiles as profile
+    where profile.user_id = p_recipient_id and profile.is_public
+  ) then
+    raise exception 'Friend requests are only available between public profiles.';
   end if;
 
-  if p_followed_user_id is null or p_followed_user_id = v_follower_id then
-    raise exception 'You cannot follow this profile.';
-  end if;
+  v_low := least(v_user_id, p_recipient_id);
+  v_high := greatest(v_user_id, p_recipient_id);
 
-  if p_should_follow is null then
-    raise exception 'Choose whether to follow or unfollow this profile.';
-  end if;
+  insert into public.profile_friendships (user_low, user_high, requested_by, status)
+  values (v_low, v_high, v_user_id, 'pending')
+  on conflict (user_low, user_high) do update
+    set requested_by = excluded.requested_by,
+        status = 'pending',
+        created_at = now(),
+        updated_at = now()
+    where public.profile_friendships.status = 'rejected';
 
-  if p_should_follow then
-    if not exists (
-      select 1
-      from public.profiles as profile
-      where profile.user_id = p_followed_user_id
-        and profile.is_public
-    ) then
-      raise exception 'Only public profiles can be followed.';
-    end if;
+  select status, requested_by
+    into v_status, v_requested_by
+  from public.profile_friendships
+  where user_low = v_low and user_high = v_high;
 
-    insert into public.profile_follows (follower_id, followed_user_id)
-    values (v_follower_id, p_followed_user_id)
-    on conflict (follower_id, followed_user_id) do nothing;
-  else
-    delete from public.profile_follows
-    where follower_id = v_follower_id
-      and followed_user_id = p_followed_user_id;
+  if v_status = 'accepted' then
+    raise exception 'You are already friends.';
+  elsif v_status = 'pending' and v_requested_by = v_user_id then
+    raise exception 'A friend request is already pending.';
+  elsif v_status = 'pending' then
+    raise exception 'This person has already sent you a request. Accept it from your profile.';
   end if;
 end;
 $$;
 
-revoke all on function public.set_profile_follow(uuid, boolean) from public;
-grant execute on function public.set_profile_follow(uuid, boolean) to authenticated;
+revoke all on function public.send_friend_request(uuid) from public;
+grant execute on function public.send_friend_request(uuid) to authenticated;
+
+create or replace function public.respond_friend_request(p_requester_id uuid, p_accept boolean)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_user_id uuid := (select auth.uid());
+  v_low uuid;
+  v_high uuid;
+begin
+  if v_user_id is null then
+    raise exception 'Sign in to respond to friend requests.';
+  end if;
+  if p_requester_id is null or p_requester_id = v_user_id or p_accept is null then
+    raise exception 'Invalid friend request.';
+  end if;
+  v_low := least(v_user_id, p_requester_id);
+  v_high := greatest(v_user_id, p_requester_id);
+
+  update public.profile_friendships
+  set status = case when p_accept then 'accepted' else 'rejected' end,
+      updated_at = now()
+  where user_low = v_low
+    and user_high = v_high
+    and requested_by = p_requester_id
+    and status = 'pending';
+
+  if not found then
+    raise exception 'No pending friend request was found.';
+  end if;
+end;
+$$;
+
+revoke all on function public.respond_friend_request(uuid, boolean) from public;
+grant execute on function public.respond_friend_request(uuid, boolean) to authenticated;
+
+create or replace function public.cancel_friend_request(p_recipient_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_user_id uuid := (select auth.uid());
+begin
+  if v_user_id is null or p_recipient_id is null then
+    raise exception 'Sign in to cancel a friend request.';
+  end if;
+
+  delete from public.profile_friendships
+  where user_low = least(v_user_id, p_recipient_id)
+    and user_high = greatest(v_user_id, p_recipient_id)
+    and requested_by = v_user_id
+    and status = 'pending';
+
+  if not found then
+    raise exception 'No pending friend request was found.';
+  end if;
+end;
+$$;
+
+revoke all on function public.cancel_friend_request(uuid) from public;
+grant execute on function public.cancel_friend_request(uuid) to authenticated;
+
+create or replace function public.remove_friend(p_friend_user_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_user_id uuid := (select auth.uid());
+begin
+  if v_user_id is null or p_friend_user_id is null or p_friend_user_id = v_user_id then
+    raise exception 'Invalid friend.';
+  end if;
+
+  delete from public.profile_friendships
+  where user_low = least(v_user_id, p_friend_user_id)
+    and user_high = greatest(v_user_id, p_friend_user_id)
+    and status = 'accepted';
+
+  if not found then
+    raise exception 'Friendship was not found.';
+  end if;
+end;
+$$;
+
+revoke all on function public.remove_friend(uuid) from public;
+grant execute on function public.remove_friend(uuid) to authenticated;

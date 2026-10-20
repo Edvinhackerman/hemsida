@@ -52,9 +52,9 @@ Visitors can submit place suggestions from a place's detail view. Suggestions do
 
 ## Visited places and achievements
 
-After running `supabase/admin_comments.sql`, run the latest `supabase/profile_visits.sql` in the Supabase SQL Editor. If you already ran an earlier version, run the updated script again to enable visit dates and notes, expanded achievements and statistics, and following public profiles. The migration is safe to rerun.
+After running `supabase/admin_comments.sql`, run the latest `supabase/profile_visits.sql` in the Supabase SQL Editor. If you already ran an earlier version, run the updated script again to enable visit dates and notes, expanded achievements, public profiles, and friend requests. The migration is safe to rerun.
 
-Signed-in users can edit the date and a note for each visited bathing place. Profiles are private by default. Turning on the public-profile setting shares the profile name, visited places (including their dates and notes), achievements, statistics, and the public profiles that person follows. Followers are shown as a count. Users can follow only public profiles, and private profile details are not exposed.
+Signed-in users can edit the date and a note for each visited bathing place. New profiles are public by default; existing profiles keep their current privacy setting. A public profile shows only its display name and optional age. Email addresses, visits, visit notes, favorites, comments, achievements, and statistics remain private. Users can search public profiles and send friend requests; the recipient must accept before the two accounts become friends. Only public profiles can be added as friends.
 
 ## Feature ideas and municipal contacts
 

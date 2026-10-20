@@ -1841,7 +1841,9 @@ footer {
       <form class="profile-form" id="profileDetailsForm">
         <label for="profileDisplayName">Visningsnamn</label>
         <input class="field" id="profileDisplayName" maxlength="60" placeholder="Ditt namn">
-        <label class="profile-privacy"><input id="profilePublicToggle" type="checkbox"> <span>Gör min profil offentlig. Andra kan då se mitt namn, besök med datum och anteckningar, statistik, achievements och vilka offentliga profiler jag följer.</span></label>
+        <label for="profilePublicAge">Ålder (valfritt, visas om profilen är offentlig)</label>
+        <input class="field" id="profilePublicAge" type="number" min="13" max="120" inputmode="numeric" placeholder="Ålder">
+        <label class="profile-privacy"><input id="profilePublicToggle" type="checkbox"> <span>Gör min profil offentlig. Andra kan bara se mitt visningsnamn och min ålder om jag har lagt till den. E-post, besök, anteckningar och övrig profilinformation är privata.</span></label>
         <button class="btn btn-soft" type="submit">Spara profil</button>
       </form>
       <p class="profile-message" id="profileDetailsMessage" role="status" aria-live="polite"></p>
@@ -1852,7 +1854,8 @@ footer {
       <div class="profile-columns">
         <section><h3>Mina besök</h3><p class="hint" id="profileVisitCount">0 besökta badplatser</p><div id="profileVisits"></div></section>
         <section><h3>Achievements</h3><div id="profileAchievements" class="profile-achievements"></div></section>
-        <section><h3>Jag följer</h3><div id="profileFollowing"></div></section>
+        <section><h3>Mina vänner</h3><div id="profileFriends"></div></section>
+        <section><h3>Vänförfrågningar</h3><div id="profileFriendRequests"></div></section>
         <section>
           <h3>Upptäck profiler</h3>
           <form class="profile-form profile-discovery-form" id="profileDiscoveryForm">
@@ -1860,6 +1863,7 @@ footer {
             <input id="profileDiscoveryQuery" type="search" maxlength="80" placeholder="Sök på profilnamn">
             <button class="btn btn-soft" type="submit">Sök profiler</button>
           </form>
+          <p class="hint" id="profileFriendPrivacyHint" hidden>Gör din profil offentlig för att skicka vänförfrågningar.</p>
           <div id="profileDiscovery"></div>
         </section>
         <section><h3>Mina favoriter</h3><div id="profileFavorites"></div></section>
@@ -1870,14 +1874,8 @@ footer {
     <div id="profilePublicView" hidden>
       <div class="eyebrow">Offentlig badprofil</div>
       <h2 id="publicProfileHeading">Badprofil</h2>
-      <p class="hint" id="publicProfileVisitCount"></p>
-      <div class="profile-stats" id="publicProfileStats"></div>
-      <button class="btn btn-soft" id="publicProfileFollowBtn" type="button" hidden></button>
-      <div class="profile-columns">
-        <section><h3>Achievements</h3><div id="publicProfileAchievements" class="profile-achievements"></div></section>
-        <section><h3>Besökta badplatser</h3><div id="publicProfileVisits"></div></section>
-        <section><h3>Följer</h3><div id="publicProfileFollowing"></div></section>
-      </div>
+      <p class="hint" id="publicProfileAge"></p>
+      <button class="btn btn-soft" id="publicProfileFriendBtn" type="button" hidden></button>
       <p class="profile-message" id="publicProfileMessage" role="status" aria-live="polite"></p>
     </div>
   </div>
@@ -2069,7 +2067,6 @@ let isSiteAdmin = false;
 let currentUser = null;
 let currentProfile = null;
 let displayedPublicProfileId = null;
-let displayedPublicProfileFollowed = false;
 let municipalContacts = {};
 let visitedPlaceIds = [];
 const PROFILE_ACHIEVEMENTS = [
@@ -2114,7 +2111,8 @@ function renderAchievements(container, visitCount, cityCount) {
 }
 
 function isMissingPublicProfileColumn(error) {
-  return error?.code === '42703' || error?.code === 'PGRST204' || error?.message?.includes('is_public');
+  return error?.code === '42703' || error?.code === 'PGRST204'
+    || error?.message?.includes('is_public') || error?.message?.includes('public_age');
 }
 
 const FEATURE_IDEA_STATUSES = {
@@ -2358,7 +2356,7 @@ async function loadAccountProfile() {
   const fallbackName = currentUser.user_metadata?.display_name || currentUser.email?.split('@')[0] || '';
   const { data: profileRow, error: profileError } = await supabase
     .from('profiles')
-    .select('display_name,is_public')
+    .select('display_name,is_public,public_age')
     .eq('user_id', currentUser.id)
     .maybeSingle();
   if (profileError) {
@@ -2369,31 +2367,33 @@ async function loadAccountProfile() {
         .eq('user_id', currentUser.id)
         .maybeSingle();
       if (!legacyProfileError) {
-        currentProfile = { display_name: legacyProfile?.display_name || fallbackName, is_public: false };
+        currentProfile = { display_name: legacyProfile?.display_name || fallbackName, is_public: false, public_age: null };
         $('#profileDetailsMessage').textContent = 'Kör supabase/profile_visits.sql för att aktivera besök och offentlig profil.';
       } else {
         console.error('Befintlig profil kunde inte hämtas:', legacyProfileError.message);
         $('#profileDetailsMessage').textContent = 'Profilen kunde inte hämtas.';
-        currentProfile = { display_name: fallbackName, is_public: false };
+        currentProfile = { display_name: fallbackName, is_public: false, public_age: null };
       }
     } else {
       console.error('Profilen kunde inte hämtas:', profileError.message);
       $('#profileDetailsMessage').textContent = 'Kör Supabase-migreringarna för att aktivera profiler.';
-      currentProfile = { display_name: fallbackName, is_public: false };
+      currentProfile = { display_name: fallbackName, is_public: false, public_age: null };
     }
   } else if (profileRow) {
     currentProfile = profileRow;
   } else {
     const { data: createdProfile, error: createError } = await supabase
       .from('profiles')
-      .upsert({ user_id: currentUser.id, display_name: fallbackName }, { onConflict: 'user_id' })
-      .select('display_name,is_public')
+      .upsert({ user_id: currentUser.id, display_name: fallbackName, is_public: true }, { onConflict: 'user_id' })
+      .select('display_name,is_public,public_age')
       .single();
-    currentProfile = createError ? { display_name: fallbackName, is_public: false } : createdProfile;
+    currentProfile = createError ? { display_name: fallbackName, is_public: true, public_age: null } : createdProfile;
   }
 
   $('#profileDisplayName').value = currentProfile?.display_name || '';
+  $('#profilePublicAge').value = currentProfile?.public_age || '';
   $('#profilePublicToggle').checked = Boolean(currentProfile?.is_public);
+  $('#profileFriendPrivacyHint').hidden = Boolean(currentProfile?.is_public);
   $('#profileShareActions').hidden = !currentProfile?.is_public;
   $('#profileHeading').textContent = currentProfile?.display_name || 'Din profil.';
   await renderProfileActivity();
@@ -2462,20 +2462,38 @@ async function renderProfileActivity() {
       : '<p class="hint">Du har inte publicerat några kommentarer ännu.</p>';
   }
 
-  const { data: followingRows, error: followingError } = await supabase.rpc('get_my_following');
-  const followingList = $('#profileFollowing');
-  if (followingError) {
-    followingList.textContent = 'Följda profiler kunde inte hämtas. Kontrollera att den senaste profil-migreringen har körts.';
-    console.error('Följda profiler kunde inte hämtas:', followingError.message);
+  const { data: friends, error: friendsError } = await supabase.rpc('get_my_friends');
+  const friendsList = $('#profileFriends');
+  if (friendsError) {
+    friendsList.textContent = 'Vänner kunde inte hämtas. Kör den senaste profilmigreringen i Supabase.';
+    console.error('Vänner kunde inte hämtas:', friendsError.message);
   } else {
-    followingList.className = 'profile-list';
-    followingList.innerHTML = followingRows?.length
-      ? followingRows.map(profile => `<div class="profile-item">
-          <a class="profile-follow-link" href="?profile=${encodeURIComponent(profile.user_id)}">${esc(profile.display_name || 'Badprofil')}</a>
-          <span>${Number(profile.visited_place_count) || 0} besök</span>
-          <button type="button" data-unfollow-profile="${esc(profile.user_id)}">Sluta följa</button>
+    friendsList.className = 'profile-list';
+    friendsList.innerHTML = friends?.length
+      ? friends.map(friend => `<div class="profile-item">
+          <a class="profile-follow-link" href="?profile=${encodeURIComponent(friend.user_id)}">${esc(friend.display_name || 'Badprofil')}</a>
+          ${friend.public_age ? `<span>${Number(friend.public_age)} år</span>` : ''}
+          <button type="button" data-friend-action="remove" data-user-id="${esc(friend.user_id)}">Ta bort vän</button>
         </div>`).join('')
-      : '<p class="hint">Du följer inga profiler ännu. Besök en offentlig profil och välj Följ.</p>';
+      : '<p class="hint">Du har inga vänner ännu. Sök bland offentliga profiler och skicka en vänförfrågan.</p>';
+  }
+
+  const { data: requests, error: requestsError } = await supabase.rpc('get_my_friend_requests');
+  const requestsList = $('#profileFriendRequests');
+  if (requestsError) {
+    requestsList.textContent = 'Vänförfrågningar kunde inte hämtas. Kör den senaste profilmigreringen i Supabase.';
+    console.error('Vänförfrågningar kunde inte hämtas:', requestsError.message);
+  } else {
+    requestsList.className = 'profile-list';
+    requestsList.innerHTML = requests?.length
+      ? requests.map(request => `<div class="profile-item">
+          <a class="profile-follow-link" href="?profile=${encodeURIComponent(request.user_id)}">${esc(request.display_name || 'Badprofil')}</a>
+          ${request.public_age ? `<span>${Number(request.public_age)} år</span>` : ''}
+          ${request.direction === 'incoming'
+            ? `<span><button type="button" data-friend-action="accept" data-user-id="${esc(request.user_id)}">Acceptera</button><button type="button" data-friend-action="reject" data-user-id="${esc(request.user_id)}">Avvisa</button></span>`
+            : '<span class="hint">Skickad</span><button type="button" data-friend-action="cancel" data-user-id="' + esc(request.user_id) + '">Avbryt</button>'}
+        </div>`).join('')
+      : '<p class="hint">Inga väntande vänförfrågningar.</p>';
   }
   await loadPublicProfiles($('#profileDiscoveryQuery').value.trim());
 }
@@ -2492,8 +2510,14 @@ async function loadPublicProfiles(query = '') {
   list.innerHTML = data?.length
     ? data.map(profile => `<div class="profile-item">
         <a class="profile-follow-link" href="?profile=${encodeURIComponent(profile.user_id)}">${esc(profile.display_name || 'Badprofil')}</a>
-        <span>${Number(profile.visited_place_count) || 0} besök · ${Number(profile.follower_count) || 0} följare</span>
-        <button type="button" data-follow-profile="${esc(profile.user_id)}" data-is-following="${profile.is_following ? 'true' : 'false'}">${profile.is_following ? 'Följer' : '＋ Följ'}</button>
+        ${profile.public_age ? `<span>${Number(profile.public_age)} år</span>` : ''}
+        ${profile.friendship_status === 'friends'
+          ? '<span class="hint">Vänner</span>'
+          : profile.friendship_status === 'request_sent'
+            ? '<span class="hint">Förfrågan skickad</span>'
+            : profile.friendship_status === 'request_received'
+              ? `<button type="button" data-friend-action="accept" data-user-id="${esc(profile.user_id)}">Acceptera</button>`
+              : `<button type="button" data-friend-action="send" data-user-id="${esc(profile.user_id)}" ${currentProfile?.is_public ? '' : 'disabled'}>${currentProfile?.is_public ? '＋ Lägg till vän' : 'Gör profilen offentlig'}</button>`}
       </div>`).join('')
     : '<p class="hint">Inga offentliga profiler matchade sökningen.</p>';
 }
@@ -2550,7 +2574,7 @@ async function togglePlaceVisited(placeId) {
 async function showPublicProfile(userId) {
   const message = $('#publicProfileMessage');
   displayedPublicProfileId = null;
-  $('#publicProfileFollowBtn').hidden = true;
+  $('#publicProfileFriendBtn').hidden = true;
   const { data, error } = await supabase.rpc('get_public_profile_details', { p_user_id: userId });
   $('#profileSignedOut').hidden = true;
   $('#profileSignedIn').hidden = true;
@@ -2564,74 +2588,62 @@ async function showPublicProfile(userId) {
   const profile = data?.[0];
   if (!profile) {
     displayedPublicProfileId = null;
-    $('#publicProfileFollowBtn').hidden = true;
+    $('#publicProfileFriendBtn').hidden = true;
     $('#publicProfileHeading').textContent = 'Profilen är privat eller finns inte';
-    $('#publicProfileVisitCount').textContent = '';
-    $('#publicProfileVisits').innerHTML = '';
-    $('#publicProfileAchievements').innerHTML = '';
-    $('#publicProfileStats').innerHTML = '';
-    $('#publicProfileFollowing').innerHTML = '';
     message.textContent = 'Be profilägaren kontrollera att profilen är offentlig.';
     return;
   }
   displayedPublicProfileId = userId;
-  displayedPublicProfileFollowed = Boolean(profile.is_following);
-  const visitRows = profile.visits || [];
-  const visitedIds = visitRows.map(row => Number(row.place_id));
-  const visitedPlaces = visitedIds.map(id => places.find(place => place.id === id)).filter(Boolean);
-  const visitedCities = new Set(visitedPlaces.map(place => place.city).filter(Boolean));
   $('#publicProfileHeading').textContent = profile.display_name || 'Badprofil';
-  $('#publicProfileVisitCount').textContent = `${visitedPlaces.length} av ${places.length} badplatser besökta`;
-  $('#publicProfileStats').innerHTML = `
-    <div class="profile-stat"><strong>${Number(profile.visited_count) || visitedPlaces.length}</strong>badplatser besökta</div>
-    <div class="profile-stat"><strong>${Number(profile.city_count) || visitedCities.size}</strong>orter utforskade</div>
-    <div class="profile-stat"><strong>${Number(profile.follower_count) || 0}</strong>följare</div>
-    <div class="profile-stat"><strong>${Number(profile.following_count) || 0}</strong>följer</div>`;
-  $('#publicProfileVisits').className = 'profile-list';
-  $('#publicProfileVisits').innerHTML = visitRows.length
-    ? visitRows.map(row => {
-      const place = places.find(item => item.id === Number(row.place_id));
-      if (!place) return '';
-      const date = String(row.visited_at || '').slice(0, 10);
-      return `<div class="profile-item"><span>${esc(place.name)} · ${esc(place.city || 'Östergötland')}
-        <span class="hint">${date ? ` · ${esc(date)}` : ''}${row.note ? ` · ${esc(row.note)}` : ''}</span></span>
-        <button type="button" onclick="openPlace(${place.id})">Visa</button></div>`;
-    }).join('')
-    : '<p class="hint">Inga besökta badplatser ännu.</p>';
-  renderAchievements($('#publicProfileAchievements'), visitedPlaces.length, visitedCities.size);
-  $('#publicProfileFollowing').className = 'profile-list';
-  $('#publicProfileFollowing').innerHTML = profile.public_following?.length
-    ? profile.public_following.map(followed => `<div class="profile-item">
-        <a class="profile-follow-link" href="?profile=${encodeURIComponent(followed.user_id)}">${esc(followed.display_name || 'Badprofil')}</a>
-        <span>${Number(followed.visited_place_count) || 0} besök</span>
-      </div>`).join('')
-    : '<p class="hint">Följer inga offentliga profiler.</p>';
-  const followButton = $('#publicProfileFollowBtn');
-  followButton.hidden = !currentUser || currentUser.id === userId;
-  followButton.textContent = displayedPublicProfileFollowed ? 'Sluta följa' : '＋ Följ profil';
+  $('#publicProfileAge').textContent = profile.public_age ? `${Number(profile.public_age)} år` : '';
+  const friendButton = $('#publicProfileFriendBtn');
+  friendButton.hidden = !currentUser || currentUser.id === userId || !currentProfile?.is_public;
+  friendButton.dataset.friendshipStatus = profile.friendship_status;
+  friendButton.textContent = friendActionLabel(profile.friendship_status);
   message.textContent = '';
 }
 
-async function toggleProfileFollow(userId, shouldFollow) {
+function friendActionLabel(status) {
+  if (status === 'friends') return 'Ni är vänner';
+  if (status === 'request_sent') return 'Vänförfrågan skickad';
+  if (status === 'request_received') return 'Acceptera vänförfrågan';
+  return '＋ Lägg till vän';
+}
+
+async function performFriendAction(userId, action) {
   if (!currentUser) {
-    toast('Logga in för att följa offentliga profiler.');
+    toast('Logga in för att lägga till vänner.');
     return;
   }
-  const { error } = await supabase.rpc('set_profile_follow', {
-    p_followed_user_id: userId,
-    p_should_follow: shouldFollow
-  });
-  if (error) {
-    console.error('Profilen kunde inte följas:', error.message);
-    toast('Följningen kunde inte sparas. Kontrollera att den senaste profil-migreringen har körts.');
-    return;
-  }
-  if ($('#profilePublicView').hidden) {
-    await renderProfileActivity();
+  let result;
+  if (action === 'send') {
+    result = await supabase.rpc('send_friend_request', { p_recipient_id: userId });
+  } else if (action === 'accept' || action === 'reject') {
+    result = await supabase.rpc('respond_friend_request', {
+      p_requester_id: userId,
+      p_accept: action === 'accept'
+    });
+  } else if (action === 'cancel') {
+    result = await supabase.rpc('cancel_friend_request', { p_recipient_id: userId });
+  } else if (action === 'remove') {
+    result = await supabase.rpc('remove_friend', { p_friend_user_id: userId });
   } else {
-    await showPublicProfile(userId);
+    return;
   }
-  toast(shouldFollow ? 'Du följer nu profilen.' : 'Du följer inte längre profilen.');
+  const { error } = result;
+  if (error) {
+    console.error('Vänåtgärden kunde inte sparas:', error.message);
+    toast('Åtgärden kunde inte sparas. Kontrollera att den senaste profilmigreringen har körts.');
+    return;
+  }
+  if (currentUser) await renderProfileActivity();
+  if (!$('#profilePublicView').hidden && displayedPublicProfileId) {
+    await showPublicProfile(displayedPublicProfileId);
+  }
+  toast(action === 'send' ? 'Vänförfrågan skickad.' :
+    action === 'accept' ? 'Vänförfrågan accepterad.' :
+      action === 'reject' ? 'Vänförfrågan avvisad.' :
+        action === 'cancel' ? 'Vänförfrågan avbruten.' : 'Vännen har tagits bort.');
 }
 
 async function recordSiteVisit() {
@@ -4292,21 +4304,20 @@ $('#profileModal').addEventListener('click', event => {
 });
 
 $('#profileVisits').addEventListener('submit', saveVisitDetails);
-$('#profileFollowing').addEventListener('click', event => {
-  const button = event.target.closest('[data-unfollow-profile]');
-  if (button) toggleProfileFollow(button.dataset.unfollowProfile, false);
-});
 $('#profileDiscoveryForm').addEventListener('submit', event => {
   event.preventDefault();
   loadPublicProfiles($('#profileDiscoveryQuery').value.trim());
 });
-$('#profileDiscovery').addEventListener('click', event => {
-  const button = event.target.closest('[data-follow-profile]');
-  if (button) toggleProfileFollow(button.dataset.followProfile, button.dataset.isFollowing !== 'true');
+['profileDiscovery', 'profileFriends', 'profileFriendRequests'].forEach(id => {
+  $(`#${id}`).addEventListener('click', event => {
+    const button = event.target.closest('[data-friend-action]');
+    if (button) performFriendAction(button.dataset.userId, button.dataset.friendAction);
+  });
 });
-$('#publicProfileFollowBtn').addEventListener('click', () => {
+$('#publicProfileFriendBtn').addEventListener('click', () => {
   if (!displayedPublicProfileId) return;
-  toggleProfileFollow(displayedPublicProfileId, !displayedPublicProfileFollowed);
+  const status = $('#publicProfileFriendBtn').dataset.friendshipStatus;
+  performFriendAction(displayedPublicProfileId, status === 'request_received' ? 'accept' : 'send');
 });
 
 $('#profileAuthForm').addEventListener('submit', async event => {
@@ -4359,21 +4370,28 @@ $('#profileDetailsForm').addEventListener('submit', async event => {
   event.preventDefault();
   if (!currentUser) return;
   const displayName = $('#profileDisplayName').value.trim();
+  const ageValue = $('#profilePublicAge').value;
+  const publicAge = ageValue ? Number(ageValue) : null;
+  if (publicAge !== null && (!Number.isInteger(publicAge) || publicAge < 13 || publicAge > 120)) {
+    $('#profileDetailsMessage').textContent = 'Ange en ålder mellan 13 och 120, eller lämna fältet tomt.';
+    return;
+  }
   const { error } = await supabase.from('profiles').upsert({
     user_id: currentUser.id,
     display_name: displayName,
+    public_age: publicAge,
     is_public: $('#profilePublicToggle').checked,
     updated_at: new Date().toISOString()
   }, { onConflict: 'user_id' });
   if (error) {
-    if (isMissingPublicProfileColumn(error) && !$('#profilePublicToggle').checked) {
+    if (isMissingPublicProfileColumn(error) && !$('#profilePublicToggle').checked && !publicAge) {
       const { error: legacySaveError } = await supabase.from('profiles').upsert({
         user_id: currentUser.id,
         display_name: displayName,
         updated_at: new Date().toISOString()
       }, { onConflict: 'user_id' });
       if (!legacySaveError) {
-        currentProfile = { display_name: displayName, is_public: false };
+        currentProfile = { display_name: displayName, is_public: false, public_age: null };
         $('#profileHeading').textContent = displayName || 'Din profil.';
         $('#profileDetailsMessage').textContent = 'Namnet sparades. Kör supabase/profile_visits.sql för att aktivera besök och offentlig profil.';
         return;
@@ -4383,10 +4401,12 @@ $('#profileDetailsForm').addEventListener('submit', async event => {
     console.error('Profilen kunde inte sparas:', error.message);
     return;
   }
-  currentProfile = { display_name: displayName, is_public: $('#profilePublicToggle').checked };
+  currentProfile = { display_name: displayName, is_public: $('#profilePublicToggle').checked, public_age: publicAge };
   $('#profileHeading').textContent = displayName || 'Din profil.';
   $('#profileShareActions').hidden = !currentProfile.is_public;
+  $('#profileFriendPrivacyHint').hidden = currentProfile.is_public;
   $('#profileDetailsMessage').textContent = 'Profilen är sparad.';
+  await renderProfileActivity();
   toast('Profilen har uppdaterats.');
 });
 
